@@ -2,12 +2,14 @@
   "name": "architecture-diagram-generator",
   "version": "0.1.0",
   "description": "Automated architecture diagram generator for Next.js projects",
-  "main": "dist/cli.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "generate-architecture": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build",
     "dev": "tsc --watch",
     "diagram": "node dist/cli.js",
     "test": "vitest --run",
