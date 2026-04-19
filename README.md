@@ -6,7 +6,7 @@ Automated architecture diagram generator for Next.js projects. It scans your cod
 
 - 🚀 **Automated Discovery**: Scans your source code for imports and exports.
 - 📂 **Layer & Domain Classification**: Group components by architectural layers (UI, API, Data, etc.) and business domains.
-- 📊 **Multiple Formats**: Outputs to Markdown (Mermaid), PNG, and SVG.
+- 📊 **Multiple Formats**: Outputs to Markdown (Mermaid) by default, with optional support for PNG and SVG.
 - 🤖 **AI Integration**: (Optional) Use AI to generate architectural descriptions for your components.
 - ⚙️ **Highly Configurable**: Define your own layers, domains, and filters.
 
@@ -16,11 +16,41 @@ Automated architecture diagram generator for Next.js projects. It scans your cod
 npm install -g architecture-diagram-generator
 
 # Usage
-architecture-generator . --output ./docs/architecture.md
+architecture-generator . --format md,png
 
 # Or run via npx
-npx architecture-diagram-generator . --output ./docs/architecture.md
+npx architecture-diagram-generator . --format svg
 ```
+
+## Optional Dependencies
+
+To keep the default installation lightweight, image export requires additional packages:
+
+### PNG Export
+Requires **Puppeteer**. Install it in your project:
+```bash
+npm install --save-dev puppeteer
+```
+
+### SVG Export
+Requires **Mermaid CLI**. Install it globally:
+```bash
+npm install -g @mermaid-js/mermaid-cli
+```
+
+## CLI Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--format` | Comma-separated formats: `md`, `png`, `svg` | `md` |
+| `--output, -o` | Output file path | `architecture.md` |
+| `--output-dir` | Output directory for multiple formats | `./docs` |
+| `--mode` | `architecture` (filtered) or `full` | `architecture` |
+| `--max-nodes` | Maximum number of nodes | `150` |
+| `--no-grouping` | Disable layer grouping | `false` |
+| `--simplified` | Generate simplified diagram | `true` |
+| `--detailed` | Generate detailed diagram | `false` |
+
 
 ## Configuration
 

@@ -48,18 +48,23 @@ export class VisualExporter {
       mkdirSync(outputDir, { recursive: true });
     }
 
-    // Try Mermaid CLI first
-    try {
-      await this.exportWithMermaidCLI(diagram, format, outputPath);
-      return;
-    } catch (error) {
-      // If Mermaid CLI fails, try Puppeteer
+    // Route to specific tool based on format
+    if (format === 'svg') {
+      try {
+        await this.exportWithMermaidCLI(diagram, format, outputPath);
+      } catch (error) {
+        throw new Error(
+          `Failed to export SVG: ${error instanceof Error ? error.message : String(error)}. \n` +
+          `Hint: SVG export requires Mermaid CLI. Install it with: npm install -g @mermaid-js/mermaid-cli`
+        );
+      }
+    } else if (format === 'png') {
       try {
         await this.exportWithPuppeteer(diagram, format, outputPath);
-        return;
-      } catch (puppeteerError) {
+      } catch (error) {
         throw new Error(
-          `Failed to export diagram: Mermaid CLI error: ${error}, Puppeteer error: ${puppeteerError}`
+          `Failed to export PNG: ${error instanceof Error ? error.message : String(error)}. \n` +
+          `Hint: PNG export requires Puppeteer. Install it with: npm install puppeteer`
         );
       }
     }
@@ -139,9 +144,11 @@ export class VisualExporter {
   ): Promise<void> {
     let puppeteer;
     try {
-      puppeteer = require('puppeteer');
+      // @ts-ignore - Dynamic import for optional dependency
+      const puppeteerModule = await import('puppeteer');
+      puppeteer = puppeteerModule.default || puppeteerModule;
     } catch {
-      throw new Error('Puppeteer is not installed. Install with: npm install puppeteer');
+      throw new Error('Puppeteer is not installed.');
     }
 
     const browser = await puppeteer.launch({ headless: true });

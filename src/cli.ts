@@ -107,6 +107,26 @@ function parseArgs(): CLIOptions {
           options.formats.push('svg');
         }
         break;
+      case '--format':
+        if (i + 1 < args.length) {
+          const requestedFormats = args[++i].split(',').map(f => f.trim().toLowerCase());
+          // Clear defaults if --format is explicitly used
+          options.formats = [];
+          for (const f of requestedFormats) {
+            if (f === 'md' || f === 'markdown') {
+              if (!options.formats.includes('markdown')) options.formats.push('markdown');
+            } else if (f === 'png') {
+              if (!options.formats.includes('png')) options.formats.push('png');
+            } else if (f === 'svg') {
+              if (!options.formats.includes('svg')) options.formats.push('svg');
+            } else {
+              console.warn(`⚠️  Unknown format "${f}", skipping`);
+            }
+          }
+          // If all provided formats were invalid, fall back to markdown
+          if (options.formats.length === 0) options.formats = ['markdown'];
+        }
+        break;
       case '--simplified':
         options.simplified = true;
         break;
@@ -159,9 +179,10 @@ OPTIONS:
   --mode <mode>          Output mode: "architecture" (filtered, ~40 nodes) or "full" (default: architecture)
   
   FORMAT OPTIONS:
-  --markdown             Generate Markdown output (default)
-  --png                  Generate PNG image output
-  --svg                  Generate SVG image output
+  --format <formats>     Comma-separated formats: md, png, svg (default: md)
+  --markdown             Generate Markdown output
+  --png                  Generate PNG image output (requires Puppeteer)
+  --svg                  Generate SVG image output (requires Mermaid CLI)
   
   DIAGRAM TYPE OPTIONS:
   --simplified           Generate simplified diagram (aggregated by domain)
@@ -172,8 +193,8 @@ OPTIONS:
 EXAMPLES:
   architecture-generator
   architecture-generator ./my-project
-  architecture-generator --output docs/architecture.md
-  architecture-generator --markdown --png --svg --output-dir ./docs
+  architecture-generator --format md,png
+  architecture-generator --format svg --output-dir ./docs
   architecture-generator --simplified --detailed --output-dir ./docs
   architecture-generator --ignore "**/*.test.*,**/temp/**" --max-nodes 30
   architecture-generator ./project --output ./docs/arch.md --no-grouping
