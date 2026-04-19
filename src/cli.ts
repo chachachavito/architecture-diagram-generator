@@ -237,7 +237,8 @@ async function main(): Promise<void> {
     let fullConfig: FullProjectConfig;
     
     try {
-      fullConfig = await configLoader.load();
+      const configPath = path.join(options.projectRoot, 'architecture-config.json');
+      fullConfig = await configLoader.load(configPath);
     } catch {
       // Use default config if no config file found
       fullConfig = {
