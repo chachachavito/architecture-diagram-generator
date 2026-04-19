@@ -148,7 +148,7 @@ function showHelp(): void {
 🏗️  Architecture Diagram Generator
 
 USAGE:
-  generate-architecture [project-root] [options]
+  architecture-generator [project-root] [options]
 
 OPTIONS:
   --output, -o <path>     Output file path (default: architecture.md)
@@ -170,13 +170,13 @@ OPTIONS:
   --help, -h             Show this help message
 
 EXAMPLES:
-  generate-architecture
-  generate-architecture ./my-project
-  generate-architecture --output docs/architecture.md
-  generate-architecture --markdown --png --svg --output-dir ./docs
-  generate-architecture --simplified --detailed --output-dir ./docs
-  generate-architecture --ignore "**/*.test.*,**/temp/**" --max-nodes 30
-  generate-architecture ./project --output ./docs/arch.md --no-grouping
+  architecture-generator
+  architecture-generator ./my-project
+  architecture-generator --output docs/architecture.md
+  architecture-generator --markdown --png --svg --output-dir ./docs
+  architecture-generator --simplified --detailed --output-dir ./docs
+  architecture-generator --ignore "**/*.test.*,**/temp/**" --max-nodes 30
+  architecture-generator ./project --output ./docs/arch.md --no-grouping
 `);
 }
 
