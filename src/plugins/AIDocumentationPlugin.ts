@@ -1,5 +1,5 @@
 import type { Plugin, PluginHooks } from '../core/PluginManager';
-import type { ClassifiedGraph, GraphNode } from '../core/DependencyGraph';
+import type { ClassifiedGraph, GraphNode } from '../core';
 import type { MermaidDiagram } from '../generators/DiagramGenerator';
 
 // ─── AI Plugin Types ───────────────────────────────────────────────────────────
@@ -299,7 +299,7 @@ export class AIDocumentationPlugin implements Plugin {
           domainDescriptions.push({
             domainName: domain,
             description,
-            modules: nodes.map(n => n.id),
+            modules: nodes.map((n: GraphNode) => n.id),
           });
         } catch (error) {
           console.warn(`[AIPlugin] Failed to generate description for domain ${domain}: ${(error as Error).message}`);
@@ -404,7 +404,7 @@ Total Modules: ${nodes.length}`;
    */
   private buildImprovementContext(graph: ClassifiedGraph): string {
     const layerInfo = graph.layers 
-      ? Array.from(graph.layers.entries()).map(([l, n]) => `${l}: ${n.length} modules`).join('\n')
+      ? Array.from(graph.layers.entries()).map(([l, n]: [string, GraphNode[]]) => `${l}: ${n.length} modules`).join('\n')
       : 'No layer information';
     
     return `Architecture Analysis:

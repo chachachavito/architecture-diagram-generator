@@ -1,13 +1,9 @@
 // Generators module exports
 export { DiagramGenerator } from './DiagramGenerator';
 export type {
-  GraphNode,
-  GraphEdge,
-  DependencyGraph,
-  NodeType,
-  ArchitectureLayer,
-  EdgeType,
   GenerationOptions,
   MermaidDiagram,
   DiagramMetadata,
 } from './DiagramGenerator';
+export { VisualExporter } from './VisualExporter';
+export type { ExportOptions } from './VisualExporter';

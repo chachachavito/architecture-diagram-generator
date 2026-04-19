@@ -1,48 +1,6 @@
 import { ParsedModule } from '../parsers';
 
-/**
- * Interface representing a node in the dependency graph
- */
-export interface GraphNode {
-  id: string;              // Unique identifier (file path)
-  type: NodeType;          // Type of node
-  layer?: ArchitectureLayer;
-  domain?: string;
-  label?: string;          // Display label for the node
-}
-
-/**
- * Interface representing an edge in the dependency graph
- */
-export interface GraphEdge {
-  from: string;
-  to: string;
-  type: EdgeType;          // Type of relationship
-}
-
-/**
- * Interface representing a dependency graph
- */
-export interface DependencyGraph {
-  nodes: Map<string, GraphNode>;
-  edges: GraphEdge[];
-}
-
-/**
- * Interface representing a classified graph with layer and domain groupings.
- * Extends DependencyGraph with pre-computed layer and domain maps.
- */
-export interface ClassifiedGraph extends DependencyGraph {
-  layers: Map<ArchitectureLayer, GraphNode[]>;
-  domains: Map<string, GraphNode[]>;
-}
-
-/**
- * Type definitions for nodes and edges
- */
-export type NodeType = 'route' | 'api' | 'component' | 'utility' | 'config' | 'external-service';
-export type ArchitectureLayer = 'UI' | 'API' | 'Processing' | 'Data' | 'Storage';
-export type EdgeType = 'import' | 'external-call';
+import { ClassifiedGraph, DependencyGraph, ArchitectureLayer, GraphNode, GraphEdge, NodeType, EdgeType } from '../core';
 
 /**
  * Interface for diagram generation options
@@ -71,6 +29,9 @@ export interface DiagramMetadata {
   nodeCount: number;
   edgeCount: number;
   generatedAt: Date;
+  layers?: ArchitectureLayer[];
+  domains?: string[];
+  externalServices?: string[];
 }
 
 /**
@@ -273,7 +234,7 @@ export class DiagramGenerator {
         if (domainNodes.length === 0) continue;
         
         // Use the first node as representative, but update its label to indicate aggregation
-        const representative = { ...domainNodes[0] };
+        const representative: GraphNode = { ...domainNodes[0], externalCalls: domainNodes[0].externalCalls || [] };
         
         if (domain && domainNodes.length > 1) {
           // Multiple nodes in domain - create aggregated label
@@ -871,6 +832,7 @@ export class DiagramGenerator {
         type: nodeType,
         layer: layer,
         domain: this.inferDomain(module.path),
+        externalCalls: [],
       });
     }
 
@@ -888,7 +850,10 @@ export class DiagramGenerator {
       }
     }
 
-    return { nodes, edges };
+    const graph = new DependencyGraph();
+    graph.nodes = nodes;
+    graph.edges = edges;
+    return graph;
   }
 
   /**

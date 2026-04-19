@@ -127,7 +127,7 @@ export class MermaidParser {
       // Parse header (graph/flowchart declaration)
       const headerResult = this.parseHeader(lines[headerLineIndex] || '');
       if (!headerResult.success) {
-        errors.push(...headerResult.errors);
+        errors.push(...(headerResult.errors || []));
         return { success: false, errors };
       }
 

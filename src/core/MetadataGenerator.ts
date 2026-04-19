@@ -1,8 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
-import type { DependencyGraph, GraphNode, GraphEdge } from './DependencyGraph';
+import { DependencyGraph } from './DependencyGraph';
+import type { GraphNode, GraphEdge } from './DependencyGraph';
 import type { ClassifiedGraph } from './ArchitectureClassifier';
-import type { MermaidDiagram } from '../generators/DiagramGenerator';
+import type { MermaidDiagram } from '../generators';
 
 // ─── Metadata Types ───────────────────────────────────────────────────────────
 
@@ -205,9 +206,9 @@ export class MetadataGenerator {
       edgeCount: diagram.metadata.edgeCount,
       layerCounts: {},
       domainCounts: {},
-      layers: diagram.metadata.layers,
-      domains: diagram.metadata.domains,
-      externalServices: diagram.metadata.externalServices,
+      layers: diagram.metadata.layers || [],
+      domains: diagram.metadata.domains || [],
+      externalServices: diagram.metadata.externalServices || [],
       generatedAt: diagram.metadata.generatedAt.toISOString(),
       generatorVersion: this.generatorVersion,
       rootDir: './',
@@ -366,10 +367,7 @@ export class ChangeDetector {
 
     // Reconstruct a minimal previous graph from metadata
     // Note: This is a simplified comparison since we don't have full graph data
-    const previousGraph: DependencyGraph = {
-      nodes: new Map(),
-      edges: [],
-    };
+    const previousGraph = new DependencyGraph();
 
     // We can only do limited comparison without full graph data
     // Return a summary-based comparison
@@ -449,7 +447,10 @@ export class ChangeDetector {
         type: e.type,
       }));
 
-      return { nodes, edges };
+      const graph = new DependencyGraph();
+      graph.nodes = nodes;
+      graph.edges = edges;
+      return graph;
     } catch {
       return null;
     }
