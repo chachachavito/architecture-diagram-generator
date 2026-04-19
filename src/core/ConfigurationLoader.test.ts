@@ -135,7 +135,6 @@ describe('ConfigurationLoader', () => {
           simplified: true,
           detailed: false,
         },
-        plugins: [],
       };
 
       const result = loader.validate(validConfig);
@@ -318,7 +317,6 @@ describe('ConfigurationLoader', () => {
           simplified: false,
           detailed: true,
         },
-        plugins: [{ name: 'plugin', enabled: true }],
       };
 
       const result = loader.merge(userConfig, DEFAULT_CONFIG);
@@ -335,7 +333,6 @@ describe('ConfigurationLoader', () => {
         simplified: false,
         detailed: true,
       });
-      expect(result.plugins).toEqual([{ name: 'plugin', enabled: true }]);
     });
 
     it('should merge output config partially', () => {

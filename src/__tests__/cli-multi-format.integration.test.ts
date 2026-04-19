@@ -93,7 +93,6 @@ describe('CLI - Multi-format Output Integration', () => {
       const content = require('fs').readFileSync(mdPath, 'utf-8');
       expect(content).toContain('flowchart TD');
       expect(content).toContain('```mermaid');
-      expect(content).toContain('## Analysis Report');
     } catch (error) {
       console.error(error);
       throw error;

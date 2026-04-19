@@ -1,18 +1,11 @@
 import { 
   SourceGraph, 
   ClassifiedGraph, 
-  AnalysisReport, 
-  GraphSnapshot,
-  NodeMetrics,
-  ArchitectureRules
+  GraphSnapshot
 } from './GraphTypes';
 import { Normalizer } from './Normalizer';
-import { MetricsCalculator } from './MetricsCalculator';
 import { ArchitectureClassifier } from './ArchitectureClassifier';
-import { ArchitectureAnalyzer } from './ArchitectureAnalyzer';
 import { ProjectConfig } from './ConfigValidator';
-import { PluginManager } from './PluginManager';
-import { AIDocumentationPlugin } from '../plugins/AIDocumentationPlugin';
 
 export interface PipelineOptions {
   version: string;
@@ -25,35 +18,18 @@ export interface PipelineOptions {
 }
 
 /**
- * ArchitecturePipeline orchestrates the architectural analysis flow.
+ * ArchitecturePipeline orchestrates the architectural parsing and graph generation flow.
  */
 export class ArchitecturePipeline {
   private normalizer = new Normalizer();
   private classifier = new ArchitectureClassifier();
-  private metricsCalculator = new MetricsCalculator();
-  private analyzer = new ArchitectureAnalyzer();
-  public pluginManager = new PluginManager();
-
-  constructor(private options: PipelineOptions) {
-    // Register default plugins
-    this.registerPlugins();
-  }
-
-  private registerPlugins(): void {
-    // AI Documentation Plugin
-    const aiConfig = (this.options.config as any).plugins?.find((p: any) => p.name === 'ai-documentation-enhancer');
-    this.pluginManager.register(new AIDocumentationPlugin(aiConfig?.config || {}), {
-      enabled: aiConfig?.enabled ?? true,
-      log: (msg) => this.log(`[AIPlugin] ${msg}`)
-    });
-  }
+  constructor(private options: PipelineOptions) {}
 
   /**
-   * Runs the full pipeline
+   * Runs the pipeline to generate a classified graph.
    */
   async run(input: SourceGraph): Promise<{ 
     graph: ClassifiedGraph, 
-    report: AnalysisReport, 
     version: string 
   }> {
     this.log('Starting pipeline...');
@@ -72,34 +48,22 @@ export class ArchitecturePipeline {
       ...normalized,
       version: this.options.version
     };
-    await this.pluginManager.execute('afterClassification', classified);
 
     // 4. Enrich
     this.log('Stage: Enrich');
-    // Manual overrides from config are handled inside classifier currently
 
-    // 5. Compute Metrics
-    this.log('Stage: Compute Metrics');
-    const metrics = this.metricsCalculator.compute(classified);
-
-    // 6. Sanitize
+    // 5. Sanitize
     this.log('Stage: Sanitize');
     const sanitized = this.sanitize(classified);
 
-    // 7. Snapshot
+    // 6. Snapshot
     this.log('Stage: Snapshot');
     const snapshot = this.createSnapshot(sanitized);
-
-    // 8. Analyze
-    this.log('Stage: Analyze');
-    const rules = this.getRules();
-    const report = this.analyzer.analyze(snapshot, metrics, rules);
 
     this.log('Pipeline completed.');
 
     return {
       graph: snapshot,
-      report,
       version: this.options.version
     };
   }
@@ -119,7 +83,6 @@ export class ArchitecturePipeline {
 
     for (const edge of graph.edges) {
       if (!ids.has(edge.from)) {
-        // Source node must exist
         throw new Error(`Invalid edge: source node ${edge.from} not found`);
       }
     }
@@ -152,25 +115,6 @@ export class ArchitecturePipeline {
       }
     }
     return Object.freeze(obj);
-  }
-
-  private getRules(): ArchitectureRules[] {
-    const defaultRules: ArchitectureRules[] = [
-      { ruleId: 'cycles', ruleVersion: '1.0.0', enabled: true, severity: 'high' },
-      { ruleId: 'god-object', ruleVersion: '1.0.0', enabled: true, severity: 'medium', thresholds: { maxConnections: 15 } },
-      { ruleId: 'layer-violations', ruleVersion: '1.0.0', enabled: true, severity: 'critical' }
-    ];
-
-    if (!this.options.config.rules) return defaultRules;
-
-    // Merge with config
-    return defaultRules.map(def => {
-      const configRule = this.options.config.rules?.find(r => r.ruleId === def.ruleId);
-      if (configRule) {
-        return { ...def, ...configRule };
-      }
-      return def;
-    });
   }
 
   private log(message: string): void {

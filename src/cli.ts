@@ -10,14 +10,11 @@ import {
   FileDiscovery, 
   DependencyGraphBuilder, 
   ArchitecturePipeline, 
-  ConfigValidator, 
   validateConfig,
-  type ProjectConfig 
 } from './core';
 import { ASTParser } from './parsers';
 import { DiagramGenerator } from './generators';
-import { OutputWriter, Logger, LogLevel, GeneratorError, NoFilesFoundError, InvalidProjectRootError } from './utils';
-import dotenv from 'dotenv';
+import { Logger, LogLevel, NoFilesFoundError } from './utils';
 
 interface CLIOptions {
   projectRoot: string;
@@ -67,7 +64,7 @@ async function main(): Promise<void> {
 
     if (options.help) {
       console.log(`
-Architecture Diagram Generator (v2.0)
+Architecture Diagram Generator (v2.1)
 
 Usage: architecture-generator [project-root] [options]
 
@@ -78,9 +75,8 @@ Options:
   --help, -h      Show this help message
 
 Description:
-  Scans a modern TypeScript project (like Next.js) and generates an architectural
-  analysis report along with a visual Mermaid diagram. Outputs both a .json data
-  file and a human-readable .md report.
+  Scans a modern TypeScript project and generates an architectural graph (graph.json)
+  and a structural Mermaid diagram. Analysis has been moved to architecture-analyzer.
       `);
       process.exit(0);
     }
@@ -90,7 +86,7 @@ Description:
         const pkg = JSON.parse(await fs.readFile(path.join(__dirname, '../package.json'), 'utf-8'));
         console.log(`v${pkg.version}`);
       } catch (e) {
-        console.log('v0.2.1');
+        console.log('v0.3.0');
       }
       process.exit(0);
     }
@@ -138,61 +134,31 @@ Description:
 
     // 4. Run Pipeline
     const pipeline = new ArchitecturePipeline({
-      version: '2.0.0',
+      version: '2.1.0',
       config,
       debug: options.debug,
       rootDir: options.projectRoot
     });
 
-    const { graph, report } = await pipeline.run(sourceGraph);
+    const { graph } = await pipeline.run(sourceGraph);
 
     // 5. Generate Diagram
     const generator = new DiagramGenerator();
-    const diagram = generator.generate(graph, report);
-    await pipeline.pluginManager.execute('afterGeneration', diagram);
+    const diagram = generator.generate(graph);
 
     // 6. Write Output
     const output = {
-      version: '2.0.0',
+      version: '2.1.0',
       generatedAt: new Date().toISOString(),
-      graph,
-      report
+      graph
     };
 
     await fs.writeFile(options.outputPath, JSON.stringify(output, null, 2));
     
-    // Also write markdown if requested or as default side-effect
     const mdPath = options.outputPath.replace('.json', '.md');
-    const extraContent = diagram.extraContent ? `\n\n${diagram.extraContent}` : '';
-    
-    // Format issues
-    let issuesMd = '### Issues\n\n';
-    if (report.issues.length === 0) {
-      issuesMd += '✅ No architectural issues detected.\n';
-    } else {
-      issuesMd += '| Severity | Rule | Module | Message |\n';
-      issuesMd += '|----------|------|--------|---------|\n';
-      for (const issue of report.issues) {
-        const severityIcon = issue.severity === 'critical' ? '🔴' : issue.severity === 'high' ? '🟠' : issue.severity === 'medium' ? '🟡' : '⚪';
-        issuesMd += `| ${severityIcon} ${issue.severity} | ${issue.ruleId} | \`${issue.nodeId}\` | ${issue.message} |\n`;
-      }
-    }
+    await fs.writeFile(mdPath, `# Architecture Diagram\n\n\`\`\`mermaid\n${diagram.syntax}\n\`\`\``);
 
-    // Format suggestions
-    let suggestionsMd = '\n### Suggestions\n\n';
-    if (report.suggestions.length === 0) {
-      suggestionsMd += 'No suggestions available.\n';
-    } else {
-      for (const sug of report.suggestions) {
-        suggestionsMd += `- ${sug.message}\n`;
-      }
-    }
-
-    const reportMd = `\n## Analysis Report\n\n${issuesMd}${suggestionsMd}`;
-
-    await fs.writeFile(mdPath, `# Architecture Diagram\n\n\`\`\`mermaid\n${diagram.syntax}\n\`\`\`${extraContent}${reportMd}`);
-
-    console.log(`✅ Architecture data written to ${options.outputPath}`);
+    console.log(`✅ Architecture graph written to ${options.outputPath}`);
     console.log(`✅ Diagram written to ${mdPath}`);
 
     process.exit(0);

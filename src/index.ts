@@ -35,8 +35,6 @@ export { MermaidRenderer } from './generators/MermaidRenderer';
 export { VisualExporter } from './generators/VisualExporter';
 export type { ExportOptions } from './generators/VisualExporter';
 
-// Plugin exports
-export * from './plugins';
 
 // Utils exports
 export * from './utils';

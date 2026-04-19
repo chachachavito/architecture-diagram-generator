@@ -41,11 +41,7 @@ export interface OutputConfig {
   detailed: boolean;
 }
 
-export interface PluginConfig {
-  name: string;
-  enabled: boolean;
-  config?: Record<string, unknown>;
-}
+
 
 /**
  * Full project configuration, including all optional advanced fields.
@@ -62,7 +58,6 @@ export interface FullProjectConfig {
   domains: DomainDefinition[];
   externalServices: ExternalServiceDefinition[];
   output: OutputConfig;
-  plugins: PluginConfig[];
 }
 
 export interface ValidationResult {
@@ -122,7 +117,6 @@ export const DEFAULT_CONFIG: FullProjectConfig = {
     simplified: true,
     detailed: false,
   },
-  plugins: [],
 };
 
 // ─── ConfigurationLoader ──────────────────────────────────────────────────────
@@ -349,7 +343,6 @@ export class ConfigurationLoader {
       output:           userConfig.output
         ? { ...defaults.output, ...userConfig.output }
         : defaults.output,
-      plugins:          userConfig.plugins           ?? defaults.plugins,
     };
   }
 

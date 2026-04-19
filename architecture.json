@@ -1,0 +1,1082 @@
+{
+  "version": "2.1.0",
+  "generatedAt": "2026-04-19T19:05:13.333Z",
+  "graph": {
+    "nodes": [
+      {
+        "id": "child_process",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "child_process",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "child_process",
+        "externalCalls": []
+      },
+      {
+        "id": "crypto",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "crypto",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "crypto",
+        "externalCalls": []
+      },
+      {
+        "id": "fs",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "fs",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "fs",
+        "externalCalls": []
+      },
+      {
+        "id": "fs/promises",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "fs/promises",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "fs/promises",
+        "externalCalls": []
+      },
+      {
+        "id": "glob",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "glob",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "glob",
+        "externalCalls": []
+      },
+      {
+        "id": "https:/api.openai.com/v1/chat/completions",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "https://api.openai.com/v1/chat/completions",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "https://api.openai.com/v1/chat/completions",
+        "externalCalls": []
+      },
+      {
+        "id": "path",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "path",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "path",
+        "externalCalls": []
+      },
+      {
+        "id": "puppeteer",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "puppeteer",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "puppeteer",
+        "externalCalls": []
+      },
+      {
+        "id": "src/cli.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Cli",
+          "layer": "Core",
+          "domain": "shared"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/ArchitectureClassifier.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ArchitectureClassifier",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/ArchitectureFilter.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ArchitectureFilter",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ArchitecturePipeline",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/ConfigurationLoader.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ConfigurationLoader",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/ConfigValidator.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ConfigValidator",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/DependencyGraph.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "DependencyGraph",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/DependencyGraphBuilder.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "DependencyGraphBuilder",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/FileDiscovery.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "FileDiscovery",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/GraphTypes.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "GraphTypes",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Core/Index",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/MetadataGenerator.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "MetadataGenerator",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/ModuleCache.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ModuleCache",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/Normalizer.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Normalizer",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/OutputTypes.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "OutputTypes",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/ParallelFileProcessor.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ParallelFileProcessor",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/core/PluginManager.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "PluginManager",
+          "layer": "Core",
+          "domain": "core"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/generators/DiagramGenerator.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "DiagramGenerator",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/generators/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Generators/Index",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/generators/MermaidRenderer.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "MermaidRenderer",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/generators/VisualExporter.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "VisualExporter",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/generators/VisualMapper.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "VisualMapper",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Src/Index",
+          "layer": "Core",
+          "domain": "shared"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/parsers/ASTParser.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "ASTParser",
+          "layer": "Core",
+          "domain": "parsers"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/parsers/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Parsers/Index",
+          "layer": "Core",
+          "domain": "parsers"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/parsers/MermaidParser.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "MermaidParser",
+          "layer": "Core",
+          "domain": "parsers"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/plugins/AIDocumentationPlugin.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "AIDocumentationPlugin",
+          "layer": "Core",
+          "domain": "plugins"
+        },
+        "type": "module",
+        "externalCalls": [
+          {
+            "type": "fetch",
+            "target": "https://api.openai.com/v1/chat/completions",
+            "location": {
+              "line": 133,
+              "column": 27
+            }
+          },
+          {
+            "type": "fetch",
+            "target": "https://api.openai.com/v1/chat/completions",
+            "location": {
+              "line": 169,
+              "column": 27
+            }
+          }
+        ]
+      },
+      {
+        "id": "src/plugins/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Plugins/Index",
+          "layer": "Core",
+          "domain": "plugins"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/utils/errors.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Errors",
+          "layer": "Core",
+          "domain": "utils"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/utils/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Utils/Index",
+          "layer": "Core",
+          "domain": "utils"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/utils/logger.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "Logger",
+          "layer": "Core",
+          "domain": "utils"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/utils/OutputWriter.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "label": "OutputWriter",
+          "layer": "Core",
+          "domain": "utils"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "typescript",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "typescript",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "typescript",
+        "externalCalls": []
+      },
+      {
+        "id": "zod",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "zod",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "zod",
+        "externalCalls": []
+      }
+    ],
+    "edges": [
+      {
+        "id": "src/cli.ts->fs/promises:import",
+        "from": "src/cli.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/cli.ts->path:import",
+        "from": "src/cli.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitectureClassifier.ts->src/core/ConfigValidator.ts:import",
+        "from": "src/core/ArchitectureClassifier.ts",
+        "to": "src/core/ConfigValidator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitectureClassifier.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/ArchitectureClassifier.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitectureFilter.ts->src/core/DependencyGraph.ts:import",
+        "from": "src/core/ArchitectureFilter.ts",
+        "to": "src/core/DependencyGraph.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/ArchitectureClassifier.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/ArchitectureClassifier.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/ConfigValidator.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/ConfigValidator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/Normalizer.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/Normalizer.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/PluginManager.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/PluginManager.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/plugins/AIDocumentationPlugin.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/plugins/AIDocumentationPlugin.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ConfigurationLoader.ts->fs/promises:import",
+        "from": "src/core/ConfigurationLoader.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ConfigurationLoader.ts->path:import",
+        "from": "src/core/ConfigurationLoader.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ConfigValidator.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/ConfigValidator.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ConfigValidator.ts->zod:import",
+        "from": "src/core/ConfigValidator.ts",
+        "to": "zod",
+        "type": "import"
+      },
+      {
+        "id": "src/core/DependencyGraph.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/DependencyGraph.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/DependencyGraphBuilder.ts->path:import",
+        "from": "src/core/DependencyGraphBuilder.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/core/DependencyGraphBuilder.ts->src/core/DependencyGraph.ts:import",
+        "from": "src/core/DependencyGraphBuilder.ts",
+        "to": "src/core/DependencyGraph.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/DependencyGraphBuilder.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/DependencyGraphBuilder.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/FileDiscovery.ts->fs/promises:import",
+        "from": "src/core/FileDiscovery.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/core/FileDiscovery.ts->glob:import",
+        "from": "src/core/FileDiscovery.ts",
+        "to": "glob",
+        "type": "import"
+      },
+      {
+        "id": "src/core/FileDiscovery.ts->path:import",
+        "from": "src/core/FileDiscovery.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/core/FileDiscovery.ts->src/utils/errors.ts:import",
+        "from": "src/core/FileDiscovery.ts",
+        "to": "src/utils/errors.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/ArchitectureClassifier.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/ArchitectureClassifier.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/ArchitectureFilter.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/ArchitectureFilter.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/ArchitecturePipeline.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/ArchitecturePipeline.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/ConfigurationLoader.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/ConfigurationLoader.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/ConfigValidator.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/ConfigValidator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/DependencyGraph.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/DependencyGraph.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/DependencyGraphBuilder.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/DependencyGraphBuilder.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/FileDiscovery.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/FileDiscovery.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/MetadataGenerator.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/MetadataGenerator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/ModuleCache.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/ModuleCache.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/Normalizer.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/Normalizer.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/OutputTypes.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/OutputTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/ParallelFileProcessor.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/ParallelFileProcessor.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/index.ts->src/core/PluginManager.ts:import",
+        "from": "src/core/index.ts",
+        "to": "src/core/PluginManager.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/MetadataGenerator.ts->fs/promises:import",
+        "from": "src/core/MetadataGenerator.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/core/MetadataGenerator.ts->path:import",
+        "from": "src/core/MetadataGenerator.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/core/MetadataGenerator.ts->src/core/ArchitectureClassifier.ts:import",
+        "from": "src/core/MetadataGenerator.ts",
+        "to": "src/core/ArchitectureClassifier.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/MetadataGenerator.ts->src/core/DependencyGraph.ts:import",
+        "from": "src/core/MetadataGenerator.ts",
+        "to": "src/core/DependencyGraph.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ModuleCache.ts->crypto:import",
+        "from": "src/core/ModuleCache.ts",
+        "to": "crypto",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ModuleCache.ts->fs/promises:import",
+        "from": "src/core/ModuleCache.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ModuleCache.ts->path:import",
+        "from": "src/core/ModuleCache.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/core/Normalizer.ts->path:import",
+        "from": "src/core/Normalizer.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/core/Normalizer.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/Normalizer.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/OutputTypes.ts->src/core/GraphTypes.ts:import",
+        "from": "src/core/OutputTypes.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ParallelFileProcessor.ts->src/core/ModuleCache.ts:import",
+        "from": "src/core/ParallelFileProcessor.ts",
+        "to": "src/core/ModuleCache.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/PluginManager.ts->src/core/ArchitectureClassifier.ts:import",
+        "from": "src/core/PluginManager.ts",
+        "to": "src/core/ArchitectureClassifier.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/PluginManager.ts->src/core/ConfigurationLoader.ts:import",
+        "from": "src/core/PluginManager.ts",
+        "to": "src/core/ConfigurationLoader.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/PluginManager.ts->src/core/DependencyGraph.ts:import",
+        "from": "src/core/PluginManager.ts",
+        "to": "src/core/DependencyGraph.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/PluginManager.ts->src/generators/DiagramGenerator.ts:import",
+        "from": "src/core/PluginManager.ts",
+        "to": "src/generators/DiagramGenerator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/core/PluginManager.ts->src/parsers/ASTParser.ts:import",
+        "from": "src/core/PluginManager.ts",
+        "to": "src/parsers/ASTParser.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/DiagramGenerator.ts->src/core/GraphTypes.ts:import",
+        "from": "src/generators/DiagramGenerator.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/DiagramGenerator.ts->src/generators/MermaidRenderer.ts:import",
+        "from": "src/generators/DiagramGenerator.ts",
+        "to": "src/generators/MermaidRenderer.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/DiagramGenerator.ts->src/generators/VisualMapper.ts:import",
+        "from": "src/generators/DiagramGenerator.ts",
+        "to": "src/generators/VisualMapper.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/index.ts->src/generators/DiagramGenerator.ts:import",
+        "from": "src/generators/index.ts",
+        "to": "src/generators/DiagramGenerator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/index.ts->src/generators/VisualExporter.ts:import",
+        "from": "src/generators/index.ts",
+        "to": "src/generators/VisualExporter.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/MermaidRenderer.ts->src/core/GraphTypes.ts:import",
+        "from": "src/generators/MermaidRenderer.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/MermaidRenderer.ts->src/generators/VisualMapper.ts:import",
+        "from": "src/generators/MermaidRenderer.ts",
+        "to": "src/generators/VisualMapper.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/VisualExporter.ts->child_process:import",
+        "from": "src/generators/VisualExporter.ts",
+        "to": "child_process",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/VisualExporter.ts->fs:import",
+        "from": "src/generators/VisualExporter.ts",
+        "to": "fs",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/VisualExporter.ts->path:import",
+        "from": "src/generators/VisualExporter.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/VisualExporter.ts->puppeteer:import",
+        "from": "src/generators/VisualExporter.ts",
+        "to": "puppeteer",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/VisualExporter.ts->src/generators/DiagramGenerator.ts:import",
+        "from": "src/generators/VisualExporter.ts",
+        "to": "src/generators/DiagramGenerator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/generators/VisualMapper.ts->src/core/GraphTypes.ts:import",
+        "from": "src/generators/VisualMapper.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/index.ts->src/generators/DiagramGenerator.ts:import",
+        "from": "src/index.ts",
+        "to": "src/generators/DiagramGenerator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/index.ts->src/generators/MermaidRenderer.ts:import",
+        "from": "src/index.ts",
+        "to": "src/generators/MermaidRenderer.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/index.ts->src/generators/VisualExporter.ts:import",
+        "from": "src/index.ts",
+        "to": "src/generators/VisualExporter.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/index.ts->src/generators/VisualMapper.ts:import",
+        "from": "src/index.ts",
+        "to": "src/generators/VisualMapper.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/index.ts->src/parsers/ASTParser.ts:import",
+        "from": "src/index.ts",
+        "to": "src/parsers/ASTParser.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/index.ts->src/parsers/MermaidParser.ts:import",
+        "from": "src/index.ts",
+        "to": "src/parsers/MermaidParser.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/parsers/ASTParser.ts->fs/promises:import",
+        "from": "src/parsers/ASTParser.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/parsers/ASTParser.ts->path:import",
+        "from": "src/parsers/ASTParser.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/parsers/ASTParser.ts->src/core/ModuleCache.ts:import",
+        "from": "src/parsers/ASTParser.ts",
+        "to": "src/core/ModuleCache.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/parsers/ASTParser.ts->src/utils/errors.ts:import",
+        "from": "src/parsers/ASTParser.ts",
+        "to": "src/utils/errors.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/parsers/ASTParser.ts->typescript:import",
+        "from": "src/parsers/ASTParser.ts",
+        "to": "typescript",
+        "type": "import"
+      },
+      {
+        "id": "src/parsers/index.ts->src/parsers/ASTParser.ts:import",
+        "from": "src/parsers/index.ts",
+        "to": "src/parsers/ASTParser.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/parsers/index.ts->src/parsers/MermaidParser.ts:import",
+        "from": "src/parsers/index.ts",
+        "to": "src/parsers/MermaidParser.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/plugins/AIDocumentationPlugin.ts->https:/api.openai.com/v1/chat/completions:external-call",
+        "from": "src/plugins/AIDocumentationPlugin.ts",
+        "to": "https:/api.openai.com/v1/chat/completions",
+        "type": "external-call"
+      },
+      {
+        "id": "src/plugins/AIDocumentationPlugin.ts->src/core/PluginManager.ts:import",
+        "from": "src/plugins/AIDocumentationPlugin.ts",
+        "to": "src/core/PluginManager.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/plugins/AIDocumentationPlugin.ts->src/generators/DiagramGenerator.ts:import",
+        "from": "src/plugins/AIDocumentationPlugin.ts",
+        "to": "src/generators/DiagramGenerator.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/plugins/index.ts->src/plugins/AIDocumentationPlugin.ts:import",
+        "from": "src/plugins/index.ts",
+        "to": "src/plugins/AIDocumentationPlugin.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/utils/index.ts->src/utils/errors.ts:import",
+        "from": "src/utils/index.ts",
+        "to": "src/utils/errors.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/utils/index.ts->src/utils/logger.ts:import",
+        "from": "src/utils/index.ts",
+        "to": "src/utils/logger.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/utils/index.ts->src/utils/OutputWriter.ts:import",
+        "from": "src/utils/index.ts",
+        "to": "src/utils/OutputWriter.ts",
+        "type": "import"
+      },
+      {
+        "id": "src/utils/OutputWriter.ts->fs/promises:import",
+        "from": "src/utils/OutputWriter.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/utils/OutputWriter.ts->path:import",
+        "from": "src/utils/OutputWriter.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/utils/OutputWriter.ts->src/utils/errors.ts:import",
+        "from": "src/utils/OutputWriter.ts",
+        "to": "src/utils/errors.ts",
+        "type": "import"
+      }
+    ],
+    "version": "2.1.0"
+  }
+}

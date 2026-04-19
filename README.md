@@ -1,14 +1,14 @@
 # Architecture Diagram Generator
 
-Automated architecture diagram generator and analyzer for modern TypeScript projects. It scans your codebase, classifies files into layers, and generates data-rich Mermaid diagrams with integrated analysis.
+Automated architecture diagram generator for modern TypeScript projects. It scans your codebase, classifies files into layers, and generates structural Mermaid diagrams and a machine-readable JSON graph.
 
 ## Features
 
-- **Pipeline**: Structured flow from discovery to analysis and generation.
-- **Layer & Domain Classification**: Group components by architectural layers (UI, Core, API, Action, Service, External) and business domains.
-- **Architecture Analysis**: Issue detection (cycles, god objects) and improvement suggestions.
+- **Automated Discovery**: Scans TypeScript/JavaScript projects (Next.js, etc.) automatically.
+- **Layer & Domain Classification**: Group components by architectural layers and business domains.
+- **Visual Mermaid Diagrams**: Generates clean, readable diagrams for documentation.
+- **Agile JSON Graph**: Exports a full dependency graph for external analysis.
 - **Strict Determinism**: Guaranteed identical output across runs and platforms.
-- **Relative Path Support**: Portable diagrams with clean node identifiers.
 
 ## Installation
 
@@ -35,17 +35,18 @@ npx architecture-diagram-generator .
 
 ## Outputs
 
-The CLI automatically generates two companion files for different use cases:
+The CLI automatically generates two companion files:
 
-1. **`architecture.md` (Human-Readable)**: Contains the visual Mermaid diagram and a formatted Markdown report of your architectural analysis (issues and suggestions).
-2. **`architecture.json` (Machine-Readable)**: Contains the raw data structure of your graph and classification. Ideal for CI/CD integrations or structural audits.
+1. **`architecture.md`**: Contains the visual Mermaid diagram ready for your README.
+2. **`architecture.json`**: Contains the raw data structure of your graph. This file is compatible with the `architecture-analyzer` for deeper audits.
 
-## Analysis Report
+## Analysis
 
-Every run generates an architectural analysis report:
+To run an architectural audit (cycles, rules validation, scoring), use the companion tool:
 
-- **Issues Table**: Severity-coded list of violations (God Objects, Circular Dependencies, etc.).
-- **Suggestions**: Actionable architectural improvements.
+```bash
+npx architecture-analyzer architecture.json
+```
 
 ## Development
 

@@ -1,4 +1,4 @@
-import { ClassifiedGraph, Issue, NodeType, ArchitectureLayer } from '../core/GraphTypes';
+import { ClassifiedGraph, NodeType } from '../core/GraphTypes';
 
 export interface VisualToken {
   nodeId: string;
@@ -13,45 +13,21 @@ export interface VisualToken {
  */
 export class VisualMapper {
   /**
-   * Maps a graph and its issues to visual tokens
+   * Maps a graph to visual tokens
    */
-  map(graph: ClassifiedGraph, issues: Issue[]): Map<string, VisualToken> {
+  map(graph: ClassifiedGraph): Map<string, VisualToken> {
     const tokens = new Map<string, VisualToken>();
 
     for (const node of graph.nodes) {
-      const nodeIssues = issues.filter(i => i.nodeId === node.id);
-      const maxSeverity = this.getMaxSeverity(nodeIssues);
-      
       tokens.set(node.id, {
         nodeId: node.id,
-        severityColor: this.getColorForSeverity(maxSeverity),
-        borderStyle: maxSeverity ? 'solid' : 'dotted',
+        borderStyle: 'solid',
         icon: this.getIconForType(node.metadata.type),
         label: node.metadata.label || node.id
       });
     }
 
     return tokens;
-  }
-
-  private getMaxSeverity(issues: Issue[]): string | undefined {
-    if (issues.length === 0) return undefined;
-    
-    const severityOrder = ['critical', 'high', 'medium', 'low'];
-    for (const s of severityOrder) {
-      if (issues.some(i => i.severity === s)) return s;
-    }
-    return 'low';
-  }
-
-  private getColorForSeverity(severity?: string): string | undefined {
-    switch (severity) {
-      case 'critical': return '#ff0000';
-      case 'high': return '#ff6600';
-      case 'medium': return '#ffcc00';
-      case 'low': return '#ffff00';
-      default: return undefined;
-    }
   }
 
   private getIconForType(type: NodeType): string {

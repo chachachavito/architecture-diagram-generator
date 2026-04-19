@@ -143,31 +143,6 @@
         }
       }
     },
-    "plugins": {
-      "type": "array",
-      "description": "Plugin configurations. Plugins extend the generator with custom analysis or output capabilities.",
-      "items": {
-        "type": "object",
-        "required": ["name", "enabled"],
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Plugin identifier. Must match the plugin's registered name."
-          },
-          "enabled": {
-            "type": "boolean",
-            "description": "Whether the plugin is active.",
-            "default": true
-          },
-          "config": {
-            "type": "object",
-            "description": "Plugin-specific configuration options.",
-            "additionalProperties": true
-          }
-        }
-      },
-      "default": []
-    }
+
   }
 }
