@@ -20,6 +20,7 @@ export interface GenerationOptions {
 export interface MermaidDiagram {
   syntax: string;
   metadata: DiagramMetadata;
+  extraContent?: string;
 }
 
 /**

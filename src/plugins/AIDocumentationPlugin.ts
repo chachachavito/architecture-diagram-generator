@@ -358,9 +358,9 @@ export class AIDocumentationPlugin implements Plugin {
   private enhanceDiagram(diagram: MermaidDiagram): void {
     if (!this.analysisResult) return;
 
-    // Add AI-generated descriptions as comments in the diagram
-    const descriptions = this.analysisResult.moduleDescriptions
-      .slice(0, 5) // Limit to first 5 to avoid cluttering
+    // 1. Add AI-generated descriptions as comments in the Mermaid diagram
+    const mermaidComments = this.analysisResult.moduleDescriptions
+      .slice(0, 10) // Limit to first 10 to avoid cluttering Mermaid source
       .map(d => {
         return d.description
           .split('\n')
@@ -369,15 +369,14 @@ export class AIDocumentationPlugin implements Plugin {
       })
       .join('\n');
 
-    if (descriptions) {
-      diagram.syntax = `%% === AI-Generated Descriptions ===\n${descriptions}\n%% ==================================\n\n${diagram.syntax}`;
+    if (mermaidComments) {
+      diagram.syntax = `%% === AI-Generated Descriptions ===\n${mermaidComments}\n%% ==================================\n\n${diagram.syntax}`;
     }
 
-    // Add improvement suggestions as comments
+    // 2. Add improvement suggestions as Mermaid comments
     if (this.analysisResult.improvements.length > 0) {
-      const suggestions = this.analysisResult.improvements
+      const mermaidSuggestions = this.analysisResult.improvements
         .map(i => {
-          // Clean up the suggestion: remove markdown code blocks and ensure every line starts with %%
           const cleanSuggestion = i.suggestion.replace(/```[a-z]*\n|```/g, '').trim();
           return cleanSuggestion
             .split('\n')
@@ -386,8 +385,38 @@ export class AIDocumentationPlugin implements Plugin {
         })
         .join('\n');
       
-      diagram.syntax += `\n\n%% === Suggested Improvements ===\n${suggestions}\n%% ==============================`;
+      diagram.syntax += `\n\n%% === Suggested Improvements ===\n${mermaidSuggestions}\n%% ==============================`;
     }
+
+    // 3. Populate extraContent with readable Markdown sections
+    let markdown = '## Architectural Documentation 🤖\n\n';
+
+    // Module Descriptions Section
+    if (this.analysisResult.moduleDescriptions.length > 0) {
+      markdown += '### Module Insights\n\n';
+      for (const d of this.analysisResult.moduleDescriptions) {
+        markdown += `#### ${d.moduleId}\n${d.description}\n\n`;
+      }
+    }
+
+    // Domain Descriptions Section
+    if (this.analysisResult.domainDescriptions.length > 0) {
+      markdown += '### Domain Analysis\n\n';
+      for (const d of this.analysisResult.domainDescriptions) {
+        markdown += `#### 📦 ${d.domainName}\n${d.description}\n\n`;
+      }
+    }
+
+    // Improvements Section
+    if (this.analysisResult.improvements.length > 0) {
+      markdown += '### Recommended Improvements\n\n';
+      for (const i of this.analysisResult.improvements) {
+        const cleanSuggestion = i.suggestion.replace(/```[a-z]*\n|```/g, '').trim();
+        markdown += `- ${cleanSuggestion}\n`;
+      }
+    }
+
+    diagram.extraContent = markdown;
   }
 
   /**

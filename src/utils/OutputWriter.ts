@@ -33,7 +33,12 @@ export class OutputWriter {
     const mermaidBlock = `\`\`\`mermaid\n${diagram.syntax}\n\`\`\``;
 
     // Combine header and diagram syntax with proper spacing
-    const content = `${header}\n\n${mermaidBlock}\n`;
+    let content = `${header}\n\n${mermaidBlock}\n`;
+
+    // Append extra content if present (e.g., AI descriptions)
+    if (diagram.extraContent) {
+      content += `\n${diagram.extraContent}\n`;
+    }
 
     // Write to file (overwrite if exists)
     try {
