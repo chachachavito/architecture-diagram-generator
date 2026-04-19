@@ -1,11 +1,11 @@
 {
   "name": "architecture-diagram-generator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Automated architecture diagram generator for Next.js projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "generate-architecture": "dist/cli.js"
+    "architecture-generator": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "glob": "^10.3.10",
-    "puppeteer": "^24.41.0"
+    "puppeteer": "^24.41.0",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^6.13.2",
     "@vitest/ui": "^1.0.4",
     "fast-check": "^4.7.0",
-    "typescript": "^5.3.3",
     "vitest": "^1.0.4"
   },
   "keywords": [
