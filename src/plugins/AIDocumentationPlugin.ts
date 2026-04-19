@@ -269,20 +269,36 @@ export class AIDocumentationPlugin implements Plugin {
 
     // Generate module descriptions
     if (this.config.generateModuleDescriptions) {
-      for (const [id, node] of graph.nodes) {
-        try {
-          const context = this.buildModuleContext(node);
-          const description = await this.service.generateDescription(context);
-          
-          moduleDescriptions.push({
-            moduleId: id,
-            description,
-            suggestedLayer: node.layer,
-            suggestedDomain: node.domain,
-            confidence: 0.8,
-          });
-        } catch (error) {
-          console.warn(`[AIPlugin] Failed to generate description for ${id}: ${(error as Error).message}`);
+      const nodes = Array.from(graph.nodes.entries());
+      const total = nodes.length;
+      let count = 0;
+      
+      console.log(`[AIPlugin] Generating descriptions for ${total} modules...`);
+      
+      // Process in batches of 5 to avoid rate limits
+      const batchSize = 5;
+      for (let i = 0; i < nodes.length; i += batchSize) {
+        const batch = nodes.slice(i, i + batchSize);
+        await Promise.all(batch.map(async ([id, node]) => {
+          try {
+            const context = this.buildModuleContext(node);
+            const description = await this.service.generateDescription(context);
+            
+            moduleDescriptions.push({
+              moduleId: id,
+              description,
+              suggestedLayer: node.layer,
+              suggestedDomain: node.domain,
+              confidence: 0.8,
+            });
+          } catch (error) {
+            console.warn(`[AIPlugin] Failed to generate description for ${id}: ${(error as Error).message}`);
+          }
+        }));
+        
+        count += batch.length;
+        if (count % 10 === 0 || count === total) {
+          console.log(`[AIPlugin] Progress: ${count}/${total} modules analyzed`);
         }
       }
     }
