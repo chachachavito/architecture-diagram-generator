@@ -1,0 +1,173 @@
+{
+  "title": "Architecture Diagram Generator Configuration",
+  "description": "Configuration file for the Architecture Diagram Generator. Controls which files are analyzed, how they are classified into layers and domains, and how the output diagrams are generated.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "rootDir": {
+      "type": "string",
+      "description": "Root directory of the project to analyze. Relative paths are resolved from the config file location.",
+      "default": "./"
+    },
+    "include": {
+      "type": "array",
+      "description": "Glob patterns for directories/files to include in analysis.",
+      "items": { "type": "string" },
+      "default": ["app/**", "pages/**", "src/**", "lib/**"]
+    },
+    "exclude": {
+      "type": "array",
+      "description": "Glob patterns for files/directories to exclude from analysis. Takes precedence over include patterns.",
+      "items": { "type": "string" },
+      "default": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.stories.tsx",
+        "**/node_modules/**",
+        "**/.next/**",
+        "**/dist/**",
+        "**/coverage/**"
+      ]
+    },
+    "layers": {
+      "type": "array",
+      "description": "Custom architecture layer definitions. Each layer groups files matching the given glob patterns.",
+      "items": {
+        "type": "object",
+        "required": ["name", "patterns"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable layer name shown in the diagram (e.g., 'UI', 'API', 'Processing')."
+          },
+          "patterns": {
+            "type": "array",
+            "description": "Glob patterns that match files belonging to this layer.",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "color": {
+            "type": "string",
+            "description": "Hex color code used to style nodes in this layer.",
+            "pattern": "^#[0-9A-Fa-f]{3,6}$"
+          }
+        }
+      }
+    },
+    "domains": {
+      "type": "array",
+      "description": "Functional domain groupings. Domains cut across layers and represent business capabilities.",
+      "items": {
+        "type": "object",
+        "required": ["name", "patterns"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable domain name (e.g., 'Risk', 'Weather', 'Auth')."
+          },
+          "patterns": {
+            "type": "array",
+            "description": "Glob patterns that match files belonging to this domain.",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "critical": {
+            "type": "boolean",
+            "description": "When true, marks this domain as critical with distinct visual styling.",
+            "default": false
+          }
+        }
+      },
+      "default": []
+    },
+    "externalServices": {
+      "type": "array",
+      "description": "Known external services and APIs. Matched against detected fetch/axios calls and import patterns.",
+      "items": {
+        "type": "object",
+        "required": ["name", "patterns"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Friendly display name for the service shown in the diagram."
+          },
+          "patterns": {
+            "type": "array",
+            "description": "URL fragments or package names used to identify calls to this service.",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "type": {
+            "type": "string",
+            "description": "Category of the external service for visual differentiation.",
+            "enum": ["REST API", "GraphQL API", "Database", "Message Queue", "Cache", "Storage", "Auth", "Other"]
+          }
+        }
+      },
+      "default": []
+    },
+    "output": {
+      "type": "object",
+      "description": "Controls how and where diagrams are generated.",
+      "additionalProperties": false,
+      "properties": {
+        "formats": {
+          "type": "array",
+          "description": "Output formats to generate: markdown (Mermaid), png, or svg.",
+          "items": {
+            "type": "string",
+            "enum": ["markdown", "png", "svg"]
+          },
+          "minItems": 1,
+          "default": ["markdown"]
+        },
+        "directory": {
+          "type": "string",
+          "description": "Directory where generated files are saved. Created automatically if it does not exist.",
+          "default": "./docs/architecture"
+        },
+        "simplified": {
+          "type": "boolean",
+          "description": "When true, generates a simplified high-level diagram showing only layers and key services.",
+          "default": true
+        },
+        "detailed": {
+          "type": "boolean",
+          "description": "When true, generates a detailed diagram showing all individual modules and their dependencies.",
+          "default": false
+        }
+      }
+    },
+    "plugins": {
+      "type": "array",
+      "description": "Plugin configurations. Plugins extend the generator with custom analysis or output capabilities.",
+      "items": {
+        "type": "object",
+        "required": ["name", "enabled"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Plugin identifier. Must match the plugin's registered name."
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the plugin is active.",
+            "default": true
+          },
+          "config": {
+            "type": "object",
+            "description": "Plugin-specific configuration options.",
+            "additionalProperties": true
+          }
+        }
+      },
+      "default": []
+    }
+  }
+}

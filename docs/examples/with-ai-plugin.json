@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "rootDir": "./",
+  "include": ["app/**", "pages/**", "src/**", "lib/**"],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.stories.tsx",
+    "**/node_modules/**",
+    "**/.next/**"
+  ],
+  "layers": [
+    {
+      "name": "UI",
+      "patterns": ["**/app/**/page.tsx", "**/pages/**", "**/components/**"],
+      "color": "#3B82F6"
+    },
+    {
+      "name": "API",
+      "patterns": ["**/app/api/**", "**/pages/api/**"],
+      "color": "#10B981"
+    },
+    {
+      "name": "Processing",
+      "patterns": ["**/lib/**", "**/utils/**", "**/services/**"],
+      "color": "#F59E0B"
+    },
+    {
+      "name": "Data",
+      "patterns": ["**/prisma/**", "**/db/**", "**/models/**"],
+      "color": "#8B5CF6"
+    }
+  ],
+  "domains": [],
+  "externalServices": [],
+  "output": {
+    "formats": ["markdown"],
+    "directory": "./docs/architecture",
+    "simplified": true,
+    "detailed": false
+  },
+  "plugins": [
+    {
+      "name": "ai-documentation-enhancer",
+      "enabled": true,
+      "config": {
+        "service": "openai",
+        "apiKey": "${OPENAI_API_KEY}",
+        "model": "gpt-4o-mini",
+        "generateModuleDescriptions": true,
+        "generateDomainDescriptions": true,
+        "suggestImprovements": true
+      }
+    }
+  ]
+}

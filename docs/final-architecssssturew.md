@@ -1,0 +1,268 @@
+# Architecture Diagram
+
+> **Auto-generated documentation**
+> Generated at: 2026-04-18T20:17:57.807Z
+> Nodes: 106
+> Edges: 117
+
+---
+
+```mermaid
+%%{init: {"flowchart": {"nodeSpacing": 50, "rankSpacing": 80}}}%%
+
+graph LR
+
+    subgraph UI["🎨 UI"]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx[App]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_layout_tsx[App Layout]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_WeatherPanel_tsx[WeatherPanel]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ValueMetric_tsx[ValueMetric]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_SystemAlerts_tsx[SystemAlerts]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_StatusSummary_tsx[StatusSummary]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_StationNotFound_tsx[StationNotFound]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_StationErrorStates_tsx[StationErrorStates]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_StationCard_tsx[StationCard]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_RiskProgressBar_tsx[RiskProgressBar]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_RefreshCountdown_tsx[RefreshCountdown]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_RainNowcastCard_tsx[RainNowcastCard]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_RadarPanel_tsx[RadarPanel]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_OpenWeatherDetails_tsx[OpenWeatherDetails]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_NavMenu_tsx[NavMenu]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_MonitoringPanel_tsx[MonitoringPanel]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_Logo_tsx[Logo]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_IneaStationCard_tsx[IneaStationCard]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_HydrologyPanel_tsx[HydrologyPanel]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_Header_tsx[Header]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ForecastPrecise_tsx[ForecastPrecise]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ForecastNow_tsx[ForecastNow]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_Footer_tsx[Footer]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_FloodAlert_tsx[FloodAlert]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ExecutiveSummary_tsx[ExecutiveSummary]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_DynamicRadarMap_tsx[DynamicRadarMap]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_CelestialTideMonitor_tsx[CelestialTideMonitor]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_AtmosphericContextCard_tsx[AtmosphericCont...]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_weather_page_tsx[Weather]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_monitoramento_page_tsx[Monitoramento]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_login_page_tsx[Login]
+        subgraph UI_Decisions["Decisions"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_decisions_page_tsx[Decisions]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_decisions_components_DecisionTimeline_tsx[DecisionTimeline]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_decisions_components_DecisionModal_tsx[DecisionModal]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_decisions_components_DecisionForm_tsx[DecisionForm]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_decisions_components_DecisionCard_tsx[DecisionCard]
+        end
+        subgraph UI_Analise["Analise"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_analise_page_tsx[Analise]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_analise_picos_page_tsx[Picos]
+        end
+        subgraph UI_Backlog["Backlog"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_backlog_page_tsx[Backlog]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_backlog_components_TaskModal_tsx[TaskModal]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_backlog_components_TaskCard_tsx[TaskCard]
+        end
+        subgraph UI_Admin["Admin"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_admin_risk-validator_page_tsx[Risk Validator]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_admin_sync_page_tsx[Sync]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_admin_performance_page_tsx[Performance]
+        end
+        subgraph UI_Risk-validator["Risk-validator"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_ScenarioLibrary_tsx[ScenarioLibrary]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_ScenarioForm_tsx[ScenarioForm]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_RiskValidatorShell_tsx[RiskValidatorShell]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_RiskResultPanel_tsx[RiskResultPanel]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_HistoricalEventPicker_tsx[Risk Validator]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_CompareMode_tsx[CompareMode]
+        end
+    end
+
+    subgraph API["⚡ API"]
+        subgraph API_Weather["Weather"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_route_ts[Weather API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_rain-nowcast_route_ts[Rain Nowcast API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_open-meteo_route_ts[Open Meteo API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_forecast_route_ts[Forecast API]
+        end
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_tide_route_ts[Tide API]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_sync_route_ts[Sync API]
+        subgraph API_Risk["Risk"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts[Risk API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts[Live Input API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_historical-input_route_ts[Historical Input API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_historical-events_route_ts[Historical Events API]
+        end
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar-auto_route_ts[Radar Auto API]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar_route_ts[Radar API]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_performance_route_ts[Performance API]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_hydrology_route_ts[Hydrology API]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_moon-phase_route_ts[Moon Phase API]
+        subgraph API_Decisions["Decisions"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_decisions_route_ts[Decisions API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_decisions_slug_route_ts[Dynamic slug API]
+        end
+        subgraph API_Backlog["Backlog"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_backlog_route_ts[Backlog API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_backlog_verify_route_ts[Verify API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_backlog_optimize_route_ts[Optimize API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_backlog_generate-prompt_route_ts[Generate Prompt API]
+        end
+        subgraph API_Cron["Cron"]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_verify_route_ts[Verify API]
+            Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts[Snapshot API]
+        end
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_auth_login_route_ts[Login API]
+    end
+
+    subgraph Processing["⚙️ Services"]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ReleaseTracker_tsx[ReleaseTracker]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_MapRefSetter_tsx[MapRefSetter]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ElevationLayer_tsx[ElevationLayer]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts[Weather]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_tideService_ts[Tide]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synthesisService_ts[Synthesis]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts[Synoptic]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_riverService_ts[River]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_rainNowcastService_ts[RainNowcast]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_radarService_ts[Radar]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts[MoonPhase]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_mockPrecipitacao_ts[MockPrecipitacao]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts[MarinhaTide]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts[Inmet]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_ineaService_ts[Inea]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_index_ts[Index]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts[AlertaRioPolling]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioHistorico_ts[AlertaRioHistorico]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_aiSynopticSynthesis_ts[AiSynopticSynthesis]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_weatherSummaryParser_ts[WeatherSummaryParser]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_uiRiskHelpers_ts[UiRiskHelpers]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_scenarioStorage_ts[ScenarioStorage]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts[RiskCalculator]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts[Logger]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_weather_ts[Weather]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_risk_ts[Risk]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_radar_ts[Radar]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_openMeteo_ts[OpenMeteo]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_geo_ts[Geo]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_db_ts[Db]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_classify_ts[Classify]
+        Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_capture_ts[Capture]
+    end
+
+    %% Dependencies
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_radarService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_ineaService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_aiSynopticSynthesis_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synthesisService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_radar_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_monitoramento_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_monitoramento_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_monitoramento_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_openMeteo_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_monitoramento_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_monitoramento_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_monitoramento_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_analise_page_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioHistorico_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_tide_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar-auto_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_capture_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar-auto_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_radar_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar-auto_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_classify_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar-auto_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_radar_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_radar_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_classify_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_performance_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_db_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_hydrology_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_tideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_hydrology_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_riverService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_moon-phase_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_rain-nowcast_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_rainNowcastService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_open-meteo_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_openMeteo_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_weather_forecast_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_ineaService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_radarService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_live-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_historical-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_historical-input_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_risk_historical-events_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_verify_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_db_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_verify_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_verify_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_verify_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_ineaService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_db_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_ineaService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_radarService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_app_api_cron_snapshot_route_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synthesisService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_StatusSummary_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_uiRiskHelpers_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_StationCard_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_StationCard_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_uiRiskHelpers_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_RiskProgressBar_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_uiRiskHelpers_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_MonitoringPanel_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_openMeteo_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_MonitoringPanel_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_aiSynopticSynthesis_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_MonitoringPanel_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_IneaStationCard_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_IneaStationCard_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_uiRiskHelpers_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_Header_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_Header_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ForecastNow_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_risk_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ExecutiveSummary_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_ExecutiveSummary_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_aiSynopticSynthesis_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_CelestialTideMonitor_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_AtmosphericContextCard_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_weatherSummaryParser_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_ScenarioLibrary_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_ScenarioLibrary_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_scenarioStorage_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_ScenarioForm_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_RiskValidatorShell_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_RiskResultPanel_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_HistoricalEventPicker_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_components_risk-validator_CompareMode_tsx --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_tideService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synthesisService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synthesisService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synthesisService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synthesisService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_aiSynopticSynthesis_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_synopticService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_riverService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_radarService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_capture_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_radarService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_radar_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_inmetService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_ineaService_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_index_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_index_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_tideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_index_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_marinhaTideService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_index_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_riverService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_index_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_moonPhaseService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_alertaRioPolling_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_aiSynopticSynthesis_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_scenarioStorage_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_riskCalculator_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_weather_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_services_weatherService_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_weather_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_radar_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_geo_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_openMeteo_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+    Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_lib_capture_ts --> Users_bruchave_Documents_projetos_alerta-enchentes-acari_application_utils_logger_ts
+```
