@@ -188,7 +188,7 @@ Description:
       }
     }
 
-    const reportMd = `\n## Analysis Report\n\n**Score: ${report.score}/100**\n\n${issuesMd}${suggestionsMd}`;
+    const reportMd = `\n## Analysis Report\n\n${issuesMd}${suggestionsMd}`;
 
     await fs.writeFile(mdPath, `# Architecture Diagram\n\n\`\`\`mermaid\n${diagram.syntax}\n\`\`\`${extraContent}${reportMd}`);
 

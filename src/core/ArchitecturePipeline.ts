@@ -25,7 +25,7 @@ export interface PipelineOptions {
 }
 
 /**
- * ArchitecturePipeline orchestrates the 8-stage architectural analysis flow.
+ * ArchitecturePipeline orchestrates the architectural analysis flow.
  */
 export class ArchitecturePipeline {
   private normalizer = new Normalizer();

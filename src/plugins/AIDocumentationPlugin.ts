@@ -95,9 +95,7 @@ interface AIService {
  */
 class MockAIService implements AIService {
   async generateDescription(context: string): Promise<string> {
-    // Generate a mock description based on context
-    const moduleName = context.match(/Module: ([^\n]+)/)?.[1] || 'Unknown';
-    return `This module (${moduleName}) handles core functionality within the application architecture.`;
+    return '';
   }
 
   async suggestImprovements(context: string): Promise<string[]> {
@@ -396,23 +394,11 @@ export class AIDocumentationPlugin implements Plugin {
     }
 
     // 3. Populate extraContent with readable Markdown sections
-    let markdown = '## Architectural Documentation 🤖\n\n';
+    let markdown = '## Architectural Documentation\n\n';
 
-    // Module Descriptions Section
-    if (this.analysisResult.moduleDescriptions.length > 0) {
-      markdown += '### Module Insights\n\n';
-      for (const d of this.analysisResult.moduleDescriptions) {
-        markdown += `#### ${d.moduleId}\n${d.description}\n\n`;
-      }
-    }
 
-    // Domain Descriptions Section
-    if (this.analysisResult.domainDescriptions.length > 0) {
-      markdown += '### Domain Analysis\n\n';
-      for (const d of this.analysisResult.domainDescriptions) {
-        markdown += `#### 📦 ${d.domainName}\n${d.description}\n\n`;
-      }
-    }
+
+
 
     // Improvements Section
     if (this.analysisResult.improvements.length > 0) {

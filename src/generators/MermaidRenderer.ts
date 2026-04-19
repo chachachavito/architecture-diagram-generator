@@ -46,7 +46,7 @@ export class MermaidRenderer {
   private groupByLayer(snapshot: GraphSnapshot): Map<string, any[]> {
     const layers = new Map<string, any[]>();
     for (const node of snapshot.nodes) {
-      const layer = node.metadata.layer || 'Other';
+      const layer = node.metadata.layer || 'Core';
       if (!layers.has(layer)) layers.set(layer, []);
       layers.get(layer)!.push(node);
     }

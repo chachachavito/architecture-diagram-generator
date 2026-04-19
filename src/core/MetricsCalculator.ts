@@ -1,7 +1,7 @@
 import { SourceGraph, NodeMetrics } from './GraphTypes';
 
 /**
- * MetricsCalculator computes graph metrics such as degrees and centrality.
+ * MetricsCalculator computes graph metrics such as in-degree and out-degree.
  * Pure function: does not access external state.
  */
 export class MetricsCalculator {
@@ -16,11 +16,11 @@ export class MetricsCalculator {
       metricsMap.set(node.id, {
         inDegree: 0,
         outDegree: 0,
-        centrality: 0,
         dependencies: [],
         dependents: []
       });
     }
+
 
     // Compute degrees and connections
     for (const edge of graph.edges) {
@@ -42,13 +42,7 @@ export class MetricsCalculator {
       }
     }
 
-    // Compute simple centrality (normalized degree centrality)
-    const nodeCount = graph.nodes.length;
-    if (nodeCount > 1) {
-      for (const metrics of metricsMap.values()) {
-        metrics.centrality = (metrics.inDegree + metrics.outDegree) / (nodeCount - 1);
-      }
-    }
+
 
     return metricsMap;
   }

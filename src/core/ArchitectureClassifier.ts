@@ -87,7 +87,11 @@ export class ArchitectureClassifier {
         ? matchedTypeRule 
         : defaultTypeRule;
 
-      if (layerRule?.layer) node.metadata.layer = layerRule.layer;
+      if (layerRule?.layer) {
+        node.metadata.layer = layerRule.layer;
+      } else if (!node.metadata.layer) {
+        node.metadata.layer = (node.type === 'external' || node.metadata.type === 'external') ? 'External' : 'Core';
+      }
       if (domainRule?.domain) node.metadata.domain = domainRule.domain;
       if (typeRule?.type) node.metadata.type = typeRule.type;
       

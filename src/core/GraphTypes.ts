@@ -122,7 +122,6 @@ export interface AnalysisReport {
 export interface NodeMetrics {
   inDegree: number;
   outDegree: number;
-  centrality: number;
   dependencies: string[];
   dependents: string[];
 }
