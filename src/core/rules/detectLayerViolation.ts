@@ -12,8 +12,7 @@ export function detectLayerViolation(
   const rulesMap: Partial<Record<ArchitectureLayer, Partial<Record<ArchitectureLayer, IssueSeverity>>>> = {
     'UI': {
       'Action': 'medium',
-      'Core': 'high',
-      'External': 'high'
+      'Core': 'high'
     },
     'API': {
       'UI': 'high'

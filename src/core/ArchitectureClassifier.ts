@@ -37,8 +37,9 @@ export const DEFAULT_CLASSIFICATION_RULES: ClassificationRule[] = [
   // Action handlers
   { pattern: /\/app\/actions\//i,   layer: 'Action',     type: 'module', priority: 9 },
   // UI components/pages
-  { pattern: /\/app\/.*page\.(tsx?|jsx?)$/i,  layer: 'UI',      type: 'module', priority: 8 },
-  { pattern: /\/app\/.*layout\.(tsx?|jsx?)$/i, layer: 'UI',     type: 'module', priority: 8 },
+  { pattern: /\/app\/.*page\.tsx$/i,      layer: 'UI',      type: 'module', priority: 8 },
+  { pattern: /\/app\/.*layout\.tsx$/i,    layer: 'UI',      type: 'module', priority: 8 },
+  { pattern: /\/app\/.*template\.tsx$/i,  layer: 'UI',      type: 'module', priority: 8 },
   { pattern: /\/pages\//i,          layer: 'UI',         type: 'module',  priority: 7 },
   { pattern: /\/components\//i,     layer: 'UI',         type: 'module',  priority: 7 },
   // Service layer
