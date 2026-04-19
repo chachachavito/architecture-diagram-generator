@@ -13,6 +13,7 @@ import { DiagramGenerator } from './generators';
 import { VisualExporter } from './generators/VisualExporter';
 import { OutputWriter, Logger, LogLevel, GeneratorError, NoFilesFoundError, InvalidProjectRootError } from './utils';
 import { createAIDocumentationPlugin } from './plugins';
+import dotenv from 'dotenv';
 
 /**
  * CLI options interface
@@ -231,6 +232,9 @@ async function main(): Promise<void> {
     } catch {
       throw new InvalidProjectRootError(options.projectRoot);
     }
+
+    // Load .env from project root if it exists
+    dotenv.config({ path: path.join(options.projectRoot, '.env') });
 
     // Initialize Plugin Manager and load configuration
     const configLoader = new ConfigurationLoader();

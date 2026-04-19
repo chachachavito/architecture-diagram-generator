@@ -183,7 +183,36 @@ export class ConfigurationLoader {
     // Apply migrations if needed
     const migrated = this.migrate(parsed as Record<string, unknown>);
     
-    return this.merge(migrated as Partial<FullProjectConfig>, DEFAULT_CONFIG);
+    // Interpolate environment variables
+    const interpolated = this.interpolateEnvVars(migrated);
+    
+    return this.merge(interpolated as Partial<FullProjectConfig>, DEFAULT_CONFIG);
+  }
+
+  /**
+   * Recursively interpolates environment variables (format: ${VAR_NAME}) in the config object.
+   *
+   * @param obj - Object or value to interpolate
+   * @returns Interpolated object or value
+   */
+  private interpolateEnvVars(obj: any): any {
+    if (typeof obj === 'string') {
+      return obj.replace(/\${([^}]+)}/g, (_, envVar) => process.env[envVar] || '');
+    }
+    
+    if (Array.isArray(obj)) {
+      return obj.map(item => this.interpolateEnvVars(item));
+    }
+    
+    if (typeof obj === 'object' && obj !== null) {
+      const result: Record<string, any> = {};
+      for (const key in obj) {
+        result[key] = this.interpolateEnvVars(obj[key]);
+      }
+      return result;
+    }
+    
+    return obj;
   }
 
   /**

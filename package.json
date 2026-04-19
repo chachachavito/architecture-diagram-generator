@@ -1,6 +1,6 @@
 {
   "name": "architecture-diagram-generator",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Automated architecture diagram generator for Next.js projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,6 +17,7 @@
     "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "glob": "^13.0.0",
     "typescript": "^5.3.3"
   },
