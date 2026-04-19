@@ -47,8 +47,12 @@ The generator uses a sophisticated 8-stage pipeline to process your codebase:
 | `--version, -v` | Show version number | - |
 | `--help, -h` | Show help message | - |
 
-> [!NOTE]
-> The generator always creates a companion `.md` file with the Mermaid diagram alongside the JSON output.
+## Outputs
+
+The CLI automatically generates two companion files for different use cases:
+
+1. **`architecture.md` (Human-Readable)**: Contains the visual Mermaid diagram and a formatted Markdown report of your architectural health (issues, scores, and suggestions).
+2. **`architecture.json` (Machine-Readable)**: Contains the raw deep-frozen data structure of your graph, metrics, and classification. Ideal for CI/CD integrations, structural audits, or feeding into LLMs/AI agents.
 
 ## Analysis Report 📊
 
