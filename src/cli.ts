@@ -30,6 +30,7 @@ interface CLIOptions {
   simplified: boolean;
   detailed: boolean;
   help: boolean;
+  version: boolean;
 }
 
 /**
@@ -49,6 +50,7 @@ function parseArgs(): CLIOptions {
     simplified: false,
     detailed: false,
     help: false,
+    version: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -58,6 +60,10 @@ function parseArgs(): CLIOptions {
       case '--help':
       case '-h':
         options.help = true;
+        break;
+      case '--version':
+      case '-v':
+        options.version = true;
         break;
       case '--ignore':
         if (i + 1 < args.length) {
@@ -190,6 +196,7 @@ OPTIONS:
   --detailed             Generate detailed diagram (all modules)
   
   --help, -h             Show this help message
+  --version, -v          Show version information
 
 EXAMPLES:
   architecture-generator
@@ -213,6 +220,18 @@ async function main(): Promise<void> {
 
     if (options.help) {
       showHelp();
+      process.exit(0);
+    }
+
+    if (options.version) {
+      const pkgPath = path.join(__dirname, '../package.json');
+      try {
+        const pkg = JSON.parse(await fs.readFile(pkgPath, 'utf-8'));
+        console.log(pkg.version);
+      } catch {
+        // Fallback if package.json not found in expected location
+        console.log('0.1.8');
+      }
       process.exit(0);
     }
 
