@@ -11,10 +11,12 @@ Automated architecture diagram generator for Next.js projects. It scans your cod
 - ⚙️ **Highly Configurable**: Define your own layers, domains, and filters.
 
 ## Installation
-
 ```bash
 # Global installation
 npm install -g architecture-diagram-generator
+
+# Usage
+architecture-generator . --output ./docs/architecture.md
 
 # Or run via npx
 npx architecture-diagram-generator . --output ./docs/architecture.md
