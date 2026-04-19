@@ -70,6 +70,16 @@ async function main(): Promise<void> {
       process.exit(0);
     }
 
+    if (options.version) {
+      try {
+        const pkg = JSON.parse(await fs.readFile(path.join(__dirname, '../package.json'), 'utf-8'));
+        console.log(`v${pkg.version}`);
+      } catch (e) {
+        console.log('v0.2.1');
+      }
+      process.exit(0);
+    }
+
     // Load config
     const configPath = path.join(options.projectRoot, 'architecture-config.json');
     let rawConfig = {};
