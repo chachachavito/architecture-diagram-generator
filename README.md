@@ -97,7 +97,7 @@ To use this feature, add the `ai-documentation-enhancer` plugin to your `archite
 ```
 
 > [!TIP]
-> You can also use an environment variable for the API key: `"apiKey": "${OPENAI_API_KEY}"`.
+> The generator automatically loads `.env` files from your project root. You can use environment variable interpolation in your config file using the `${VAR_NAME}` syntax (e.g., `"apiKey": "${OPENAI_API_KEY}"`).
 
 ### Features
 
