@@ -467,8 +467,9 @@ export class DiagramGenerator {
         for (const [domain, domainNodes] of domainGroups) {
           if (domain && (domainNodes.length > 1 || hasMultipleDomains)) {
             // Create a domain subgraph
-            const domainId = `${layer}_${domain.replace(/\s+/g, '_')}`;
-            lines.push(`        subgraph ${domainId}["📦 ${domain}"]`);
+            const domainId = this.sanitizeNodeId(`${layer}_${domain}`);
+            const domainLabel = this.sanitizeLabelText(domain);
+            lines.push(`        subgraph ${domainId}["📦 ${domainLabel}"]`);
             for (const node of domainNodes) {
               const mermaidId = this.sanitizeNodeId(node.id);
               const label = this.sanitizeLabelText(node.label || this.generateLabel(node.id));
