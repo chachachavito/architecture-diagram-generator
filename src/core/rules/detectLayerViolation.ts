@@ -12,10 +12,9 @@ export function detectLayerViolation(
   
   // Define illegal imports (layer -> forbidden layers)
   const forbiddenImports: Partial<Record<ArchitectureLayer, ArchitectureLayer[]>> = {
-    'Data': ['API', 'UI', 'Core'],
-    'Core': ['API', 'UI'],
-    'Lib': ['API', 'UI', 'Core', 'Data'],
-    'External': ['API', 'UI', 'Core', 'Data', 'Lib']
+    'UI': ['Core', 'External'],
+    'API': ['UI'],
+    'Service': ['UI'],
   };
 
   for (const edge of snapshot.edges) {

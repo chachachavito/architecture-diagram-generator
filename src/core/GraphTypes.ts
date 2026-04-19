@@ -5,7 +5,7 @@ import { ExternalCall } from '../parsers';
  */
 
 export type NodeType = 'module' | 'service' | 'api' | 'external';
-export type ArchitectureLayer = 'API' | 'Core' | 'Data' | 'Lib' | 'External' | 'UI';
+export type ArchitectureLayer = 'UI' | 'API' | 'Action' | 'Service' | 'Core' | 'External';
 export type SourcePriority = 'inferred' | 'manual';
 export type IssueSeverity = 'low' | 'medium' | 'high' | 'critical';
 export type IssueCategory = 'coupling' | 'layering' | 'structure';

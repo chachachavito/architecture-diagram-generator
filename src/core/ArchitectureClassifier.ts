@@ -34,21 +34,20 @@ export const DEFAULT_CLASSIFICATION_RULES: ClassificationRule[] = [
   // API routes
   { pattern: /\/app\/api\//i,       layer: 'API',        type: 'api',     priority: 10 },
   { pattern: /\/pages\/api\//i,     layer: 'API',        type: 'api',     priority: 10 },
-  // UI pages
-  { pattern: /\/app\/.*page\.tsx?$/i,  layer: 'UI',      type: 'module',  priority: 8 },
-  { pattern: /\/app\/.*layout\.tsx?$/i, layer: 'UI',     type: 'module',  priority: 8 },
+  // Action handlers
+  { pattern: /\/app\/actions\//i,   layer: 'Action',     type: 'module', priority: 9 },
+  // UI components/pages
+  { pattern: /\/app\/.*page\.(tsx?|jsx?)$/i,  layer: 'UI',      type: 'module', priority: 8 },
+  { pattern: /\/app\/.*layout\.(tsx?|jsx?)$/i, layer: 'UI',     type: 'module', priority: 8 },
   { pattern: /\/pages\//i,          layer: 'UI',         type: 'module',  priority: 7 },
   { pattern: /\/components\//i,     layer: 'UI',         type: 'module',  priority: 7 },
-  // Data / Storage
-  { pattern: /\/prisma\//i,         layer: 'Data',       type: 'service', priority: 9 },
-  { pattern: /\/db\//i,             layer: 'Data',       type: 'service', priority: 9 },
-  { pattern: /\/models\//i,         layer: 'Data',       type: 'module',  priority: 8 },
-  { pattern: /\/schema\//i,         layer: 'Data',       type: 'module',  priority: 8 },
-  // Core / Processing
-  { pattern: /\/lib\//i,            layer: 'Core',       type: 'module',  priority: 6 },
-  { pattern: /\/utils\//i,          layer: 'Lib',        type: 'module',  priority: 6 },
-  { pattern: /\/services\//i,       layer: 'Core',       type: 'service', priority: 6 },
-  { pattern: /\/helpers\//i,        layer: 'Lib',        type: 'module',  priority: 6 },
+  // Service layer
+  { pattern: /\/services\//i,       layer: 'Service',    type: 'service', priority: 6 },
+  // Core utilities
+  { pattern: /\/lib\//i,            layer: 'Core',       type: 'module',  priority: 5 },
+  { pattern: /\/utils\//i,          layer: 'Core',       type: 'module',  priority: 5 },
+  // External libraries
+  { pattern: /\/libs\//i,           layer: 'External',   type: 'external', priority: 4 },
 ];
 
 /**
@@ -121,7 +120,7 @@ export class ArchitectureClassifier {
       for (const override of config.overrides) {
         rules.push({
           pattern: this.globToRegex(override.pattern),
-          layer: override.layer,
+          layer: override.layer as ArchitectureLayer,
           type: override.type,
           domain: override.domain,
           priority: 100 // High priority for manual overrides

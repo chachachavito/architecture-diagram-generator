@@ -73,7 +73,9 @@ export class DependencyGraphBuilder {
         }
       }
 
-      for (const extCall of module.externalCalls) {
+      // Filter out empty external calls
+      const validExternalCalls = module.externalCalls.filter(call => call && (call.target || call.type));
+      for (const extCall of validExternalCalls) {
         const serviceId = extCall.target || `external:${extCall.type}`;
         if (!graph.hasNode(serviceId)) {
           const serviceNode: GraphNode = {

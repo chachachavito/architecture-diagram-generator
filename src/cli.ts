@@ -66,7 +66,22 @@ async function main(): Promise<void> {
     const options = parseArgs();
 
     if (options.help) {
-      console.log('Usage: architecture-generator [project-root] [options]');
+      console.log(`
+Architecture Diagram Generator (v2.0)
+
+Usage: architecture-generator [project-root] [options]
+
+Options:
+  --output, -o    Path to save the generated files (default: [root]/architecture.json)
+  --debug         Enable verbose logging
+  --version, -v   Show version number
+  --help, -h      Show this help message
+
+Description:
+  Scans a modern TypeScript project (like Next.js) and generates an architectural
+  analysis report along with a visual Mermaid diagram. Outputs both a .json data
+  file and a human-readable .md report.
+      `);
       process.exit(0);
     }
 

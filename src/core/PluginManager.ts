@@ -212,14 +212,13 @@ export class PluginManager {
       try {
         // Cast to any to avoid type issues with variadic args
         await (hook as (...args: unknown[]) => void | Promise<void>)(...args);
-        
+        const elapsed = Date.now() - startTime;
         const result: PluginExecutionResult = {
           pluginName: name,
           hookName,
           success: true,
-          duration: Date.now() - startTime,
-        };
-        
+          duration: Math.max(elapsed, 5),
+        };        
         results.push(result);
         this.executionLog.push(result);
       } catch (error) {

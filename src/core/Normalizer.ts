@@ -42,18 +42,19 @@ export class Normalizer {
   }
 
   private normalizePath(filePath: string, rootDir: string): string {
-    // If it's an absolute path and we have a rootDir, make it relative
+    // Resolve absolute paths relative to rootDir
     let normalized = filePath;
     if (path.isAbsolute(normalized) && rootDir) {
       normalized = path.relative(rootDir, normalized);
     }
-    
+    // Collapse any '..' or '.' segments
+    normalized = path.normalize(normalized);
     // Force forward slashes
     normalized = normalized.replace(/\\/g, '/');
-    
-    // Remove leading ./ or /
-    normalized = normalized.replace(/^(\.\/|\/)/, '');
-    
+    // Remove leading './' or '/' and any leading '../'
+    normalized = normalized.replace(/^(\.|\/)*/, '');
+    // Ensure no leftover '../' segments
+    normalized = normalized.split('/').filter(seg => seg !== '..').join('/');
     return normalized;
   }
 

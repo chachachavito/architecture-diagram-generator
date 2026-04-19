@@ -225,7 +225,7 @@ export class ArchitectureFilter {
       }
     }
 
-    if (layer === 'Core' || layer === 'Data') {
+    if (layer === 'Core') {
       for (const { patterns, domain } of SERVICE_DOMAIN_MAP) {
         if (patterns.some((p) => n.includes(p))) return domain;
       }
@@ -246,8 +246,7 @@ export class ArchitectureFilter {
       ['UI',   'Core'],
       ['API',  'Core'],
       ['Core', 'Core'],
-      ['Core', 'Data'],
-      ['API',  'Data'],
+      ['Core', 'Core'],
     ];
 
     const result: GraphEdge[] = [];
