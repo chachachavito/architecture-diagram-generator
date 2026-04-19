@@ -361,7 +361,12 @@ export class AIDocumentationPlugin implements Plugin {
     // Add AI-generated descriptions as comments in the diagram
     const descriptions = this.analysisResult.moduleDescriptions
       .slice(0, 5) // Limit to first 5 to avoid cluttering
-      .map(d => `%% ${d.moduleId}: ${d.description}`)
+      .map(d => {
+        return d.description
+          .split('\n')
+          .map((line, i) => i === 0 ? `%% ${d.moduleId}: ${line}` : `%% ${line}`)
+          .join('\n');
+      })
       .join('\n');
 
     if (descriptions) {
@@ -371,7 +376,14 @@ export class AIDocumentationPlugin implements Plugin {
     // Add improvement suggestions as comments
     if (this.analysisResult.improvements.length > 0) {
       const suggestions = this.analysisResult.improvements
-        .map(i => `%% - ${i.suggestion}`)
+        .map(i => {
+          // Clean up the suggestion: remove markdown code blocks and ensure every line starts with %%
+          const cleanSuggestion = i.suggestion.replace(/```[a-z]*\n|```/g, '').trim();
+          return cleanSuggestion
+            .split('\n')
+            .map(line => `%% - ${line}`)
+            .join('\n');
+        })
         .join('\n');
       
       diagram.syntax += `\n\n%% === Suggested Improvements ===\n${suggestions}\n%% ==============================`;
