@@ -1,50 +1,57 @@
-import { ExternalCall } from '../parsers';
+import { 
+  GraphNode, 
+  GraphEdge, 
+  SourceGraph, 
+  ClassifiedGraph, 
+  GraphSnapshot,
+  NodeType,
+  ArchitectureLayer
+} from './GraphTypes';
+
+export { 
+  GraphNode, 
+  GraphEdge, 
+  SourceGraph, 
+  ClassifiedGraph, 
+  GraphSnapshot,
+  NodeType,
+  ArchitectureLayer
+};
 
 /**
- * Type definitions for nodes and edges
+ * Utility to deeply freeze an object
  */
-export type NodeType = 'route' | 'api' | 'component' | 'utility' | 'config' | 'external-service';
-export type ArchitectureLayer = 'UI' | 'API' | 'Processing' | 'Data' | 'Storage';
-export type EdgeType = 'import' | 'external-call';
+export function deepFreeze<T>(obj: T): T {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
 
-/**
- * Interface representing a node in the dependency graph
- */
-export interface GraphNode {
-  id: string;                    // File path (unique identifier)
-  type: NodeType;                // Type of node
-  layer?: ArchitectureLayer;     // Architecture layer classification
-  domain?: string;               // Domain grouping
-  externalCalls: ExternalCall[]; // External API/service calls made by this module
-  label?: string;                // Optional display label
+  // Handle recursion protection for circular references if needed, 
+  // but for graph snapshots we expect tree-like or controlled DAG structures.
+  // Using a simple recursion for now as per requirements.
+  
+  const propNames = Object.getOwnPropertyNames(obj);
+  for (const name of propNames) {
+    const value = (obj as any)[name];
+    if (value && typeof value === 'object') {
+      deepFreeze(value);
+    }
+  }
+
+  return Object.freeze(obj);
 }
 
 /**
- * Interface representing a directed edge in the dependency graph
- */
-export interface GraphEdge {
-  from: string;   // Source node ID
-  to: string;     // Target node ID
-  type: EdgeType; // Relationship type
-}
-
-/**
- * DependencyGraph class provides Map-based storage for nodes and edges
+ * DependencyGraph class provides storage for nodes and edges
  * with methods to add and query graph elements.
  */
 export class DependencyGraph {
-  nodes: Map<string, GraphNode>;
-  edges: GraphEdge[];
-
-  constructor() {
-    this.nodes = new Map<string, GraphNode>();
-    this.edges = [];
-  }
+  nodes: Map<string, GraphNode> = new Map();
+  edges: GraphEdge[] = [];
 
   /**
    * Adds a node to the graph. If a node with the same ID already exists,
    * it will be overwritten.
-   * @param node - GraphNode to add
    */
   addNode(node: GraphNode): void {
     this.nodes.set(node.id, node);
@@ -53,10 +60,8 @@ export class DependencyGraph {
   /**
    * Adds a directed edge to the graph.
    * Duplicate edges (same from/to/type) are not added.
-   * @param edge - GraphEdge to add
    */
   addEdge(edge: GraphEdge): void {
-    // Avoid duplicate edges
     const isDuplicate = this.edges.some(
       (e) => e.from === edge.from && e.to === edge.to && e.type === edge.type
     );
@@ -67,7 +72,6 @@ export class DependencyGraph {
 
   /**
    * Returns whether a node with the given ID exists in the graph.
-   * @param id - Node ID to check
    */
   hasNode(id: string): boolean {
     return this.nodes.has(id);
@@ -75,7 +79,6 @@ export class DependencyGraph {
 
   /**
    * Returns the node with the given ID, or undefined if not found.
-   * @param id - Node ID to retrieve
    */
   getNode(id: string): GraphNode | undefined {
     return this.nodes.get(id);
@@ -83,7 +86,6 @@ export class DependencyGraph {
 
   /**
    * Returns all edges originating from the given node ID.
-   * @param fromId - Source node ID
    */
   getEdgesFrom(fromId: string): GraphEdge[] {
     return this.edges.filter((e) => e.from === fromId);
@@ -91,9 +93,33 @@ export class DependencyGraph {
 
   /**
    * Returns all edges pointing to the given node ID.
-   * @param toId - Target node ID
    */
   getEdgesTo(toId: string): GraphEdge[] {
     return this.edges.filter((e) => e.to === toId);
+  }
+
+  /**
+   * Sorts nodes and edges deterministically.
+   */
+  sort(): void {
+    // Edges are sorted in place
+    this.edges.sort((a, b) => {
+      const fromCmp = a.from.localeCompare(b.from);
+      if (fromCmp !== 0) return fromCmp;
+      return a.to.localeCompare(b.to);
+    });
+  }
+
+  /**
+   * Creates a deeply frozen snapshot of the graph.
+   */
+  createSnapshot(version: string): GraphSnapshot {
+    this.sort();
+    const classified: ClassifiedGraph = {
+      nodes: Array.from(this.nodes.values()).sort((a, b) => a.id.localeCompare(b.id)),
+      edges: JSON.parse(JSON.stringify(this.edges)),
+      version
+    };
+    return deepFreeze(classified);
   }
 }

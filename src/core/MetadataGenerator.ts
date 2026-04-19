@@ -132,25 +132,21 @@ export class MetadataGenerator {
     rootDir: string = './',
     configFile?: string
   ): ArchitectureMetadata {
-    const nodes = Array.from(graph.nodes.values());
+    const nodes: GraphNode[] = graph.nodes instanceof Map 
+      ? Array.from(graph.nodes.values()) 
+      : graph.nodes;
     const edges = graph.edges;
 
     // Count by layer
     const layerCounts: Record<string, number> = {};
     const layers = new Set<string>();
     
-    if ('layers' in graph && graph.layers) {
-      for (const [layer, layerNodes] of graph.layers) {
-        layerCounts[layer] = layerNodes.length;
+    // Infer layers from nodes
+    for (const node of nodes) {
+      const layer = node.layer || node.metadata?.layer;
+      if (layer) {
         layers.add(layer);
-      }
-    } else {
-      // Infer layers from nodes
-      for (const node of nodes) {
-        if (node.layer) {
-          layers.add(node.layer);
-          layerCounts[node.layer] = (layerCounts[node.layer] || 0) + 1;
-        }
+        layerCounts[layer] = (layerCounts[layer] || 0) + 1;
       }
     }
 
@@ -158,26 +154,18 @@ export class MetadataGenerator {
     const domainCounts: Record<string, number> = {};
     const domains = new Set<string>();
     
-    if ('domains' in graph && graph.domains) {
-      for (const [domain, domainNodes] of graph.domains) {
-        if (domain) {
-          domainCounts[domain] = domainNodes.length;
-          domains.add(domain);
-        }
-      }
-    } else {
-      // Infer domains from nodes
-      for (const node of nodes) {
-        if (node.domain) {
-          domains.add(node.domain);
-          domainCounts[node.domain] = (domainCounts[node.domain] || 0) + 1;
-        }
+    // Infer domains from nodes
+    for (const node of nodes) {
+      const domain = node.domain || node.metadata?.domain;
+      if (domain) {
+        domains.add(domain);
+        domainCounts[domain] = (domainCounts[domain] || 0) + 1;
       }
     }
 
     // Extract external services
     const externalServices = nodes
-      .filter(n => n.type === 'external-service')
+      .filter(n => (n.type || n.metadata?.type) === 'external')
       .map(n => n.id);
 
     return {
@@ -260,8 +248,12 @@ export class ChangeDetector {
     current: ClassifiedGraph | DependencyGraph,
     previous: ClassifiedGraph | DependencyGraph
   ): ChangeDetectionResult {
-    const currentNodes = new Map(current.nodes);
-    const previousNodes = new Map(previous.nodes);
+    const currentNodes = current.nodes instanceof Map 
+      ? current.nodes 
+      : new Map(current.nodes.map(n => [n.id, n]));
+    const previousNodes = previous.nodes instanceof Map 
+      ? previous.nodes 
+      : new Map(previous.nodes.map(n => [n.id, n]));
 
     const addedNodes: string[] = [];
     const removedNodes: string[] = [];
@@ -401,13 +393,13 @@ export class ChangeDetector {
     outputPath: string
   ): Promise<void> {
     const state = {
-      nodes: Array.from(graph.nodes.entries()).map(([id, node]) => ({
-        id,
-        type: node.type,
-        layer: node.layer,
-        domain: node.domain,
+      nodes: (graph.nodes instanceof Map ? Array.from(graph.nodes.values()) : graph.nodes).map((node) => ({
+        id: node.id,
+        type: node.type || node.metadata?.type,
+        layer: node.layer || node.metadata?.layer,
+        domain: node.domain || node.metadata?.domain,
       })),
-      edges: graph.edges.map(e => ({
+      edges: graph.edges.map((e: any) => ({
         from: e.from,
         to: e.to,
         type: e.type,
@@ -430,17 +422,6 @@ export class ChangeDetector {
       const content = await fs.readFile(inputPath, 'utf-8');
       const state = JSON.parse(content);
       
-      const nodes = new Map<string, GraphNode>();
-      for (const node of state.nodes) {
-        nodes.set(node.id, {
-          id: node.id,
-          type: node.type,
-          layer: node.layer,
-          domain: node.domain,
-          externalCalls: [],
-        });
-      }
-
       const edges: GraphEdge[] = state.edges.map((e: { from: string; to: string; type: string }) => ({
         from: e.from,
         to: e.to,
@@ -448,7 +429,21 @@ export class ChangeDetector {
       }));
 
       const graph = new DependencyGraph();
-      graph.nodes = nodes;
+      for (const node of state.nodes) {
+        graph.addNode({
+          id: node.id,
+          metadata: {
+            type: node.type,
+            layer: node.layer,
+            domain: node.domain,
+            source: 'inferred'
+          },
+          type: node.type,
+          layer: node.layer,
+          domain: node.domain,
+          externalCalls: [],
+        });
+      }
       graph.edges = edges;
       return graph;
     } catch {

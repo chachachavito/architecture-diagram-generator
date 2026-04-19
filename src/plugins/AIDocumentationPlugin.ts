@@ -269,7 +269,7 @@ export class AIDocumentationPlugin implements Plugin {
 
     // Generate module descriptions
     if (this.config.generateModuleDescriptions) {
-      const nodes = Array.from(graph.nodes.entries());
+      const nodes = graph.nodes;
       const total = nodes.length;
       let count = 0;
       
@@ -279,20 +279,20 @@ export class AIDocumentationPlugin implements Plugin {
       const batchSize = 5;
       for (let i = 0; i < nodes.length; i += batchSize) {
         const batch = nodes.slice(i, i + batchSize);
-        await Promise.all(batch.map(async ([id, node]) => {
+        await Promise.all(batch.map(async (node) => {
           try {
             const context = this.buildModuleContext(node);
             const description = await this.service.generateDescription(context);
             
             moduleDescriptions.push({
-              moduleId: id,
+              moduleId: node.id,
               description,
-              suggestedLayer: node.layer,
-              suggestedDomain: node.domain,
+              suggestedLayer: node.layer || node.metadata?.layer,
+              suggestedDomain: node.domain || node.metadata?.domain,
               confidence: 0.8,
             });
           } catch (error) {
-            console.warn(`[AIPlugin] Failed to generate description for ${id}: ${(error as Error).message}`);
+            console.warn(`[AIPlugin] Failed to generate description for ${node.id}: ${(error as Error).message}`);
           }
         }));
         
@@ -304,10 +304,17 @@ export class AIDocumentationPlugin implements Plugin {
     }
 
     // Generate domain descriptions
-    if (this.config.generateDomainDescriptions && graph.domains) {
-      for (const [domain, nodes] of graph.domains) {
-        if (!domain) continue;
-        
+    if (this.config.generateDomainDescriptions) {
+      const domainsMap = new Map<string, GraphNode[]>();
+      for (const node of graph.nodes) {
+        const domain = node.domain || node.metadata?.domain;
+        if (domain) {
+          if (!domainsMap.has(domain)) domainsMap.set(domain, []);
+          domainsMap.get(domain)!.push(node);
+        }
+      }
+
+      for (const [domain, nodes] of domainsMap) {
         try {
           const context = this.buildDomainContext(domain, nodes);
           const description = await this.service.generateDescription(context);
@@ -460,12 +467,18 @@ Total Modules: ${nodes.length}`;
    * Builds context string for improvement suggestions.
    */
   private buildImprovementContext(graph: ClassifiedGraph): string {
-    const layerInfo = graph.layers 
-      ? Array.from(graph.layers.entries()).map(([l, n]: [string, GraphNode[]]) => `${l}: ${n.length} modules`).join('\n')
-      : 'No layer information';
+    const layersMap = new Map<string, number>();
+    for (const node of graph.nodes) {
+      const layer = node.layer || node.metadata?.layer || 'Unknown';
+      layersMap.set(layer, (layersMap.get(layer) || 0) + 1);
+    }
+    
+    const layerInfo = Array.from(layersMap.entries())
+      .map(([l, count]) => `${l}: ${count} modules`)
+      .join('\n');
     
     return `Architecture Analysis:
-Total Nodes: ${graph.nodes.size}
+Total Nodes: ${graph.nodes.length}
 Total Edges: ${graph.edges.length}
 
 Layers:

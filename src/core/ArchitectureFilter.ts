@@ -148,7 +148,8 @@ export class ArchitectureFilter {
   private filterNodes(graph: DependencyGraph): Map<string, GraphNode> {
     const result = new Map<string, GraphNode>();
     for (const [id, node] of graph.nodes) {
-      if (EXCLUDED_TYPES.has(node.type)) continue;
+      const nodeType = node.type || node.metadata?.type || 'module';
+      if (EXCLUDED_TYPES.has(nodeType)) continue;
       if (this.isExcludedPath(id)) continue;
       result.set(id, { ...node, externalCalls: [] });
     }
@@ -224,7 +225,7 @@ export class ArchitectureFilter {
       }
     }
 
-    if (layer === 'Processing' || layer === 'Data') {
+    if (layer === 'Core' || layer === 'Data') {
       for (const { patterns, domain } of SERVICE_DOMAIN_MAP) {
         if (patterns.some((p) => n.includes(p))) return domain;
       }
@@ -241,12 +242,12 @@ export class ArchitectureFilter {
     nodes: Map<string, GraphNode>,
   ): GraphEdge[] {
     const ALLOWED: Array<[ArchitectureLayer | undefined, ArchitectureLayer | undefined]> = [
-      ['UI',         'API'],
-      ['UI',         'Processing'],
-      ['API',        'Processing'],
-      ['Processing', 'Processing'],
-      ['Processing', 'Data'],
-      ['API',        'Data'],
+      ['UI',   'API'],
+      ['UI',   'Core'],
+      ['API',  'Core'],
+      ['Core', 'Core'],
+      ['Core', 'Data'],
+      ['API',  'Data'],
     ];
 
     const result: GraphEdge[] = [];
@@ -263,7 +264,12 @@ export class ArchitectureFilter {
       const toLayer   = nodes.get(toId)?.layer;
 
       if (ALLOWED.some(([f, t]) => f === fromLayer && t === toLayer)) {
-        result.push({ from: fromId, to: toId, type: edge.type });
+        result.push({ 
+          id: `${fromId}->${toId}:${edge.type}`,
+          from: fromId, 
+          to: toId, 
+          type: edge.type 
+        });
       }
     }
 
@@ -286,7 +292,9 @@ export class ArchitectureFilter {
 
     const sorted = [...nodes.entries()].sort(([idA, a], [idB, b]) => {
       const coreBonus = (coreNodes.has(idB) ? 10 : 0) - (coreNodes.has(idA) ? 10 : 0);
-      return coreBonus + (priority[b.type] ?? 0) - (priority[a.type] ?? 0);
+      const typeB = b.type || b.metadata?.type || 'module';
+      const typeA = a.type || a.metadata?.type || 'module';
+      return coreBonus + (priority[typeB] ?? 0) - (priority[typeA] ?? 0);
     });
 
     const kept    = new Map(sorted.slice(0, MAX_ARCHITECTURE_NODES));
