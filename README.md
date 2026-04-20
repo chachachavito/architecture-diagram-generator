@@ -1,61 +1,77 @@
-# Architecture Diagram Generator
+# [Architecture Diagram Generator](https://www.npmjs.com/package/architecture-diagram-generator)
 
-Automated architecture diagram generator for modern TypeScript projects. It scans your codebase, classifies files into layers, and generates structural Mermaid diagrams and a machine-readable JSON graph.
+**Map your TypeScript architecture in seconds.**
+No configuration required for most projects.
 
-## Features
+[![npm version](https://img.shields.io/npm/v/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
+[![npm downloads](https://img.shields.io/npm/dm/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
+[![license](https://img.shields.io/npm/l/architecture-diagram-generator.svg)](https://github.com/chachachavito/architecture-diagram-generator/blob/main/LICENSE)
 
-- **Automated Discovery**: Scans TypeScript/JavaScript projects (Next.js, etc.) automatically.
-- **Layer & Domain Classification**: Group components by architectural layers and business domains.
-- **Visual Mermaid Diagrams**: Generates clean, readable diagrams for documentation.
-- **Agile JSON Graph**: Exports a full dependency graph for external analysis.
-- **Strict Determinism**: Guaranteed identical output across runs and platforms.
+## Who is this for?
 
-## Installation
+- **Architects & Tech Leads**: To maintain a living record of the system architecture
+- **Developers**: To quickly visualize the topology of unfamiliar repositories
 
+## Quick Start
+
+Run in any TypeScript project (no setup required):
 ```bash
-# Global installation
-npm install -g architecture-diagram-generator
-
-# Usage
-architecture-generator . --output architecture.json
-
-# Or run via npx
 npx architecture-diagram-generator .
 ```
+Runs in seconds
 
-## CLI Options
+Outputs are generated in the project root
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `[project-root]` | Root directory to scan | `.` (current dir) |
-| `--output, -o` | Path to save the JSON output | `[root]/architecture.json` |
-| `--debug` | Enable verbose logging | `false` |
-| `--version, -v` | Show version number | - |
-| `--help, -h` | Show help message | - |
-
-## Outputs
-
-The CLI automatically generates two companion files:
-
-1. **`architecture.md`**: Contains the visual Mermaid diagram ready for your README.
-2. **`architecture.json`**: Contains the raw data structure of your graph. This file is compatible with the `architecture-analyzer` for deeper audits.
-
-## Analysis
-
-To run an architectural audit (cycles, rules validation, scoring), use the companion tool:
-
-```bash
-npx architecture-analyzer architecture.json
+CLI output:
+```text
+✔ architecture.md created
+✔ architecture.json created
 ```
 
-## Development
+## Example Output
 
-```bash
-npm install
-npm run build
-npm test
+```mermaid
+flowchart TD
+  subgraph Core
+    src_cli_ts["📦 Cli"]
+    src_core_Pipeline_ts["📦 ArchitecturePipeline"]
+  end
+  subgraph External
+    typescript["☁️ typescript"]
+    zod["☁️ zod"]
+  end
+  src_cli_ts --> src_core_Pipeline_ts
+  src_core_Pipeline_ts --> zod
 ```
 
-## License
+## Artifacts
 
-MIT
+- **`architecture.json`**: Dependency graph
+- **`architecture.md`**: Mermaid diagram
+
+## Automated Governance Pipeline
+
+Use the JSON output for automated validation:
+
+1. **Extract**: `architecture-diagram-generator` — Generates the graph
+2. **Audit**: [architecture-analyzer](https://github.com/chachachavito/architecture-analyzer) — Validates rules and detects issues
+
+## Supported Environments
+
+- Next.js (App/Pages router)
+- Layered Architectures (Core, Domain, Infra)
+- Monorepos (pnpm, yarn workspaces)
+
+For custom layouts, use an `architecture-config.json` in the root.
+
+## Limitations
+
+- **Convention-based**: Relies on standard folder naming and import patterns
+- **TypeScript ecosystem**: Supports .ts and .tsx only
+
+## Call to Action
+
+Run locally or in CI to keep your architecture in sync.
+
+---
+MIT License • Created by [chachachavito](https://github.com/chachachavito)
