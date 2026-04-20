@@ -1,6 +1,6 @@
 # [Architecture Diagram Generator](https://www.npmjs.com/package/architecture-diagram-generator)
 
-**Map your TypeScript architecture in seconds.**
+**Understand your TypeScript architecture in seconds.**
 No configuration required for most projects.
 
 [![npm version](https://img.shields.io/npm/v/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
