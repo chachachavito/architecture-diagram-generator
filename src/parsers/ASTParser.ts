@@ -138,7 +138,7 @@ export class ASTParser {
     const ext = path.extname(absolutePath).toLowerCase();
     const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
     if (!validExtensions.includes(ext)) {
-      throw new ParseError(filePath, new Error(`Invalid file extension: ${ext}`));
+      throw new ParseError(filePath, `Invalid file extension: ${ext}`);
     }
 
     // 2. Check cache first
