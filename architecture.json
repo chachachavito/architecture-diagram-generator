@@ -1,21 +1,8 @@
 {
-  "version": "0.4.8",
-  "generatedAt": "2026-04-21T16:14:41.739Z",
+  "version": "0.4.9",
+  "generatedAt": "2026-04-21T16:23:01.242Z",
   "graph": {
     "nodes": [
-      {
-        "id": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
-        "externalCalls": []
-      },
       {
         "id": "commander",
         "metadata": {
@@ -40,32 +27,6 @@
         },
         "type": "external",
         "label": "crypto",
-        "externalCalls": []
-      },
-      {
-        "id": "dbNames",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "dbNames",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "dbNames",
-        "externalCalls": []
-      },
-      {
-        "id": "dbPatterns",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "dbPatterns",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "dbPatterns",
         "externalCalls": []
       },
       {
@@ -141,56 +102,7 @@
           "domain": "core"
         },
         "type": "module",
-        "externalCalls": [
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 73,
-              "column": 32
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 74,
-              "column": 32
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 79,
-              "column": 33
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 80,
-              "column": 33
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 85,
-              "column": 31
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 86,
-              "column": 31
-            }
-          }
-        ]
+        "externalCalls": []
       },
       {
         "id": "src/core/ArchitectureFilter.ts",
@@ -308,7 +220,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 237,
+            "sloc": 246,
             "complexity": 56
           },
           "label": "FileDiscovery",
@@ -478,16 +390,7 @@
           "domain": "generators"
         },
         "type": "module",
-        "externalCalls": [
-          {
-            "type": "database",
-            "target": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
-            "location": {
-              "line": 9,
-              "column": 12
-            }
-          }
-        ]
+        "externalCalls": []
       },
       {
         "id": "src/generators/index.ts",
@@ -569,48 +472,15 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 524,
-            "complexity": 63
+            "sloc": 534,
+            "complexity": 78
           },
           "label": "ASTParser",
           "layer": "Core",
           "domain": "parsers"
         },
         "type": "module",
-        "externalCalls": [
-          {
-            "type": "database",
-            "target": "dbPatterns",
-            "location": {
-              "line": 406,
-              "column": 15
-            }
-          },
-          {
-            "type": "database",
-            "target": "dbNames",
-            "location": {
-              "line": 416,
-              "column": 15
-            }
-          },
-          {
-            "type": "database",
-            "target": "dbPatterns",
-            "location": {
-              "line": 435,
-              "column": 13
-            }
-          },
-          {
-            "type": "database",
-            "target": "dbPatterns",
-            "location": {
-              "line": 448,
-              "column": 13
-            }
-          }
-        ]
+        "externalCalls": []
       },
       {
         "id": "src/parsers/index.ts",
@@ -766,19 +636,6 @@
         "externalCalls": []
       },
       {
-        "id": "this",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "this",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "this",
-        "externalCalls": []
-      },
-      {
         "id": "ts-morph",
         "metadata": {
           "type": "external",
@@ -892,12 +749,6 @@
         "to": "src/core/GraphTypes.ts",
         "type": "import",
         "isTypeOnly": false
-      },
-      {
-        "id": "src/core/ArchitectureClassifier.ts->this:external-call",
-        "from": "src/core/ArchitectureClassifier.ts",
-        "to": "this",
-        "type": "external-call"
       },
       {
         "id": "src/core/ArchitectureFilter.ts->src/core/DependencyGraph.ts:import",
@@ -1202,12 +1053,6 @@
         "isTypeOnly": false
       },
       {
-        "id": "src/generators/HTMLGenerator.ts->`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1:external-call",
-        "from": "src/generators/HTMLGenerator.ts",
-        "to": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
-        "type": "external-call"
-      },
-      {
         "id": "src/generators/index.ts->src/generators/DiagramGenerator.ts:import",
         "from": "src/generators/index.ts",
         "to": "src/generators/DiagramGenerator.ts",
@@ -1290,18 +1135,6 @@
         "to": "src/parsers/MermaidParser.ts",
         "type": "import",
         "isTypeOnly": false
-      },
-      {
-        "id": "src/parsers/ASTParser.ts->dbNames:external-call",
-        "from": "src/parsers/ASTParser.ts",
-        "to": "dbNames",
-        "type": "external-call"
-      },
-      {
-        "id": "src/parsers/ASTParser.ts->dbPatterns:external-call",
-        "from": "src/parsers/ASTParser.ts",
-        "to": "dbPatterns",
-        "type": "external-call"
       },
       {
         "id": "src/parsers/ASTParser.ts->fs/promises:import",
@@ -1396,6 +1229,6 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.4.8"
+    "version": "0.4.9"
   }
 }

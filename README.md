@@ -1,91 +1,64 @@
 # Architecture Diagram Generator (v0.4.9)
 
 **Understand your TypeScript architecture in seconds.**
-No configuration required for most projects.
+Automated dependency analysis and interactive visualization for modern web projects.
 
-[![npm version](https://img.shields.io/npm/v/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
-[![npm downloads](https://img.shields.io/npm/dm/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
-[![license](https://img.shields.io/npm/l/architecture-diagram-generator.svg)](https://github.com/chavitochavito/architecture-diagram-generator/blob/main/LICENSE)
+## Overview
 
-## Who is this for?
+Architecture Diagram Generator is a zero-config tool that transforms your codebase into a high-fidelity interactive dashboard. It performs deep semantic analysis using **ts-morph** to map connections, external integrations, and architectural layers.
 
-- **Architects & Tech Leads**: To maintain a living record of the system architecture
-- **Developers**: To quickly visualize the topology of unfamiliar repositories
+## Key Features
 
-## Quick Start
+- **Interactive HTML Dashboard**: Premium visualization with drill-down capabilities (click on domains to see internal files).
+- **Automated Layer Classification**: Intelligently categorizes modules into UI, API, and Core layers.
+- **Deep Semantic Analysis**: Detects real imports, dynamic calls, and external service integrations (fetch, axios, databases).
+- **Mermaid.js Integration**: Generates deterministic Mermaid syntax for Git documentation.
+- **Zero Configuration**: Works out of the box for most Next.js and TypeScript projects.
 
-Run in any TypeScript project (no setup required):
+## Installation
+
 ```bash
-npx architecture-diagram-generator .
-```
-Runs in seconds
-
-Outputs are generated in the project root
-
-CLI output:
-```text
-Analyzing project at: /path/to/project
-Step 1: Scanning for files...
-Step 2: Parsing AST and extracting metadata...
-Graph built with 150 nodes and 240 edges.
-Generation successful!
-   - Data: architecture.json
-   - Markdown: architecture.md
-   - Dashboard: architecture.html (OPEN THIS IN BROWSER)
+npm install -g architecture-diagram-generator
 ```
 
-## Example Output
+## Usage
 
-```mermaid
-flowchart TD
-  subgraph Core
-    src_cli_ts["Cli"]
-    src_core_Pipeline_ts["ArchitecturePipeline"]
-  end
-  subgraph External
-    typescript["typescript"]
-    zod["zod"]
-  end
-  src_cli_ts --> src_core_Pipeline_ts
-  src_core_Pipeline_ts --> zod
+Run the generator in your project root:
+
+```bash
+architecture-generator .
 ```
 
-## Core Engine (v0.4.9)
+### Output Files
 
-Powered by **ts-morph** for deep semantic analysis.
+- `architecture.html`: Interactive premium dashboard (Open in browser).
+- `architecture.md`: Static Mermaid diagram for GitHub/GitLab.
+- `architecture.json`: Raw dependency graph data for programmatic use.
 
-- **Interactive HTML Dashboard**: Export as a self-contained premium HTML page.
-    - **Drill-down**: Click on any domain to explore its internal file structure.
-    - **Dynamic Layouts**: Switch between Vertical and Horizontal views in real-time.
-    - **Smart Zoom & Pan**: Explore massive diagrams with high-fidelity zoom and native scrolling.
-- **Domain Grouping**: Automatically clusters modules by domain for high readability.
-- **Type-Safe Dependencies**: Distinguishes between runtime and type-only imports.
-- **Inheritance Mapping**: Automatically detects extends and implements relations.
-- **Code Metrics**: Provides Cyclomatic Complexity and SLOC for every module.
-- **External Services**: High-precision detection of DB clients (Prisma, Mongoose) and API calls using TypeScript's TypeChecker.
+## Configuration
 
-## Automated Governance Pipeline
+Custom rules can be defined in `architecture-config.json`:
 
-Use the JSON output for automated validation:
+```json
+{
+  "rootDir": "./src",
+  "exclude": ["**/*.test.ts", "**/node_modules/**"],
+  "layers": {
+    "UI": ["**/components/**"],
+    "API": ["**/api/**"],
+    "Core": ["**/services/**", "**/utils/**"]
+  }
+}
+```
 
-1. **Extract**: `architecture-diagram-generator` - Generates the enriched graph.
-2. **Audit**: [architecture-analyzer](https://github.com/chavitochavito/architecture-analyzer) - Validates rules, inheritance, and complexity.
+## Development
 
-## Supported Environments
+```bash
+npm install
+npm run build
+npm run diagram # Test in current directory
+```
 
-- Next.js (App/Pages router)
-- Layered Architectures (Core, Domain, Infra)
-- Monorepos (pnpm, yarn workspaces)
-- NestJS & Framework-heavy projects (Decorator support)
+## License
 
-## Limitations
-
-- **TypeScript focus**: Optimal performance on TS/TSX projects.
-- **Memory usage**: Semantic analysis requires more memory for large project graphs.
-
-## Call to Action
-
-Run locally or in CI to keep your architecture in sync.
-
----
-MIT License • Created by [chavitochavito](https://github.com/chavitochavito)
+MIT
