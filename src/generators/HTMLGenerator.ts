@@ -65,18 +65,17 @@ export class HTMLGenerator {
             flex: 1;
             overflow: auto;
             padding: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
             background: #fff;
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
             background-size: 20px 20px;
         }
         .mermaid {
-            visibility: hidden;
+            display: flex;
+            justify-content: center;
         }
-        .mermaid[data-processed="true"] {
-            visibility: visible;
+        .mermaid svg {
+            max-width: none !important;
+            height: auto !important;
         }
     </style>
 </head>
