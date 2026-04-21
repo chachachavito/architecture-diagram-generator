@@ -1,6 +1,6 @@
 {
   "version": "0.4.2",
-  "generatedAt": "2026-04-21T15:46:03.824Z",
+  "generatedAt": "2026-04-21T15:49:25.913Z",
   "graph": {
     "nodes": [
       {
@@ -496,7 +496,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 324,
+            "sloc": 329,
             "complexity": 1
           },
           "label": "HTMLGenerator",

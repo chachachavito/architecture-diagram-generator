@@ -196,7 +196,8 @@ export class HTMLGenerator {
         window.onNodeClick = (id) => {
             if (currentView === 'high-level') {
                 const parts = id.split('_');
-                const domain = parts.slice(1).join('_');
+                // ID starts with n_
+                const domain = parts.slice(2).join('_');
                 drillDown(domain);
             }
         };
@@ -255,10 +256,18 @@ export class HTMLGenerator {
 
         async function render() {
             const syntax = generateMermaidSyntax();
+            console.log('--- GENERATED MERMAID SYNTAX ---');
+            console.log(syntax);
+            console.log('-------------------------------');
+            
             const container = document.getElementById('mermaid-graph');
             container.removeAttribute('data-processed');
             container.innerHTML = syntax;
-            await mermaid.run({ nodes: [container] });
+            try {
+                await mermaid.run({ nodes: [container] });
+            } catch (err) {
+                console.error('Mermaid rendering failed:', err);
+            }
             applyZoom();
         }
 
@@ -329,13 +338,14 @@ export class HTMLGenerator {
         }
 
         function safeId(id) {
-            return id.replace(/[^a-zA-Z0-9]/g, '_');
+            // Prefix with n_ and replace all non-alphanumeric with _
+            return 'n_' + id.replace(/[^a-zA-Z0-9]/g, '_');
         }
 
         function cleanLabel(label) {
             if (!label) return '';
-            // Aggressive escaping for Mermaid syntax safety
-            return label.replace(/[<>|[\\](){}]/g, '').replace(/--+/g, '-').trim();
+            // Remove double quotes and other breaking characters
+            return label.replace(/[<>|[\\](){}"']/g, '').replace(/--+/g, '-').trim();
         }
 
         window.zoom = (delta) => { scale = Math.max(0.1, scale + delta); applyZoom(); };
