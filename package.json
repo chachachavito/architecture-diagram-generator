@@ -1,7 +1,7 @@
 {
   "name": "architecture-diagram-generator",
   "version": "0.4.15",
-  "description": "Automated Architecture Diagram Generator (v0.4.15) for Next.js projects",
+  "description": "Automated Architecture Diagram Generator (v0.4.15) for Next.js projects. Scan codebases, classify layers, and generate interactive HTML dashboards and Mermaid diagrams.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
