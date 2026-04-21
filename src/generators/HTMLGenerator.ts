@@ -6,6 +6,9 @@ export class HTMLGenerator {
    * Generates a full HTML document for the given Mermaid syntax.
    */
   generate(mermaidSyntax: string, title: string = 'Architecture Diagram'): string {
+    // Strip the initial flowchart line to allow dynamic switching
+    const baseSyntax = mermaidSyntax.replace(/^flowchart (TD|LR|RL|BT)\n/, '');
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +35,7 @@ export class HTMLGenerator {
         }
         header {
             background: var(--card-bg);
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
@@ -41,25 +44,45 @@ export class HTMLGenerator {
         }
         h1 {
             margin: 0;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 600;
         }
         .controls {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .group {
+            display: flex;
+            background: #f1f5f9;
+            padding: 0.25rem;
+            border-radius: 8px;
+            gap: 0.25rem;
+            margin-right: 1rem;
         }
         button {
-            background: var(--bg-color);
-            border: 1px solid #e2e8f0;
-            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            padding: 0.4rem 0.8rem;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
             transition: all 0.2s;
         }
-        button:hover {
-            border-color: var(--accent-color);
+        button.active {
+            background: var(--card-bg);
             color: var(--accent-color);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        button:hover:not(.active) {
+            background: rgba(255,255,255,0.5);
+        }
+        .action-btn {
+            background: var(--bg-color);
+            border: 1px solid #e2e8f0;
+            color: var(--text-primary);
         }
         #diagram-container {
             flex: 1;
@@ -67,11 +90,13 @@ export class HTMLGenerator {
             padding: 2rem;
             background: #fff;
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-size: 30px 30px;
         }
         .mermaid {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-width: min-content;
         }
         .mermaid svg {
             max-width: none !important;
@@ -83,61 +108,79 @@ export class HTMLGenerator {
     <header>
         <h1>${title}</h1>
         <div class="controls">
-            <button onclick="window.print()">Save as PDF</button>
-            <button onclick="zoomIn()">Zoom In</button>
-            <button onclick="zoomOut()">Zoom Out</button>
-            <button onclick="resetZoom()">Reset</button>
+            <div class="group" id="direction-group">
+                <button onclick="setDirection('TD')" id="btn-TD">Vertical (TD)</button>
+                <button onclick="setDirection('LR')" id="btn-LR">Horizontal (LR)</button>
+                <button onclick="setDirection('RL')" id="btn-RL" class="active">Horizontal (RL)</button>
+                <button onclick="setDirection('BT')" id="btn-BT">Bottom-Up (BT)</button>
+            </div>
+            <button class="action-btn" onclick="window.print()">Save PDF</button>
+            <button class="action-btn" onclick="zoom(0.1)">Zoom +</button>
+            <button class="action-btn" onclick="zoom(-0.1)">Zoom -</button>
+            <button class="action-btn" onclick="resetZoom()">Reset</button>
         </div>
     </header>
     <div id="diagram-container">
-        <pre class="mermaid">
-${mermaidSyntax}
-        </pre>
+        <div class="mermaid" id="mermaid-graph"></div>
     </div>
 
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         
+        const baseSyntax = \`${baseSyntax}\`;
+        let currentDirection = 'RL';
+        let scale = 1;
+
         mermaid.initialize({ 
-            startOnLoad: true,
+            startOnLoad: false,
             theme: 'base',
+            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
             themeVariables: {
                 primaryColor: '#eff6ff',
                 primaryTextColor: '#1e3a8a',
                 primaryBorderColor: '#3b82f6',
-                lineColor: '#64748b',
-                secondaryColor: '#f1f5f9',
-                tertiaryColor: '#fff'
-            },
-            flowchart: {
-                curve: 'basis',
-                htmlLabels: true
+                lineColor: '#64748b'
             }
         });
 
-        let scale = 1;
-        const container = document.querySelector('.mermaid');
-        
-        window.zoomIn = () => {
-            scale += 0.1;
+        window.setDirection = async (dir) => {
+            currentDirection = dir;
+            
+            // Update UI
+            document.querySelectorAll('#direction-group button').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + dir).classList.add('active');
+            
+            await render();
+        };
+
+        async function render() {
+            const container = document.getElementById('mermaid-graph');
+            container.removeAttribute('data-processed');
+            container.innerHTML = 'flowchart ' + currentDirection + '\\n' + baseSyntax;
+            await mermaid.run({ nodes: [container] });
+            applyZoom();
+        }
+
+        window.zoom = (delta) => {
+            scale = Math.max(0.1, scale + delta);
             applyZoom();
         };
-        window.zoomOut = () => {
-            scale = Math.max(0.2, scale - 0.1);
-            applyZoom();
-        };
+
         window.resetZoom = () => {
             scale = 1;
             applyZoom();
         };
-        
+
         function applyZoom() {
             const svg = document.querySelector('.mermaid svg');
             if (svg) {
                 svg.style.transform = 'scale(' + scale + ')';
-                svg.style.transformOrigin = 'top center';
+                svg.style.transformOrigin = 'top left';
             }
         }
+
+        // Initial render
+        render();
     </script>
 </body>
 </html>`.trim();
