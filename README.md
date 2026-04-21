@@ -1,4 +1,4 @@
-# Architecture Diagram Generator (v0.4.14)
+# Architecture Diagram Generator (v0.4.15)
 
 ![Static Diagram](docs/diagram.png)
 *Automated architecture overview*
