@@ -20,6 +20,7 @@ export interface GenerationOptions {
  */
 export interface MermaidDiagram {
   syntax: string;
+  simplifiedSyntax: string;
   metadata: DiagramMetadata;
   extraContent?: string;
 }
@@ -48,10 +49,12 @@ export class DiagramGenerator {
    */
   generate(graph: GraphSnapshot, options: GenerationOptions = {}): MermaidDiagram {
     const visualTokens = this.visualMapper.map(graph);
-    const syntax = this.mermaidRenderer.render(graph, visualTokens);
+    const syntax = this.mermaidRenderer.render(graph, visualTokens, { simplified: false });
+    const simplifiedSyntax = this.mermaidRenderer.render(graph, visualTokens, { simplified: true });
 
     return {
       syntax,
+      simplifiedSyntax,
       metadata: {
         nodeCount: graph.nodes.length,
         edgeCount: graph.edges.length,

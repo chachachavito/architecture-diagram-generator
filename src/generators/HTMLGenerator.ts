@@ -5,9 +5,9 @@ export class HTMLGenerator {
   /**
    * Generates a full HTML document for the given Mermaid syntax.
    */
-  generate(mermaidSyntax: string, title: string = 'Architecture Diagram'): string {
-    // Strip the initial flowchart line to allow dynamic switching
-    const baseSyntax = mermaidSyntax.replace(/^flowchart (TD|LR|RL|BT)\n/, '');
+  generate(detailedSyntax: string, simplifiedSyntax: string, title: string = 'Architecture Diagram'): string {
+    const baseDetailed = detailedSyntax.replace(/^flowchart (TD|LR|RL|BT)\n/, '');
+    const baseSimplified = simplifiedSyntax.replace(/^flowchart (TD|LR|RL|BT)\n/, '');
 
     return `<!DOCTYPE html>
 <html lang="en">
@@ -108,10 +108,14 @@ export class HTMLGenerator {
     <header>
         <h1>${title}</h1>
         <div class="controls">
+            <div class="group" id="view-group">
+                <button onclick="setView('simplified')" id="btn-simplified" class="active">High-Level</button>
+                <button onclick="setView('detailed')" id="btn-detailed">Detailed</button>
+            </div>
             <div class="group" id="direction-group">
                 <button onclick="setDirection('TD')" id="btn-TD">Vertical (TD)</button>
-                <button onclick="setDirection('LR')" id="btn-LR">Horizontal (LR)</button>
-                <button onclick="setDirection('RL')" id="btn-RL" class="active">Horizontal (RL)</button>
+                <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal (LR)</button>
+                <button onclick="setDirection('RL')" id="btn-RL">Horizontal (RL)</button>
                 <button onclick="setDirection('BT')" id="btn-BT">Bottom-Up (BT)</button>
             </div>
             <button class="action-btn" onclick="window.print()">Save PDF</button>
@@ -127,8 +131,13 @@ export class HTMLGenerator {
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         
-        const baseSyntax = \`${baseSyntax}\`;
-        let currentDirection = 'RL';
+        const syntaxes = {
+            detailed: \`${baseDetailed}\`,
+            simplified: \`${baseSimplified}\`
+        };
+        
+        let currentView = 'simplified';
+        let currentDirection = 'LR';
         let scale = 1;
 
         mermaid.initialize({ 
@@ -143,20 +152,24 @@ export class HTMLGenerator {
             }
         });
 
+        window.setView = async (view) => {
+            currentView = view;
+            document.querySelectorAll('#view-group button').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + view).classList.add('active');
+            await render();
+        };
+
         window.setDirection = async (dir) => {
             currentDirection = dir;
-            
-            // Update UI
             document.querySelectorAll('#direction-group button').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-' + dir).classList.add('active');
-            
             await render();
         };
 
         async function render() {
             const container = document.getElementById('mermaid-graph');
             container.removeAttribute('data-processed');
-            container.innerHTML = 'flowchart ' + currentDirection + '\\n' + baseSyntax;
+            container.innerHTML = 'flowchart ' + currentDirection + '\\n' + syntaxes[currentView];
             await mermaid.run({ nodes: [container] });
             applyZoom();
         }
@@ -179,7 +192,6 @@ export class HTMLGenerator {
             }
         }
 
-        // Initial render
         render();
     </script>
 </body>

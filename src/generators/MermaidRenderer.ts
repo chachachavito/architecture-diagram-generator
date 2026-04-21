@@ -8,7 +8,16 @@ export class MermaidRenderer {
   /**
    * Renders the graph into Mermaid flowchart syntax
    */
-  render(snapshot: GraphSnapshot, visualTokens: Map<string, VisualToken>): string {
+  /**
+   * Renders the graph into Mermaid flowchart syntax
+   */
+  render(snapshot: GraphSnapshot, visualTokens: Map<string, VisualToken>, options: { simplified?: boolean } = {}): string {
+    return options.simplified 
+      ? this.renderSimplified(snapshot)
+      : this.renderDetailed(snapshot, visualTokens);
+  }
+
+  private renderDetailed(snapshot: GraphSnapshot, visualTokens: Map<string, VisualToken>): string {
     let output = 'flowchart TD\n';
 
     // Group by Layer -> Domain
@@ -51,6 +60,42 @@ export class MermaidRenderer {
       if (token.severityColor) {
         output += `  style ${this.safeId(token.nodeId)} stroke:${token.severityColor},stroke-width:4px\n`;
       }
+    }
+
+    return output;
+  }
+
+  private renderSimplified(snapshot: GraphSnapshot): string {
+    let output = 'flowchart TD\n';
+    
+    // Nodes: One per Domain per Layer
+    const layers = this.groupData(snapshot);
+    for (const [layerName, domains] of layers.entries()) {
+      output += `  subgraph ${this.safeId(layerName)}\n`;
+      for (const domainName of domains.keys()) {
+        output += `    ${this.safeId(layerName + '_' + domainName)}["${this.escapeLabel(domainName)}"]\n`;
+      }
+      output += '  end\n';
+    }
+
+    // Edges: Aggregate file edges to domain edges
+    const domainEdges = new Set<string>();
+    for (const edge of snapshot.edges) {
+      const fromNode = snapshot.nodes.find(n => n.id === edge.from);
+      const toNode = snapshot.nodes.find(n => n.id === edge.to);
+      
+      if (fromNode && toNode) {
+        const fromDomain = `${this.safeId(fromNode.metadata.layer || 'Core')}_${this.safeId(fromNode.metadata.domain || 'shared')}`;
+        const toDomain = `${this.safeId(toNode.metadata.layer || 'Core')}_${this.safeId(toNode.metadata.domain || 'shared')}`;
+        
+        if (fromDomain !== toDomain) {
+          domainEdges.add(`${fromDomain} --> ${toDomain}`);
+        }
+      }
+    }
+
+    for (const edgeString of domainEdges) {
+      output += `  ${edgeString}\n`;
     }
 
     return output;

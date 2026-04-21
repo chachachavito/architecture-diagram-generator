@@ -1,7 +1,7 @@
 {
   "name": "architecture-diagram-generator",
-  "version": "0.3.7",
-  "description": "Automated architecture diagram generator for Next.js projects",
+  "version": "0.3.8",
+  "description": "Automated Architecture Diagram Generator (0.3.8) for Next.js projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
