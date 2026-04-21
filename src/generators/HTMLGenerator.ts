@@ -135,7 +135,7 @@ ${mermaidSyntax}
         function applyZoom() {
             const svg = document.querySelector('.mermaid svg');
             if (svg) {
-                svg.style.transform = `scale(${scale})`;
+                svg.style.transform = 'scale(' + scale + ')';
                 svg.style.transformOrigin = 'top center';
             }
         }
