@@ -1,4 +1,10 @@
-# Architecture Diagram Generator (v0.4.12)
+# Architecture Diagram Generator (v0.4.13)
+
+![Interactive Dashboard](docs/dashboard-preview.png)
+*Interactive Dashboard with drill-down capabilities*
+
+![Static Diagram](docs/diagram.png)
+*Static architecture overview*
 
 **Understand your TypeScript architecture in seconds.**
 Automated dependency analysis and interactive visualization for modern web projects.

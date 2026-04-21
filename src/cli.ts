@@ -9,7 +9,7 @@ import { ArchitecturePipeline } from './core/ArchitecturePipeline';
 import { DiagramGenerator } from './generators/DiagramGenerator';
 import { HTMLGenerator } from './generators/HTMLGenerator';
 
-const VERSION = '0.4.12';
+const VERSION = '0.4.13';
 
 async function main() {
   const program = new Command();
@@ -24,7 +24,10 @@ async function main() {
     .action(async (projectRoot, options) => {
       try {
         const absProjectRoot = path.resolve(projectRoot);
-        const outputPath = path.resolve(options.output);
+        // Resolve output path relative to project root if it's not absolute
+        const outputPath = path.isAbsolute(options.output) 
+          ? options.output 
+          : path.join(absProjectRoot, options.output);
 
         console.log(`Analyzing project at: ${absProjectRoot}`);
 

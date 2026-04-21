@@ -44,9 +44,12 @@ flowchart TD
   subgraph External ["External"]
       commander["[EXT] commander"]
       crypto["[EXT] crypto"]
+      dbNames["[EXT] dbNames"]
+      dbPatterns["[EXT] dbPatterns"]
       fs_promises["[EXT] fs/promises"]
       glob["[EXT] glob"]
       path["[EXT] path"]
+      this["[EXT] this"]
       ts_morph["[EXT] ts-morph"]
       typescript["[EXT] typescript"]
       zod["[EXT] zod"]
@@ -62,6 +65,7 @@ flowchart TD
   src_cli_ts --> src_parsers_ASTParser_ts
   src_core_ArchitectureClassifier_ts --> src_core_ConfigValidator_ts
   src_core_ArchitectureClassifier_ts --> src_core_GraphTypes_ts
+  src_core_ArchitectureClassifier_ts --> this
   src_core_ArchitectureFilter_ts --> src_core_DependencyGraph_ts
   src_core_ArchitecturePipeline_ts --> src_core_ArchitectureClassifier_ts
   src_core_ArchitecturePipeline_ts --> src_core_ConfigValidator_ts
@@ -119,6 +123,8 @@ flowchart TD
   src_index_ts --> src_generators_VisualMapper_ts
   src_index_ts --> src_parsers_ASTParser_ts
   src_index_ts --> src_parsers_MermaidParser_ts
+  src_parsers_ASTParser_ts --> dbNames
+  src_parsers_ASTParser_ts --> dbPatterns
   src_parsers_ASTParser_ts --> fs_promises
   src_parsers_ASTParser_ts --> path
   src_parsers_ASTParser_ts --> src_core_ModuleCache_ts

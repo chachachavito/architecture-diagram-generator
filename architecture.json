@@ -1,6 +1,6 @@
 {
-  "version": "0.4.9",
-  "generatedAt": "2026-04-21T16:23:01.242Z",
+  "version": "0.4.13",
+  "generatedAt": "2026-04-21T17:00:19.025Z",
   "graph": {
     "nodes": [
       {
@@ -27,6 +27,32 @@
         },
         "type": "external",
         "label": "crypto",
+        "externalCalls": []
+      },
+      {
+        "id": "dbNames",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "dbNames",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "dbNames",
+        "externalCalls": []
+      },
+      {
+        "id": "dbPatterns",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "dbPatterns",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "dbPatterns",
         "externalCalls": []
       },
       {
@@ -76,8 +102,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 114,
-            "complexity": 9
+            "sloc": 96,
+            "complexity": 6
           },
           "label": "Cli",
           "layer": "Core",
@@ -102,7 +128,56 @@
           "domain": "core"
         },
         "type": "module",
-        "externalCalls": []
+        "externalCalls": [
+          {
+            "type": "database",
+            "target": "this",
+            "location": {
+              "line": 73,
+              "column": 32
+            }
+          },
+          {
+            "type": "database",
+            "target": "this",
+            "location": {
+              "line": 74,
+              "column": 32
+            }
+          },
+          {
+            "type": "database",
+            "target": "this",
+            "location": {
+              "line": 79,
+              "column": 33
+            }
+          },
+          {
+            "type": "database",
+            "target": "this",
+            "location": {
+              "line": 80,
+              "column": 33
+            }
+          },
+          {
+            "type": "database",
+            "target": "this",
+            "location": {
+              "line": 85,
+              "column": 31
+            }
+          },
+          {
+            "type": "database",
+            "target": "this",
+            "location": {
+              "line": 86,
+              "column": 31
+            }
+          }
+        ]
       },
       {
         "id": "src/core/ArchitectureFilter.ts",
@@ -472,15 +547,48 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 534,
-            "complexity": 78
+            "sloc": 546,
+            "complexity": 75
           },
           "label": "ASTParser",
           "layer": "Core",
           "domain": "parsers"
         },
         "type": "module",
-        "externalCalls": []
+        "externalCalls": [
+          {
+            "type": "database",
+            "target": "dbPatterns",
+            "location": {
+              "line": 426,
+              "column": 15
+            }
+          },
+          {
+            "type": "database",
+            "target": "dbNames",
+            "location": {
+              "line": 436,
+              "column": 15
+            }
+          },
+          {
+            "type": "database",
+            "target": "dbPatterns",
+            "location": {
+              "line": 457,
+              "column": 13
+            }
+          },
+          {
+            "type": "database",
+            "target": "dbPatterns",
+            "location": {
+              "line": 473,
+              "column": 13
+            }
+          }
+        ]
       },
       {
         "id": "src/parsers/index.ts",
@@ -636,6 +744,19 @@
         "externalCalls": []
       },
       {
+        "id": "this",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "this",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "this",
+        "externalCalls": []
+      },
+      {
         "id": "ts-morph",
         "metadata": {
           "type": "external",
@@ -749,6 +870,12 @@
         "to": "src/core/GraphTypes.ts",
         "type": "import",
         "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitectureClassifier.ts->this:external-call",
+        "from": "src/core/ArchitectureClassifier.ts",
+        "to": "this",
+        "type": "external-call"
       },
       {
         "id": "src/core/ArchitectureFilter.ts->src/core/DependencyGraph.ts:import",
@@ -1137,6 +1264,18 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/parsers/ASTParser.ts->dbNames:external-call",
+        "from": "src/parsers/ASTParser.ts",
+        "to": "dbNames",
+        "type": "external-call"
+      },
+      {
+        "id": "src/parsers/ASTParser.ts->dbPatterns:external-call",
+        "from": "src/parsers/ASTParser.ts",
+        "to": "dbPatterns",
+        "type": "external-call"
+      },
+      {
         "id": "src/parsers/ASTParser.ts->fs/promises:import",
         "from": "src/parsers/ASTParser.ts",
         "to": "fs/promises",
@@ -1229,6 +1368,6 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.4.9"
+    "version": "0.4.13"
   }
 }
