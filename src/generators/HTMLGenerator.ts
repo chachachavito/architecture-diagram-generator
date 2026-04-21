@@ -15,11 +15,13 @@ export class HTMLGenerator {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8fafc;
+            --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --text-primary: #1e293b;
-            --accent-color: #3b82f6;
-            --accent-soft: #eff6ff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-color: #2563eb;
+            --accent-soft: #dbeafe;
+            --border-color: #e2e8f0;
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -34,7 +36,7 @@ export class HTMLGenerator {
         header {
             background: var(--card-bg);
             padding: 0.75rem 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -47,104 +49,108 @@ export class HTMLGenerator {
         }
         h1 {
             margin: 0;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
+            letter-spacing: -0.01em;
         }
         .project-label {
-            color: #64748b;
-            font-weight: 400;
-            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         .context-badge {
-            background: var(--accent-soft);
-            color: var(--accent-color);
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.8rem;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
             font-weight: 600;
             display: none;
-            border: 1px solid #dbeafe;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         .controls {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
             align-items: center;
         }
         .group {
             display: flex;
-            background: #f1f5f9;
-            padding: 0.25rem;
+            background: #f8fafc;
+            padding: 0.2rem;
             border-radius: 8px;
-            gap: 0.25rem;
-            margin-right: 1rem;
+            gap: 0.2rem;
+            border: 1px solid var(--border-color);
         }
         button {
             background: transparent;
             border: none;
-            padding: 0.4rem 0.8rem;
+            padding: 0.4rem 0.9rem;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.75rem;
             font-weight: 600;
-            color: #64748b;
-            transition: all 0.2s;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
         }
         button.active {
-            background: var(--card-bg);
+            background: white;
             color: var(--accent-color);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         button:hover:not(.active) {
-            background: rgba(255,255,255,0.5);
+            color: var(--text-primary);
+            background: #f1f5f9;
         }
         .action-btn {
-            background: var(--bg-color);
-            border: 1px solid #e2e8f0;
+            background: white;
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        .debug-btn {
-            background: #fff1f2;
-            color: #e11d48;
-            border: 1px solid #fecdd3;
-        }
-        .debug-btn:hover {
-            background: #ffe4e6;
+        .action-btn:hover {
+            background: #f8fafc;
         }
         #diagram-container {
             flex: 1;
             overflow: auto;
-            padding: 2rem;
-            background: #fff;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 30px 30px;
+            padding: 3rem;
+            background: white;
+            background-image: 
+                linear-gradient(var(--bg-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--bg-color) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
         .mermaid {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: flex-start;
             min-width: min-content;
         }
         .mermaid svg {
             max-width: none !important;
             height: auto !important;
-            cursor: pointer;
+            cursor: crosshair;
+            transition: transform 0.1s ease-out;
         }
         .back-btn {
             font-size: 0.75rem;
-            color: #64748b;
+            color: var(--text-secondary);
             cursor: pointer;
             display: none;
             align-items: center;
-            gap: 0.25rem;
-            background: #f1f5f9;
+            gap: 0.3rem;
+            background: white;
             padding: 0.4rem 0.8rem;
             border-radius: 6px;
             font-weight: 600;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         .back-btn:hover {
-            background: #e2e8f0;
-            color: var(--text-primary);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
     </style>
 </head>
@@ -152,12 +158,12 @@ export class HTMLGenerator {
     <header>
         <div class="title-area">
             <div onclick="resetView()" style="cursor:pointer">
-                <span class="project-label">Project:</span>
+                <span class="project-label">Project</span>
                 <h1>${projectName}</h1>
             </div>
             <div id="context-badge" class="context-badge"></div>
             <div id="back-btn" class="back-btn" onclick="resetView()">
-                <span>←</span> Back to High-Level
+                <span>←</span> Exit Domain
             </div>
         </div>
         <div class="controls">
@@ -166,12 +172,11 @@ export class HTMLGenerator {
                 <button onclick="changeView('detailed')" id="btn-detailed">Detailed</button>
             </div>
             <div class="group" id="direction-group">
-                <button onclick="setDirection('TD')" id="btn-TD">Vertical (TD)</button>
-                <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal (LR)</button>
+                <button onclick="setDirection('TD')" id="btn-TD">Vertical</button>
+                <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal</button>
             </div>
-            <button class="action-btn debug-btn" onclick="copySyntax()">Copy Mermaid Code</button>
-            <button class="action-btn" onclick="zoom(0.1)">Zoom +</button>
-            <button class="action-btn" onclick="zoom(-0.1)">Zoom -</button>
+            <button class="action-btn" onclick="zoom(0.15)">Zoom +</button>
+            <button class="action-btn" onclick="zoom(-0.15)">Zoom -</button>
             <button class="action-btn" onclick="resetZoom()">Reset</button>
         </div>
     </header>
@@ -187,23 +192,31 @@ export class HTMLGenerator {
         let currentDirection = 'LR';
         let currentDomain = null;
         let scale = 1;
-        let lastSyntax = '';
 
         mermaid.initialize({ 
             startOnLoad: false,
             theme: 'base',
             securityLevel: 'loose',
-            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+            flowchart: { 
+                useMaxWidth: false, 
+                htmlLabels: true, 
+                curve: 'basis',
+                rankspacing: 80,
+                nodespacing: 50
+            },
             themeVariables: {
-                primaryColor: '#eff6ff',
-                primaryTextColor: '#1e3a8a',
-                primaryBorderColor: '#3b82f6',
-                lineColor: '#64748b'
+                primaryColor: '#ffffff',
+                primaryTextColor: '#1e293b',
+                primaryBorderColor: '#cbd5e1',
+                lineColor: '#94a3b8',
+                secondaryColor: '#f8fafc',
+                tertiaryColor: '#f1f5f9'
             }
         });
 
         window.onNodeClick = (id) => {
             if (currentView === 'high-level') {
+                // ID is n_LAYER_DOMAIN
                 const parts = id.split('_');
                 const domain = parts.slice(2).join('_');
                 drillDown(domain);
@@ -231,12 +244,6 @@ export class HTMLGenerator {
             render();
         };
 
-        window.copySyntax = () => {
-            navigator.clipboard.writeText(lastSyntax).then(() => {
-                alert('Mermaid syntax copied to clipboard! Paste it in the chat.');
-            });
-        };
-
         function updateUI() {
             const badge = document.getElementById('context-badge');
             const backBtn = document.getElementById('back-btn');
@@ -244,9 +251,9 @@ export class HTMLGenerator {
             
             if (currentView === 'drill-down') {
                 badge.style.display = 'block';
-                badge.innerText = 'Domain: ' + currentDomain;
+                badge.innerText = currentDomain.toUpperCase();
                 backBtn.style.display = 'flex';
-                viewGroup.style.opacity = '0.5';
+                viewGroup.style.opacity = '0.4';
                 viewGroup.style.pointerEvents = 'none';
             } else {
                 badge.style.display = 'none';
@@ -269,14 +276,14 @@ export class HTMLGenerator {
         };
 
         async function render() {
-            lastSyntax = generateMermaidSyntax();
+            const syntax = generateMermaidSyntax();
             const container = document.getElementById('mermaid-graph');
             container.removeAttribute('data-processed');
-            container.innerHTML = lastSyntax;
+            container.innerHTML = syntax;
             try {
                 await mermaid.run({ nodes: [container] });
             } catch (err) {
-                console.error('Mermaid rendering failed:', err);
+                console.error('Rendering failed', err);
             }
             applyZoom();
         }
@@ -289,7 +296,7 @@ export class HTMLGenerator {
                 graph.nodes.forEach(n => {
                     const layer = n.metadata.layer || 'Core';
                     const domain = n.metadata.domain || 'shared';
-                    const key = layer + '_' + domain;
+                    const key = layer + '::' + domain;
                     if (!domainMap.has(key)) domainMap.set(key, { layer, domain, count: 0 });
                     domainMap.get(key).count++;
                 });
@@ -298,8 +305,8 @@ export class HTMLGenerator {
                 layers.forEach(layer => {
                     syntax += '  subgraph ' + safeId(layer) + ' ["' + cleanLabel(layer) + '"]\\n';
                     [...domainMap.values()].filter(d => d.layer === layer).forEach(d => {
-                        const id = safeId(layer + '_' + d.domain);
-                        syntax += '    ' + id + '["' + cleanLabel(d.domain) + ' (' + d.count + ' files)"]\\n';
+                        const id = getDomainId(d.layer, d.domain);
+                        syntax += '    ' + id + '["' + cleanLabel(d.domain) + ' <small>(' + d.count + ' files)</small>"]\\n';
                         syntax += '    click ' + id + ' call onNodeClick("' + id + '")\\n';
                     });
                     syntax += '  end\\n';
@@ -310,8 +317,8 @@ export class HTMLGenerator {
                     const fromNode = graph.nodes.find(n => n.id === e.from);
                     const toNode = graph.nodes.find(n => n.id === e.to);
                     if (fromNode && toNode) {
-                        const from = safeId(fromNode.metadata.layer || 'Core') + '_' + safeId(fromNode.metadata.domain || 'shared');
-                        const to = safeId(toNode.metadata.layer || 'Core') + '_' + safeId(toNode.metadata.domain || 'shared');
+                        const from = getDomainId(fromNode.metadata.layer || 'Core', fromNode.metadata.domain || 'shared');
+                        const to = getDomainId(toNode.metadata.layer || 'Core', toNode.metadata.domain || 'shared');
                         if (from !== to) domainEdges.add(from + ' --> ' + to);
                     }
                 });
@@ -325,7 +332,7 @@ export class HTMLGenerator {
                 const nodeIds = new Set(nodes.map(n => n.id));
 
                 if (currentView === 'drill-down') {
-                    syntax += '  subgraph InternalView ["Internal view of ' + cleanLabel(currentDomain) + '"]\\n';
+                    syntax += '  subgraph ' + safeId(currentDomain) + ' ["DOMAIN: ' + cleanLabel(currentDomain).toUpperCase() + '"]\\n';
                 }
                 
                 nodes.forEach(n => {
@@ -347,13 +354,17 @@ export class HTMLGenerator {
             return syntax;
         }
 
+        function getDomainId(layer, domain) {
+            // Using a consistent separator that safeId will handle predictably
+            return safeId('dom_' + layer + '_' + domain);
+        }
+
         function safeId(id) {
             return 'n_' + id.replace(/[^a-zA-Z0-9]/g, '_');
         }
 
         function cleanLabel(label) {
             if (!label) return 'unnamed';
-            // Radical cleaning: keep only alphanumeric, space, dots, and hyphens.
             return label.replace(/[^a-zA-Z0-9 \\.\\-_]/g, '').trim();
         }
 
@@ -363,7 +374,7 @@ export class HTMLGenerator {
             const svg = document.querySelector('.mermaid svg');
             if (svg) {
                 svg.style.transform = 'scale(' + scale + ')';
-                svg.style.transformOrigin = 'top left';
+                svg.style.transformOrigin = 'top center';
             }
         }
 
