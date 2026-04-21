@@ -1,4 +1,4 @@
-# Architecture Diagram Generator (v0.4.9)
+# Architecture Diagram Generator (v0.4.10)
 
 **Understand your TypeScript architecture in seconds.**
 Automated dependency analysis and interactive visualization for modern web projects.
