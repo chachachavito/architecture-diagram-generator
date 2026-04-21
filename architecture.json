@@ -1,6 +1,6 @@
 {
-  "version": "0.4.7",
-  "generatedAt": "2026-04-21T16:05:55.006Z",
+  "version": "0.4.8",
+  "generatedAt": "2026-04-21T16:14:41.739Z",
   "graph": {
     "nodes": [
       {
@@ -14,19 +14,6 @@
         },
         "type": "external",
         "label": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
-        "externalCalls": []
-      },
-      {
-        "id": "child_process",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "child_process",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "child_process",
         "externalCalls": []
       },
       {
@@ -82,19 +69,6 @@
         "externalCalls": []
       },
       {
-        "id": "fs",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "fs",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "fs",
-        "externalCalls": []
-      },
-      {
         "id": "fs/promises",
         "metadata": {
           "type": "external",
@@ -131,19 +105,6 @@
         },
         "type": "external",
         "label": "path",
-        "externalCalls": []
-      },
-      {
-        "id": "puppeteer",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "puppeteer",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "puppeteer",
         "externalCalls": []
       },
       {
@@ -565,24 +526,6 @@
         "externalCalls": []
       },
       {
-        "id": "src/generators/VisualExporter.ts",
-        "metadata": {
-          "type": "module",
-          "source": "inferred",
-          "inheritance": [],
-          "decorators": [],
-          "metrics": {
-            "sloc": 219,
-            "complexity": 24
-          },
-          "label": "VisualExporter",
-          "layer": "Core",
-          "domain": "generators"
-        },
-        "type": "module",
-        "externalCalls": []
-      },
-      {
         "id": "src/generators/VisualMapper.ts",
         "metadata": {
           "type": "module",
@@ -590,7 +533,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 37,
+            "sloc": 38,
             "complexity": 7
           },
           "label": "VisualMapper",
@@ -608,7 +551,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 35,
+            "sloc": 34,
             "complexity": 1
           },
           "label": "Src/Index",
@@ -812,8 +755,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 71,
-            "complexity": 6
+            "sloc": 67,
+            "complexity": 5
           },
           "label": "OutputWriter",
           "layer": "Core",
@@ -1279,9 +1222,9 @@
         "isTypeOnly": false
       },
       {
-        "id": "src/generators/index.ts->src/generators/VisualExporter.ts:import",
+        "id": "src/generators/index.ts->src/generators/VisualMapper.ts:import",
         "from": "src/generators/index.ts",
-        "to": "src/generators/VisualExporter.ts",
+        "to": "src/generators/VisualMapper.ts",
         "type": "import",
         "isTypeOnly": false
       },
@@ -1300,37 +1243,6 @@
         "isTypeOnly": false
       },
       {
-        "id": "src/generators/VisualExporter.ts->child_process:import",
-        "from": "src/generators/VisualExporter.ts",
-        "to": "child_process",
-        "type": "import"
-      },
-      {
-        "id": "src/generators/VisualExporter.ts->fs:import",
-        "from": "src/generators/VisualExporter.ts",
-        "to": "fs",
-        "type": "import"
-      },
-      {
-        "id": "src/generators/VisualExporter.ts->path:import",
-        "from": "src/generators/VisualExporter.ts",
-        "to": "path",
-        "type": "import"
-      },
-      {
-        "id": "src/generators/VisualExporter.ts->puppeteer:import",
-        "from": "src/generators/VisualExporter.ts",
-        "to": "puppeteer",
-        "type": "import"
-      },
-      {
-        "id": "src/generators/VisualExporter.ts->src/generators/DiagramGenerator.ts:import",
-        "from": "src/generators/VisualExporter.ts",
-        "to": "src/generators/DiagramGenerator.ts",
-        "type": "import",
-        "isTypeOnly": false
-      },
-      {
         "id": "src/generators/VisualMapper.ts->src/core/GraphTypes.ts:import",
         "from": "src/generators/VisualMapper.ts",
         "to": "src/core/GraphTypes.ts",
@@ -1345,16 +1257,16 @@
         "isTypeOnly": false
       },
       {
-        "id": "src/index.ts->src/generators/MermaidRenderer.ts:import",
+        "id": "src/index.ts->src/generators/HTMLGenerator.ts:import",
         "from": "src/index.ts",
-        "to": "src/generators/MermaidRenderer.ts",
+        "to": "src/generators/HTMLGenerator.ts",
         "type": "import",
         "isTypeOnly": false
       },
       {
-        "id": "src/index.ts->src/generators/VisualExporter.ts:import",
+        "id": "src/index.ts->src/generators/MermaidRenderer.ts:import",
         "from": "src/index.ts",
-        "to": "src/generators/VisualExporter.ts",
+        "to": "src/generators/MermaidRenderer.ts",
         "type": "import",
         "isTypeOnly": false
       },
@@ -1484,6 +1396,6 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.4.7"
+    "version": "0.4.8"
   }
 }

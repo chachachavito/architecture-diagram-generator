@@ -3,65 +3,61 @@
 ```mermaid
 flowchart TD
   subgraph Core ["Core"]
-      src_cli_ts["📦 Cli"]
-      src_index_ts["📦 Src/Index"]
+      src_cli_ts["[MOD] Cli"]
+      src_index_ts["[MOD] Src/Index"]
     subgraph Core_core ["core"]
-      src_core_ArchitectureClassifier_ts["📦 ArchitectureClassifier"]
-      src_core_ArchitectureFilter_ts["📦 ArchitectureFilter"]
-      src_core_ArchitecturePipeline_ts["📦 ArchitecturePipeline"]
-      src_core_ConfigurationLoader_ts["📦 ConfigurationLoader"]
-      src_core_ConfigValidator_ts["📦 ConfigValidator"]
-      src_core_DependencyGraph_ts["📦 DependencyGraph"]
-      src_core_DependencyGraphBuilder_ts["📦 DependencyGraphBuilder"]
-      src_core_FileDiscovery_ts["📦 FileDiscovery"]
-      src_core_GraphTypes_ts["📦 GraphTypes"]
-      src_core_index_ts["📦 Core/Index"]
-      src_core_MetadataGenerator_ts["📦 MetadataGenerator"]
-      src_core_ModuleCache_ts["📦 ModuleCache"]
-      src_core_Normalizer_ts["📦 Normalizer"]
-      src_core_OutputTypes_ts["📦 OutputTypes"]
-      src_core_ParallelFileProcessor_ts["📦 ParallelFileProcessor"]
+      src_core_ArchitectureClassifier_ts["[MOD] ArchitectureClassifier"]
+      src_core_ArchitectureFilter_ts["[MOD] ArchitectureFilter"]
+      src_core_ArchitecturePipeline_ts["[MOD] ArchitecturePipeline"]
+      src_core_ConfigurationLoader_ts["[MOD] ConfigurationLoader"]
+      src_core_ConfigValidator_ts["[MOD] ConfigValidator"]
+      src_core_DependencyGraph_ts["[MOD] DependencyGraph"]
+      src_core_DependencyGraphBuilder_ts["[MOD] DependencyGraphBuilder"]
+      src_core_FileDiscovery_ts["[MOD] FileDiscovery"]
+      src_core_GraphTypes_ts["[MOD] GraphTypes"]
+      src_core_index_ts["[MOD] Core/Index"]
+      src_core_MetadataGenerator_ts["[MOD] MetadataGenerator"]
+      src_core_ModuleCache_ts["[MOD] ModuleCache"]
+      src_core_Normalizer_ts["[MOD] Normalizer"]
+      src_core_OutputTypes_ts["[MOD] OutputTypes"]
+      src_core_ParallelFileProcessor_ts["[MOD] ParallelFileProcessor"]
     end
     subgraph Core_generators ["generators"]
-      src_generators_DiagramGenerator_ts["📦 DiagramGenerator"]
-      src_generators_HTMLGenerator_ts["📦 HTMLGenerator"]
-      src_generators_index_ts["📦 Generators/Index"]
-      src_generators_MermaidRenderer_ts["📦 MermaidRenderer"]
-      src_generators_VisualExporter_ts["📦 VisualExporter"]
-      src_generators_VisualMapper_ts["📦 VisualMapper"]
+      src_generators_DiagramGenerator_ts["[MOD] DiagramGenerator"]
+      src_generators_HTMLGenerator_ts["[MOD] HTMLGenerator"]
+      src_generators_index_ts["[MOD] Generators/Index"]
+      src_generators_MermaidRenderer_ts["[MOD] MermaidRenderer"]
+      src_generators_VisualMapper_ts["[MOD] VisualMapper"]
     end
     subgraph Core_parsers ["parsers"]
-      src_parsers_ASTParser_ts["📦 ASTParser"]
-      src_parsers_index_ts["📦 Parsers/Index"]
-      src_parsers_MermaidParser_ts["📦 MermaidParser"]
+      src_parsers_ASTParser_ts["[MOD] ASTParser"]
+      src_parsers_index_ts["[MOD] Parsers/Index"]
+      src_parsers_MermaidParser_ts["[MOD] MermaidParser"]
     end
     subgraph Core_utils ["utils"]
-      src_utils_errors_ts["📦 Errors"]
-      src_utils_index_ts["📦 Utils/Index"]
-      src_utils_logger_ts["📦 Logger"]
-      src_utils_OutputWriter_ts["📦 OutputWriter"]
+      src_utils_errors_ts["[MOD] Errors"]
+      src_utils_index_ts["[MOD] Utils/Index"]
+      src_utils_logger_ts["[MOD] Logger"]
+      src_utils_OutputWriter_ts["[MOD] OutputWriter"]
     end
   end
   subgraph External ["External"]
-      ___DOCTYPE_html___html_lang__en____head_______meta_charset__UTF_8________meta_name__viewport__content__width_device_width__initial_scale_1["☁️ `!DOCTYPE html
+      ___DOCTYPE_html___html_lang__en____head_______meta_charset__UTF_8________meta_name__viewport__content__width_device_width__initial_scale_1["[EXT] `!DOCTYPE html
 html lang=#quot;en#quot;
 head
     meta charset=#quot;UTF-8#quot;
     meta name=#quot;viewport#quot; content=#quot;width=device-width, initial-scale=1"]
-      child_process["☁️ child_process"]
-      commander["☁️ commander"]
-      crypto["☁️ crypto"]
-      dbNames["☁️ dbNames"]
-      dbPatterns["☁️ dbPatterns"]
-      fs["☁️ fs"]
-      fs_promises["☁️ fs/promises"]
-      glob["☁️ glob"]
-      path["☁️ path"]
-      puppeteer["☁️ puppeteer"]
-      this["☁️ this"]
-      ts_morph["☁️ ts-morph"]
-      typescript["☁️ typescript"]
-      zod["☁️ zod"]
+      commander["[EXT] commander"]
+      crypto["[EXT] crypto"]
+      dbNames["[EXT] dbNames"]
+      dbPatterns["[EXT] dbPatterns"]
+      fs_promises["[EXT] fs/promises"]
+      glob["[EXT] glob"]
+      path["[EXT] path"]
+      this["[EXT] this"]
+      ts_morph["[EXT] ts-morph"]
+      typescript["[EXT] typescript"]
+      zod["[EXT] zod"]
   end
   src_cli_ts --> commander
   src_cli_ts --> fs_promises
@@ -123,18 +119,13 @@ head
   src_generators_HTMLGenerator_ts --> ___DOCTYPE_html___html_lang__en____head_______meta_charset__UTF_8________meta_name__viewport__content__width_device_width__initial_scale_1
   src_generators_index_ts --> src_generators_DiagramGenerator_ts
   src_generators_index_ts --> src_generators_HTMLGenerator_ts
-  src_generators_index_ts --> src_generators_VisualExporter_ts
+  src_generators_index_ts --> src_generators_VisualMapper_ts
   src_generators_MermaidRenderer_ts --> src_core_GraphTypes_ts
   src_generators_MermaidRenderer_ts --> src_generators_VisualMapper_ts
-  src_generators_VisualExporter_ts --> child_process
-  src_generators_VisualExporter_ts --> fs
-  src_generators_VisualExporter_ts --> path
-  src_generators_VisualExporter_ts --> puppeteer
-  src_generators_VisualExporter_ts --> src_generators_DiagramGenerator_ts
   src_generators_VisualMapper_ts --> src_core_GraphTypes_ts
   src_index_ts --> src_generators_DiagramGenerator_ts
+  src_index_ts --> src_generators_HTMLGenerator_ts
   src_index_ts --> src_generators_MermaidRenderer_ts
-  src_index_ts --> src_generators_VisualExporter_ts
   src_index_ts --> src_generators_VisualMapper_ts
   src_index_ts --> src_parsers_ASTParser_ts
   src_index_ts --> src_parsers_MermaidParser_ts

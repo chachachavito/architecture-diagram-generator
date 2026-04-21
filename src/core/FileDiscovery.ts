@@ -71,7 +71,16 @@ export class FileDiscovery {
       '**/*.spec.ts',
       '**/*.spec.tsx',
       '**/*.spec.js',
-      '**/*.spec.jsx'
+      '**/*.spec.jsx',
+      '**/*.html',
+      '**/*.md',
+      '**/*.json',
+      '**/*.css',
+      '**/*.scss',
+      '**/*.svg',
+      '**/*.png',
+      '**/*.jpg',
+      '**/*.jpeg'
     ];
     const excludePatterns = [...defaultExclude, ...(config.exclude || [])];
 

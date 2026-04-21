@@ -134,7 +134,14 @@ export class ASTParser {
       ? filePath 
       : path.join(this.rootDir, filePath);
 
-    // Check cache first
+    // 1. Validate extension
+    const ext = path.extname(absolutePath).toLowerCase();
+    const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
+    if (!validExtensions.includes(ext)) {
+      throw new ParseError(filePath, new Error(`Invalid file extension: ${ext}`));
+    }
+
+    // 2. Check cache first
     if (this.cache) {
       const cached = await this.cache.get(absolutePath);
       if (cached) {
@@ -379,9 +386,13 @@ export class ASTParser {
       // 1. fetch('url')
       if (text === 'fetch') {
         const args = call.getArguments();
-        const target = args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral 
+        let target = args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral 
           ? args[0].asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue() 
           : '';
+        
+        // Safety: Limit target length to avoid huge nodes from malformed data
+        if (target.length > 100) target = target.substring(0, 97) + '...';
+        
         calls.push({ type: 'fetch', target, location: { line, column } });
         detected = true;
       }
@@ -389,9 +400,13 @@ export class ASTParser {
       // 2. axios.get('url') or axios('url')
       if (!detected && (text === 'axios' || text.startsWith('axios.'))) {
         const args = call.getArguments();
-        const target = args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral 
+        let target = args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral 
           ? args[0].asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue() 
           : '';
+        
+        // Safety: Limit target length
+        if (target.length > 100) target = target.substring(0, 97) + '...';
+
         calls.push({ type: 'axios', target, location: { line, column } });
         detected = true;
       }
