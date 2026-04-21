@@ -49,7 +49,9 @@ flowchart TD
 
 Powered by **ts-morph** for deep semantic analysis.
 
-- **Interactive HTML**: Export as a self-contained HTML page with zoom/pan support.
+- **Interactive HTML Dashboard**: Export as a self-contained premium HTML page.
+    - **Dynamic Layouts**: Switch between Vertical (TD) and Horizontal (RL/LR) views in real-time.
+    - **Smart Zoom & Pan**: Explore massive diagrams with high-fidelity zoom and native scrolling.
 - **Domain Grouping**: Automatically clusters modules by domain for high readability.
 - **Type-Safe Dependencies**: Distinguishes between runtime and type-only imports.
 - **Inheritance Mapping**: Automatically detects `extends` and `implements` relations.
