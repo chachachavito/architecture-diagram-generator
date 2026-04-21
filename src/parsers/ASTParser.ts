@@ -390,11 +390,13 @@ export class ASTParser {
           ? args[0].asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue() 
           : '';
         
-        // Safety: Limit target length to avoid huge nodes from malformed data
+        // Safety: Limit target length and ensure it doesn't look like HTML
         if (target.length > 100) target = target.substring(0, 97) + '...';
         
-        calls.push({ type: 'fetch', target, location: { line, column } });
-        detected = true;
+        if (target && !target.includes('<') && !target.includes(' ')) {
+          calls.push({ type: 'fetch', target, location: { line, column } });
+          detected = true;
+        }
       }
 
       // 2. axios.get('url') or axios('url')
@@ -407,8 +409,10 @@ export class ASTParser {
         // Safety: Limit target length
         if (target.length > 100) target = target.substring(0, 97) + '...';
 
-        calls.push({ type: 'axios', target, location: { line, column } });
-        detected = true;
+        if (target && !target.includes('<') && !target.includes(' ')) {
+          calls.push({ type: 'axios', target, location: { line, column } });
+          detected = true;
+        }
       }
 
       // 3. Database detection (Type-based + Heuristics)
@@ -424,16 +428,7 @@ export class ASTParser {
           }
         } catch (e) {}
 
-        // Fallback: Name-based heuristics for DB (essential for tests without node_modules)
-        if (!detected) {
-          const dbNames = ['prisma', 'db', 'database', 'repo', 'repository', 'knex', 'sequelize', 'mongoose', 'mongodb'];
-          const lowerText = text.toLowerCase();
-          if (dbNames.some(name => lowerText.includes(name))) {
-            // Extract the base object name (e.g., 'prisma' from 'prisma.user.findMany')
-            const target = text.split('.')[0];
-            calls.push({ type: 'database', target, location: { line, column } });
-          }
-        }
+        // Fallback removed: name-based heuristics were causing false positives with HTML strings
       }
     });
 
@@ -453,8 +448,11 @@ export class ASTParser {
           if (target.includes('PrismaClient')) target = 'prisma';
           if (target.includes('MongoClient')) target = 'mongodb';
           
-          calls.push({ type: 'database', target, location: { line, column: 0 } });
-          detected = true;
+          // Validation: Ensure target is a valid identifier-like string
+          if (target && !target.includes('<') && !target.includes(' ') && target.length < 100) {
+            calls.push({ type: 'database', target, location: { line, column: 0 } });
+            detected = true;
+          }
         }
       } catch (e) {}
 
@@ -467,7 +465,9 @@ export class ASTParser {
           if (target === 'PrismaClient') target = 'prisma';
           if (target === 'MongoClient') target = 'mongodb';
           
-          calls.push({ type: 'database', target, location: { line, column: 0 } });
+          if (target && !target.includes('<') && !target.includes(' ') && target.length < 100) {
+            calls.push({ type: 'database', target, location: { line, column: 0 } });
+          }
         }
       }
     });
