@@ -5,6 +5,6 @@ export type {
   MermaidDiagram,
   DiagramMetadata,
 } from './DiagramGenerator';
-export { VisualExporter } from './VisualExporter';
-export type { ExportOptions } from './VisualExporter';
 export { HTMLGenerator } from './HTMLGenerator';
+export { VisualMapper } from './VisualMapper';
+export type { VisualToken } from './VisualMapper';

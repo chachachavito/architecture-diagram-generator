@@ -31,12 +31,13 @@ export class VisualMapper {
   }
 
   private getIconForType(type: NodeType): string {
+    // Emojis removed for professional tone
     switch (type) {
-      case 'api': return '🌐';
-      case 'service': return '⚙️';
-      case 'module': return '📦';
-      case 'external': return '☁️';
-      default: return '📄';
+      case 'api': return '[API]';
+      case 'service': return '[SVC]';
+      case 'module': return '[MOD]';
+      case 'external': return '[EXT]';
+      default: return '[FILE]';
     }
   }
 }

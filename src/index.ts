@@ -32,9 +32,7 @@ export type { GenerationOptions, MermaidDiagram, DiagramMetadata } from './gener
 export { VisualMapper } from './generators/VisualMapper';
 export type { VisualToken } from './generators/VisualMapper';
 export { MermaidRenderer } from './generators/MermaidRenderer';
-export { VisualExporter } from './generators/VisualExporter';
-export type { ExportOptions } from './generators/VisualExporter';
-
+export { HTMLGenerator } from './generators/HTMLGenerator';
 
 // Utils exports
 export * from './utils';

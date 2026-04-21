@@ -1,4 +1,4 @@
-# Architecture Diagram Generator (v0.4.7)
+# Architecture Diagram Generator (v0.4.8)
 
 **Understand your TypeScript architecture in seconds.**
 No configuration required for most projects.
@@ -50,7 +50,7 @@ flowchart TD
   src_core_Pipeline_ts --> zod
 ```
 
-## Core Engine (v0.4.7)
+## Core Engine (v0.4.8)
 
 Powered by **ts-morph** for deep semantic analysis.
 
