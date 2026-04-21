@@ -9,8 +9,7 @@ export class MermaidRenderer {
    * Renders the graph into Mermaid flowchart syntax
    */
   render(snapshot: GraphSnapshot, visualTokens: Map<string, VisualToken>): string {
-    let output = '%%{init: {"maxTextSize": 1000000}}%%\n';
-    output += 'flowchart TD\n';
+    let output = 'flowchart TD\n';
 
     // Group by Layer -> Domain
     const layers = this.groupData(snapshot);
@@ -18,12 +17,14 @@ export class MermaidRenderer {
 
     for (const layerName of sortedLayers) {
       const domains = layers.get(layerName)!;
-      output += `  subgraph ${layerName}\n`;
+      const safeLayerId = this.safeId(layerName);
+      output += `  subgraph ${safeLayerId} ["${this.escapeLabel(layerName)}"]\n`;
       
       for (const [domainName, nodes] of domains.entries()) {
         const hasDomain = domainName !== 'shared' && domainName !== '';
         if (hasDomain) {
-          output += `    subgraph ${layerName}_${this.safeId(domainName)} ["${domainName}"]\n`;
+          const safeDomainId = this.safeId(layerName + '_' + domainName);
+          output += `    subgraph ${safeDomainId} ["${this.escapeLabel(domainName)}"]\n`;
         }
         
         for (const node of nodes) {
@@ -76,6 +77,7 @@ export class MermaidRenderer {
   }
 
   private escapeLabel(label: string): string {
-    return label.replace(/"/g, '#quot;');
+    // Escape quotes and ensure no internal Mermaid syntax breaks the label
+    return label.replace(/"/g, '#quot;').replace(/[\[\]\(\)\{\}]/g, '');
   }
 }
