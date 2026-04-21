@@ -43,6 +43,11 @@ flowchart TD
     end
   end
   subgraph External ["External"]
+      ___DOCTYPE_html___html_lang__en____head_______meta_charset__UTF_8________meta_name__viewport__content__width_device_width__initial_scale_1["☁️ `!DOCTYPE html
+html lang=#quot;en#quot;
+head
+    meta charset=#quot;UTF-8#quot;
+    meta name=#quot;viewport#quot; content=#quot;width=device-width, initial-scale=1"]
       child_process["☁️ child_process"]
       crypto["☁️ crypto"]
       dbNames["☁️ dbNames"]
@@ -107,6 +112,7 @@ flowchart TD
   src_generators_DiagramGenerator_ts --> src_core_GraphTypes_ts
   src_generators_DiagramGenerator_ts --> src_generators_MermaidRenderer_ts
   src_generators_DiagramGenerator_ts --> src_generators_VisualMapper_ts
+  src_generators_HTMLGenerator_ts --> ___DOCTYPE_html___html_lang__en____head_______meta_charset__UTF_8________meta_name__viewport__content__width_device_width__initial_scale_1
   src_generators_index_ts --> src_generators_DiagramGenerator_ts
   src_generators_index_ts --> src_generators_HTMLGenerator_ts
   src_generators_index_ts --> src_generators_VisualExporter_ts

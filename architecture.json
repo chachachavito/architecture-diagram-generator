@@ -1,8 +1,21 @@
 {
-  "version": "0.4.1",
-  "generatedAt": "2026-04-21T15:41:10.515Z",
+  "version": "0.4.2",
+  "generatedAt": "2026-04-21T15:46:03.824Z",
   "graph": {
     "nodes": [
+      {
+        "id": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
+        "externalCalls": []
+      },
       {
         "id": "child_process",
         "metadata": {
@@ -483,7 +496,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 272,
+            "sloc": 324,
             "complexity": 1
           },
           "label": "HTMLGenerator",
@@ -491,7 +504,16 @@
           "domain": "generators"
         },
         "type": "module",
-        "externalCalls": []
+        "externalCalls": [
+          {
+            "type": "database",
+            "target": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
+            "location": {
+              "line": 9,
+              "column": 12
+            }
+          }
+        ]
       },
       {
         "id": "src/generators/index.ts",
@@ -1176,6 +1198,12 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/generators/HTMLGenerator.ts->`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1:external-call",
+        "from": "src/generators/HTMLGenerator.ts",
+        "to": "`<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1",
+        "type": "external-call"
+      },
+      {
         "id": "src/generators/index.ts->src/generators/DiagramGenerator.ts:import",
         "from": "src/generators/index.ts",
         "to": "src/generators/DiagramGenerator.ts",
@@ -1395,6 +1423,6 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.4.1"
+    "version": "0.4.2"
   }
 }

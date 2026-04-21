@@ -277,10 +277,10 @@ export class HTMLGenerator {
 
                 const layers = [...new Set(graph.nodes.map(n => n.metadata.layer || 'Core'))];
                 layers.forEach(layer => {
-                    syntax += '  subgraph ' + safeId(layer) + ' ["' + layer + '"]\\n';
+                    syntax += '  subgraph ' + safeId(layer) + ' ["' + cleanLabel(layer) + '"]\\n';
                     [...domainMap.values()].filter(d => d.layer === layer).forEach(d => {
                         const id = safeId(layer + '_' + d.domain);
-                        syntax += '    ' + id + '["' + d.domain + ' (' + d.count + ' files)"]\\n';
+                        syntax += '    ' + id + '["' + cleanLabel(d.domain) + ' (' + d.count + ' files)"]\\n';
                         syntax += '    click ' + id + ' call onNodeClick("' + id + '")\\n';
                     });
                     syntax += '  end\\n';
@@ -306,12 +306,12 @@ export class HTMLGenerator {
                 const nodeIds = new Set(nodes.map(n => n.id));
 
                 if (currentView === 'drill-down') {
-                    syntax += '  subgraph InternalView ["Internal view of ' + currentDomain + '"]\\n';
+                    syntax += '  subgraph InternalView ["Internal view of ' + cleanLabel(currentDomain) + '"]\\n';
                 }
                 
                 nodes.forEach(n => {
                     const label = n.id.split('/').pop();
-                    syntax += '    ' + safeId(n.id) + '["' + label + '"]\\n';
+                    syntax += '    ' + safeId(n.id) + '["' + cleanLabel(label) + '"]\\n';
                 });
 
                 if (currentView === 'drill-down') {
@@ -330,6 +330,12 @@ export class HTMLGenerator {
 
         function safeId(id) {
             return id.replace(/[^a-zA-Z0-9]/g, '_');
+        }
+
+        function cleanLabel(label) {
+            if (!label) return '';
+            // Aggressive escaping for Mermaid syntax safety
+            return label.replace(/[<>|[\\](){}]/g, '').replace(/--+/g, '-').trim();
         }
 
         window.zoom = (delta) => { scale = Math.max(0.1, scale + delta); applyZoom(); };

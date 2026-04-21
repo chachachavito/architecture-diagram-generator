@@ -64,7 +64,7 @@ async function main(): Promise<void> {
 
     if (options.help) {
       console.log(`
-Architecture Diagram Generator (v0.4.2)
+Architecture Diagram Generator (v0.4.3)
 
 Usage: architecture-generator [project-root] [options]
 
@@ -86,7 +86,7 @@ Description:
         const pkg = JSON.parse(await fs.readFile(path.join(__dirname, '../package.json'), 'utf-8'));
         console.log(`v${pkg.version}`);
       } catch (e) {
-        console.log('v0.4.2');
+        console.log('v0.4.3');
       }
       process.exit(0);
     }
@@ -141,7 +141,7 @@ Description:
     // 4. Run Pipeline
     console.log('🚀 Step 4: Normalizing architecture and applying rules...');
     const pipeline = new ArchitecturePipeline({
-      version: '0.4.2',
+      version: '0.4.3',
       config,
       debug: options.debug,
       rootDir: options.projectRoot
@@ -158,7 +158,7 @@ Description:
     // 6. Write Output
     console.log('💾 Step 6: Saving output files...');
     const output = {
-      version: '0.4.2',
+      version: '0.4.3',
       generatedAt: new Date().toISOString(),
       graph
     };
