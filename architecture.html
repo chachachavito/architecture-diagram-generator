@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>architecture-diagram-generator - Architecture Diagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --accent-color: #3b82f6;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        header {
+            background: var(--card-bg);
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .project-label {
+            color: #64748b;
+            font-weight: 400;
+            margin-right: 0.5rem;
+        }
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .group {
+            display: flex;
+            background: #f1f5f9;
+            padding: 0.25rem;
+            border-radius: 8px;
+            gap: 0.25rem;
+            margin-right: 1rem;
+        }
+        button {
+            background: transparent;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        button.active {
+            background: var(--card-bg);
+            color: var(--accent-color);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        button:hover:not(.active) {
+            background: rgba(255,255,255,0.5);
+        }
+        .action-btn {
+            background: var(--bg-color);
+            border: 1px solid #e2e8f0;
+            color: var(--text-primary);
+        }
+        #diagram-container {
+            flex: 1;
+            overflow: auto;
+            padding: 2rem;
+            background: #fff;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            min-width: min-content;
+        }
+        .mermaid svg {
+            max-width: none !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <span class="project-label">Project:</span>
+            <h1>architecture-diagram-generator</h1>
+        </div>
+        <div class="controls">
+            <div class="group" id="view-group">
+                <button onclick="setView('simplified')" id="btn-simplified" class="active">High-Level</button>
+                <button onclick="setView('detailed')" id="btn-detailed">Detailed</button>
+            </div>
+            <div class="group" id="direction-group">
+                <button onclick="setDirection('TD')" id="btn-TD">Vertical (TD)</button>
+                <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal (LR)</button>
+                <button onclick="setDirection('RL')" id="btn-RL">Horizontal (RL)</button>
+                <button onclick="setDirection('BT')" id="btn-BT">Bottom-Up (BT)</button>
+            </div>
+            <button class="action-btn" onclick="window.print()">Save PDF</button>
+            <button class="action-btn" onclick="zoom(0.1)">Zoom +</button>
+            <button class="action-btn" onclick="zoom(-0.1)">Zoom -</button>
+            <button class="action-btn" onclick="resetZoom()">Reset</button>
+        </div>
+    </header>
+    <div id="diagram-container">
+        <div class="mermaid" id="mermaid-graph"></div>
+    </div>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        
+        const syntaxes = {
+            detailed: `  subgraph Core ["Core"]
+      src_cli_ts["📦 Cli"]
+      src_index_ts["📦 Src/Index"]
+    subgraph Core_core ["core"]
+      src_core_ArchitectureClassifier_ts["📦 ArchitectureClassifier"]
+      src_core_ArchitectureFilter_ts["📦 ArchitectureFilter"]
+      src_core_ArchitecturePipeline_ts["📦 ArchitecturePipeline"]
+      src_core_ConfigurationLoader_ts["📦 ConfigurationLoader"]
+      src_core_ConfigValidator_ts["📦 ConfigValidator"]
+      src_core_DependencyGraph_ts["📦 DependencyGraph"]
+      src_core_DependencyGraphBuilder_ts["📦 DependencyGraphBuilder"]
+      src_core_FileDiscovery_ts["📦 FileDiscovery"]
+      src_core_GraphTypes_ts["📦 GraphTypes"]
+      src_core_index_ts["📦 Core/Index"]
+      src_core_MetadataGenerator_ts["📦 MetadataGenerator"]
+      src_core_ModuleCache_ts["📦 ModuleCache"]
+      src_core_Normalizer_ts["📦 Normalizer"]
+      src_core_OutputTypes_ts["📦 OutputTypes"]
+      src_core_ParallelFileProcessor_ts["📦 ParallelFileProcessor"]
+    end
+    subgraph Core_generators ["generators"]
+      src_generators_DiagramGenerator_ts["📦 DiagramGenerator"]
+      src_generators_HTMLGenerator_ts["📦 HTMLGenerator"]
+      src_generators_index_ts["📦 Generators/Index"]
+      src_generators_MermaidRenderer_ts["📦 MermaidRenderer"]
+      src_generators_VisualExporter_ts["📦 VisualExporter"]
+      src_generators_VisualMapper_ts["📦 VisualMapper"]
+    end
+    subgraph Core_parsers ["parsers"]
+      src_parsers_ASTParser_ts["📦 ASTParser"]
+      src_parsers_index_ts["📦 Parsers/Index"]
+      src_parsers_MermaidParser_ts["📦 MermaidParser"]
+    end
+    subgraph Core_utils ["utils"]
+      src_utils_errors_ts["📦 Errors"]
+      src_utils_index_ts["📦 Utils/Index"]
+      src_utils_logger_ts["📦 Logger"]
+      src_utils_OutputWriter_ts["📦 OutputWriter"]
+    end
+  end
+  subgraph External ["External"]
+      child_process["☁️ child_process"]
+      crypto["☁️ crypto"]
+      dbNames["☁️ dbNames"]
+      dbPatterns["☁️ dbPatterns"]
+      fs["☁️ fs"]
+      fs_promises["☁️ fs/promises"]
+      glob["☁️ glob"]
+      path["☁️ path"]
+      puppeteer["☁️ puppeteer"]
+      this["☁️ this"]
+      ts_morph["☁️ ts-morph"]
+      typescript["☁️ typescript"]
+      zod["☁️ zod"]
+  end
+  src_cli_ts --> fs_promises
+  src_cli_ts --> path
+  src_core_ArchitectureClassifier_ts --> src_core_ConfigValidator_ts
+  src_core_ArchitectureClassifier_ts --> src_core_GraphTypes_ts
+  src_core_ArchitectureClassifier_ts --> this
+  src_core_ArchitectureFilter_ts --> src_core_DependencyGraph_ts
+  src_core_ArchitecturePipeline_ts --> src_core_ArchitectureClassifier_ts
+  src_core_ArchitecturePipeline_ts --> src_core_ConfigValidator_ts
+  src_core_ArchitecturePipeline_ts --> src_core_GraphTypes_ts
+  src_core_ArchitecturePipeline_ts --> src_core_Normalizer_ts
+  src_core_ConfigurationLoader_ts --> fs_promises
+  src_core_ConfigurationLoader_ts --> path
+  src_core_ConfigValidator_ts --> src_core_GraphTypes_ts
+  src_core_ConfigValidator_ts --> zod
+  src_core_DependencyGraph_ts --> src_core_GraphTypes_ts
+  src_core_DependencyGraphBuilder_ts --> path
+  src_core_DependencyGraphBuilder_ts --> src_core_DependencyGraph_ts
+  src_core_DependencyGraphBuilder_ts --> src_core_GraphTypes_ts
+  src_core_FileDiscovery_ts --> fs_promises
+  src_core_FileDiscovery_ts --> glob
+  src_core_FileDiscovery_ts --> path
+  src_core_FileDiscovery_ts --> src_utils_errors_ts
+  src_core_index_ts --> src_core_ArchitectureClassifier_ts
+  src_core_index_ts --> src_core_ArchitectureFilter_ts
+  src_core_index_ts --> src_core_ArchitecturePipeline_ts
+  src_core_index_ts --> src_core_ConfigurationLoader_ts
+  src_core_index_ts --> src_core_ConfigValidator_ts
+  src_core_index_ts --> src_core_DependencyGraph_ts
+  src_core_index_ts --> src_core_DependencyGraphBuilder_ts
+  src_core_index_ts --> src_core_FileDiscovery_ts
+  src_core_index_ts --> src_core_GraphTypes_ts
+  src_core_index_ts --> src_core_MetadataGenerator_ts
+  src_core_index_ts --> src_core_ModuleCache_ts
+  src_core_index_ts --> src_core_Normalizer_ts
+  src_core_index_ts --> src_core_OutputTypes_ts
+  src_core_index_ts --> src_core_ParallelFileProcessor_ts
+  src_core_MetadataGenerator_ts --> fs_promises
+  src_core_MetadataGenerator_ts --> path
+  src_core_MetadataGenerator_ts --> src_core_ArchitectureClassifier_ts
+  src_core_MetadataGenerator_ts --> src_core_DependencyGraph_ts
+  src_core_ModuleCache_ts --> crypto
+  src_core_ModuleCache_ts --> fs_promises
+  src_core_ModuleCache_ts --> path
+  src_core_Normalizer_ts --> path
+  src_core_Normalizer_ts --> src_core_GraphTypes_ts
+  src_core_OutputTypes_ts --> src_core_GraphTypes_ts
+  src_core_ParallelFileProcessor_ts --> src_core_ModuleCache_ts
+  src_generators_DiagramGenerator_ts --> src_core_GraphTypes_ts
+  src_generators_DiagramGenerator_ts --> src_generators_MermaidRenderer_ts
+  src_generators_DiagramGenerator_ts --> src_generators_VisualMapper_ts
+  src_generators_index_ts --> src_generators_DiagramGenerator_ts
+  src_generators_index_ts --> src_generators_HTMLGenerator_ts
+  src_generators_index_ts --> src_generators_VisualExporter_ts
+  src_generators_MermaidRenderer_ts --> src_core_GraphTypes_ts
+  src_generators_MermaidRenderer_ts --> src_generators_VisualMapper_ts
+  src_generators_VisualExporter_ts --> child_process
+  src_generators_VisualExporter_ts --> fs
+  src_generators_VisualExporter_ts --> path
+  src_generators_VisualExporter_ts --> puppeteer
+  src_generators_VisualExporter_ts --> src_generators_DiagramGenerator_ts
+  src_generators_VisualMapper_ts --> src_core_GraphTypes_ts
+  src_index_ts --> src_generators_DiagramGenerator_ts
+  src_index_ts --> src_generators_MermaidRenderer_ts
+  src_index_ts --> src_generators_VisualExporter_ts
+  src_index_ts --> src_generators_VisualMapper_ts
+  src_index_ts --> src_parsers_ASTParser_ts
+  src_index_ts --> src_parsers_MermaidParser_ts
+  src_parsers_ASTParser_ts --> dbNames
+  src_parsers_ASTParser_ts --> dbPatterns
+  src_parsers_ASTParser_ts --> fs_promises
+  src_parsers_ASTParser_ts --> path
+  src_parsers_ASTParser_ts --> src_core_ModuleCache_ts
+  src_parsers_ASTParser_ts --> src_utils_errors_ts
+  src_parsers_ASTParser_ts --> ts_morph
+  src_parsers_ASTParser_ts --> typescript
+  src_parsers_index_ts --> src_parsers_ASTParser_ts
+  src_parsers_index_ts --> src_parsers_MermaidParser_ts
+  src_utils_index_ts --> src_utils_errors_ts
+  src_utils_index_ts --> src_utils_logger_ts
+  src_utils_index_ts --> src_utils_OutputWriter_ts
+  src_utils_OutputWriter_ts --> fs_promises
+  src_utils_OutputWriter_ts --> path
+  src_utils_OutputWriter_ts --> src_utils_errors_ts
+`,
+            simplified: `  subgraph External
+    External_shared["shared 13 files"]
+  end
+  subgraph Core
+    Core_shared["shared 2 files"]
+    Core_core["core 15 files"]
+    Core_generators["generators 6 files"]
+    Core_parsers["parsers 3 files"]
+    Core_utils["utils 4 files"]
+  end
+  Core_shared --> External_shared
+  Core_core --> External_shared
+  Core_core --> Core_utils
+  Core_generators --> Core_core
+  Core_generators --> External_shared
+  Core_shared --> Core_generators
+  Core_shared --> Core_parsers
+  Core_parsers --> External_shared
+  Core_parsers --> Core_core
+  Core_parsers --> Core_utils
+  Core_utils --> External_shared
+`
+        };
+        
+        let currentView = 'simplified';
+        let currentDirection = 'LR';
+        let scale = 1;
+
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: 'base',
+            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+            themeVariables: {
+                primaryColor: '#eff6ff',
+                primaryTextColor: '#1e3a8a',
+                primaryBorderColor: '#3b82f6',
+                lineColor: '#64748b'
+            }
+        });
+
+        window.setView = async (view) => {
+            currentView = view;
+            document.querySelectorAll('#view-group button').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + view).classList.add('active');
+            await render();
+        };
+
+        window.setDirection = async (dir) => {
+            currentDirection = dir;
+            document.querySelectorAll('#direction-group button').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + dir).classList.add('active');
+            await render();
+        };
+
+        async function render() {
+            const container = document.getElementById('mermaid-graph');
+            container.removeAttribute('data-processed');
+            container.innerHTML = 'flowchart ' + currentDirection + '\n' + syntaxes[currentView];
+            await mermaid.run({ nodes: [container] });
+            applyZoom();
+        }
+
+        window.zoom = (delta) => {
+            scale = Math.max(0.1, scale + delta);
+            applyZoom();
+        };
+
+        window.resetZoom = () => {
+            scale = 1;
+            applyZoom();
+        };
+
+        function applyZoom() {
+            const svg = document.querySelector('.mermaid svg');
+            if (svg) {
+                svg.style.transform = 'scale(' + scale + ')';
+                svg.style.transformOrigin = 'top left';
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>

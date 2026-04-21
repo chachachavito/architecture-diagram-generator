@@ -64,7 +64,7 @@ async function main(): Promise<void> {
 
     if (options.help) {
       console.log(`
-Architecture Diagram Generator (v0.3.9)
+Architecture Diagram Generator (v0.4.1)
 
 Usage: architecture-generator [project-root] [options]
 
@@ -86,7 +86,7 @@ Description:
         const pkg = JSON.parse(await fs.readFile(path.join(__dirname, '../package.json'), 'utf-8'));
         console.log(`v${pkg.version}`);
       } catch (e) {
-        console.log('v0.3.9');
+        console.log('v0.4.1');
       }
       process.exit(0);
     }
@@ -99,7 +99,10 @@ Description:
     } catch (e) {}
     const config = validateConfig(rawConfig);
 
+    console.log(`\n🔍 Analyzing project at: ${options.projectRoot}`);
+
     // 1. Discovery
+    console.log('📂 Step 1: Scanning for files...');
     const discovery = new FileDiscovery();
     const fileList = await discovery.discover(options.projectRoot, {
       rootDir: options.projectRoot,
@@ -115,8 +118,10 @@ Description:
     ];
 
     if (allFiles.length === 0) throw new NoFilesFoundError(options.projectRoot);
+    console.log(`✅ Found ${allFiles.length} relevant files.`);
 
     // 2. Parse
+    console.log('🏗️  Step 2: Parsing AST and extracting metadata...');
     const parser = new ASTParser(options.projectRoot);
     const parsedModules = [];
     for (const file of allFiles) {
@@ -129,26 +134,31 @@ Description:
     }
 
     // 3. Build Source Graph
+    console.log('🕸️  Step 3: Building dependency graph...');
     const builder = new DependencyGraphBuilder(options.projectRoot);
     const sourceGraph = builder.build(parsedModules);
 
     // 4. Run Pipeline
+    console.log('🚀 Step 4: Normalizing architecture and applying rules...');
     const pipeline = new ArchitecturePipeline({
-      version: '0.3.9',
+      version: '0.4.1',
       config,
       debug: options.debug,
       rootDir: options.projectRoot
     });
 
     const { graph } = await pipeline.run(sourceGraph);
+    console.log(`✅ Graph built with ${graph.nodes.length} nodes and ${graph.edges.length} edges.`);
 
     // 5. Generate Diagram
+    console.log('🎨 Step 5: Generating interactive diagrams...');
     const generator = new DiagramGenerator();
     const diagram = generator.generate(graph);
 
     // 6. Write Output
+    console.log('💾 Step 6: Saving output files...');
     const output = {
-      version: '0.3.9',
+      version: '0.4.1',
       generatedAt: new Date().toISOString(),
       graph
     };
@@ -160,13 +170,14 @@ Description:
 
     const projectName = path.basename(options.projectRoot);
     const htmlGenerator = new HTMLGenerator();
-    const htmlContent = htmlGenerator.generate(diagram.syntax, diagram.simplifiedSyntax, projectName);
+    const htmlContent = htmlGenerator.generate(graph, projectName);
     const htmlPath = options.outputPath.replace('.json', '.html');
     await fs.writeFile(htmlPath, htmlContent);
 
-    console.log(`✅ Architecture graph written to ${options.outputPath}`);
-    console.log(`✅ Diagram written to ${mdPath}`);
-    console.log(`✅ Interactive HTML written to ${htmlPath}`);
+    console.log(`\n🚀 Generation successful!`);
+    console.log(`   - Data: ${path.basename(options.outputPath)}`);
+    console.log(`   - Markdown: ${path.basename(mdPath)}`);
+    console.log(`   - Dashboard: ${path.basename(htmlPath)} (OPEN THIS IN BROWSER)`);
 
     process.exit(0);
   } catch (error) {

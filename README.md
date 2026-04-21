@@ -1,4 +1,4 @@
-# [Architecture Diagram Generator](https://www.npmjs.com/package/architecture-diagram-generator)
+# Architecture Diagram Generator (v0.4.1)
 
 **Understand your TypeScript architecture in seconds.**
 No configuration required for most projects.
@@ -24,9 +24,14 @@ Outputs are generated in the project root
 
 CLI output:
 ```text
-✔ architecture.md created
-✔ architecture.json created
-✔ architecture.html created (Interactive!)
+🔍 Analyzing project at: /path/to/project
+📂 Step 1: Scanning for files...
+🏗️ Step 2: Parsing AST and extracting metadata...
+✅ Graph built with 150 nodes and 240 edges.
+🚀 Generation successful!
+   - Data: architecture.json
+   - Markdown: architecture.md
+   - Dashboard: architecture.html (OPEN THIS IN BROWSER)
 ```
 
 ## Example Output
@@ -45,11 +50,12 @@ flowchart TD
   src_core_Pipeline_ts --> zod
 ```
 
-## Core Engine (v0.3.9)
+## Core Engine (v0.4.1)
 
 Powered by **ts-morph** for deep semantic analysis.
 
 - **Interactive HTML Dashboard**: Export as a self-contained premium HTML page.
+    - **Drill-down**: Click on any domain to explore its internal file structure.
     - **Dynamic Layouts**: Switch between Vertical (TD) and Horizontal (RL/LR) views in real-time.
     - **Smart Zoom & Pan**: Explore massive diagrams with high-fidelity zoom and native scrolling.
 - **Domain Grouping**: Automatically clusters modules by domain for high readability.
