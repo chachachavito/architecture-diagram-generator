@@ -1,4 +1,4 @@
-# Architecture Diagram Generator (v0.4.15)
+# Architecture Diagram Generator (v0.4.16)
 
 ![Diagram](https://raw.githubusercontent.com/chachachavito/architecture-diagram-generator/main/docs/diagram.png)
 *Automated architecture overview*

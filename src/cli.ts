@@ -9,14 +9,14 @@ import { ArchitecturePipeline } from './core/ArchitecturePipeline';
 import { DiagramGenerator } from './generators/DiagramGenerator';
 import { HTMLGenerator } from './generators/HTMLGenerator';
 
-const VERSION = '0.4.15';
+const VERSION = '0.4.16';
 
 async function main() {
   const program = new Command();
 
   program
     .name('architecture-generator')
-    .description('Automated Architecture Diagram Generator (v0.4.15) for Next.js projects')
+    .description('Automated Architecture Diagram Generator (v0.4.16) for Next.js projects')
     .version(VERSION, '-v, --version', 'output the current version')
     .argument('[project-root]', 'Root directory of the project to analyze', '.')
     .option('-o, --output <path>', 'Path to save the generated JSON', 'architecture.json')

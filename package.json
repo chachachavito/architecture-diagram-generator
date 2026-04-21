@@ -1,7 +1,7 @@
 {
   "name": "architecture-diagram-generator",
-  "version": "0.4.15",
-  "description": "Automated Architecture Diagram Generator (v0.4.15) for Next.js projects. Scan codebases, classify layers, and generate interactive HTML dashboards and Mermaid diagrams.",
+  "version": "0.4.16",
+  "description": "Automated Architecture Diagram Generator (v0.4.16) for Next.js projects. Scan codebases, classify layers, and generate interactive HTML dashboards and Mermaid diagrams.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -37,16 +37,16 @@
     "mermaid",
     "documentation"
   ],
-  "author": "chavitochavito",
+  "author": "chavito",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chavitochavito/architecture-diagram-generator.git"
+    "url": "git+https://github.com/chachachavito/architecture-diagram-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/chavitochavito/architecture-diagram-generator/issues"
+    "url": "https://github.com/chachachavito/architecture-diagram-generator/issues"
   },
-  "homepage": "https://github.com/chavitochavito/architecture-diagram-generator#readme",
+  "homepage": "https://github.com/chachachavito/architecture-diagram-generator#readme",
   "files": [
     "dist",
     "README.md",
