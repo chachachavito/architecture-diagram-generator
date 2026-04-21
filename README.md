@@ -3,9 +3,9 @@
 **Understand your TypeScript architecture in seconds.**
 No configuration required for most projects.
 
-[![npm version](https://img.shields.io/npm/v/@chavitochavito/architecture-diagram-generator.svg)](https://www.npmjs.com/package/@chavitochavito/architecture-diagram-generator)
-[![npm downloads](https://img.shields.io/npm/dm/@chavitochavito/architecture-diagram-generator.svg)](https://www.npmjs.com/package/@chavitochavito/architecture-diagram-generator)
-[![license](https://img.shields.io/npm/l/@chavitochavito/architecture-diagram-generator.svg)](https://github.com/chavitochavito/architecture-diagram-generator/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
+[![npm downloads](https://img.shields.io/npm/dm/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
+[![license](https://img.shields.io/npm/l/architecture-diagram-generator.svg)](https://github.com/chavitochavito/architecture-diagram-generator/blob/main/LICENSE)
 
 ## Who is this for?
 
@@ -44,7 +44,7 @@ flowchart TD
   src_core_Pipeline_ts --> zod
 ```
 
-## Core Engine (v0.3.1)
+## Core Engine (v0.3.2)
 
 Powered by **ts-morph** for deep semantic analysis.
 

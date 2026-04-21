@@ -1,10 +1,7 @@
 {
-  "name": "@chavitochavito/architecture-diagram-generator",
-  "version": "0.3.1",
+  "name": "architecture-diagram-generator",
+  "version": "0.3.2",
   "description": "Automated architecture diagram generator for Next.js projects",
-  "publishConfig": {
-    "access": "public"
-  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
