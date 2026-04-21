@@ -102,6 +102,14 @@ export class HTMLGenerator {
             border: 1px solid #e2e8f0;
             color: var(--text-primary);
         }
+        .debug-btn {
+            background: #fff1f2;
+            color: #e11d48;
+            border: 1px solid #fecdd3;
+        }
+        .debug-btn:hover {
+            background: #ffe4e6;
+        }
         #diagram-container {
             flex: 1;
             overflow: auto;
@@ -160,8 +168,8 @@ export class HTMLGenerator {
             <div class="group" id="direction-group">
                 <button onclick="setDirection('TD')" id="btn-TD">Vertical (TD)</button>
                 <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal (LR)</button>
-                <button onclick="setDirection('RL')" id="btn-RL">Horizontal (RL)</button>
             </div>
+            <button class="action-btn debug-btn" onclick="copySyntax()">Copy Mermaid Code</button>
             <button class="action-btn" onclick="zoom(0.1)">Zoom +</button>
             <button class="action-btn" onclick="zoom(-0.1)">Zoom -</button>
             <button class="action-btn" onclick="resetZoom()">Reset</button>
@@ -179,6 +187,7 @@ export class HTMLGenerator {
         let currentDirection = 'LR';
         let currentDomain = null;
         let scale = 1;
+        let lastSyntax = '';
 
         mermaid.initialize({ 
             startOnLoad: false,
@@ -196,7 +205,6 @@ export class HTMLGenerator {
         window.onNodeClick = (id) => {
             if (currentView === 'high-level') {
                 const parts = id.split('_');
-                // ID starts with n_
                 const domain = parts.slice(2).join('_');
                 drillDown(domain);
             }
@@ -221,6 +229,12 @@ export class HTMLGenerator {
             currentDomain = null;
             updateUI();
             render();
+        };
+
+        window.copySyntax = () => {
+            navigator.clipboard.writeText(lastSyntax).then(() => {
+                alert('Mermaid syntax copied to clipboard! Paste it in the chat.');
+            });
         };
 
         function updateUI() {
@@ -255,14 +269,10 @@ export class HTMLGenerator {
         };
 
         async function render() {
-            const syntax = generateMermaidSyntax();
-            console.log('--- GENERATED MERMAID SYNTAX ---');
-            console.log(syntax);
-            console.log('-------------------------------');
-            
+            lastSyntax = generateMermaidSyntax();
             const container = document.getElementById('mermaid-graph');
             container.removeAttribute('data-processed');
-            container.innerHTML = syntax;
+            container.innerHTML = lastSyntax;
             try {
                 await mermaid.run({ nodes: [container] });
             } catch (err) {
@@ -338,14 +348,13 @@ export class HTMLGenerator {
         }
 
         function safeId(id) {
-            // Prefix with n_ and replace all non-alphanumeric with _
             return 'n_' + id.replace(/[^a-zA-Z0-9]/g, '_');
         }
 
         function cleanLabel(label) {
-            if (!label) return '';
-            // Remove double quotes and other breaking characters
-            return label.replace(/[<>|[\\](){}"']/g, '').replace(/--+/g, '-').trim();
+            if (!label) return 'unnamed';
+            // Radical cleaning: keep only alphanumeric, space, dots, and hyphens.
+            return label.replace(/[^a-zA-Z0-9 \\.\\-_]/g, '').trim();
         }
 
         window.zoom = (delta) => { scale = Math.max(0.1, scale + delta); applyZoom(); };
