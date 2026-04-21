@@ -72,8 +72,10 @@ export class MermaidRenderer {
     const layers = this.groupData(snapshot);
     for (const [layerName, domains] of layers.entries()) {
       output += `  subgraph ${this.safeId(layerName)}\n`;
-      for (const domainName of domains.keys()) {
-        output += `    ${this.safeId(layerName + '_' + domainName)}["${this.escapeLabel(domainName)}"]\n`;
+      for (const [domainName, nodes] of domains.entries()) {
+        const count = nodes.length;
+        const label = count > 0 ? `${domainName} (${count} files)` : domainName;
+        output += `    ${this.safeId(layerName + '_' + domainName)}["${this.escapeLabel(label)}"]\n`;
       }
       output += '  end\n';
     }

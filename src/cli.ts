@@ -64,7 +64,7 @@ async function main(): Promise<void> {
 
     if (options.help) {
       console.log(`
-Architecture Diagram Generator (v0.3.8)
+Architecture Diagram Generator (v0.3.9)
 
 Usage: architecture-generator [project-root] [options]
 
@@ -86,7 +86,7 @@ Description:
         const pkg = JSON.parse(await fs.readFile(path.join(__dirname, '../package.json'), 'utf-8'));
         console.log(`v${pkg.version}`);
       } catch (e) {
-        console.log('v0.3.8');
+        console.log('v0.3.9');
       }
       process.exit(0);
     }
@@ -134,7 +134,7 @@ Description:
 
     // 4. Run Pipeline
     const pipeline = new ArchitecturePipeline({
-      version: '0.3.8',
+      version: '0.3.9',
       config,
       debug: options.debug,
       rootDir: options.projectRoot
@@ -148,7 +148,7 @@ Description:
 
     // 6. Write Output
     const output = {
-      version: '0.3.8',
+      version: '0.3.9',
       generatedAt: new Date().toISOString(),
       graph
     };
@@ -158,8 +158,9 @@ Description:
     const mdPath = options.outputPath.replace('.json', '.md');
     await fs.writeFile(mdPath, `# Architecture Diagram\n\n\`\`\`mermaid\n${diagram.syntax}\n\`\`\``);
 
+    const projectName = path.basename(options.projectRoot);
     const htmlGenerator = new HTMLGenerator();
-    const htmlContent = htmlGenerator.generate(diagram.syntax, diagram.simplifiedSyntax);
+    const htmlContent = htmlGenerator.generate(diagram.syntax, diagram.simplifiedSyntax, projectName);
     const htmlPath = options.outputPath.replace('.json', '.html');
     await fs.writeFile(htmlPath, htmlContent);
 

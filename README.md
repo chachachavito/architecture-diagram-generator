@@ -45,7 +45,7 @@ flowchart TD
   src_core_Pipeline_ts --> zod
 ```
 
-## Core Engine (v0.3.8)
+## Core Engine (v0.3.9)
 
 Powered by **ts-morph** for deep semantic analysis.
 

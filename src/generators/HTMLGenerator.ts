@@ -5,7 +5,7 @@ export class HTMLGenerator {
   /**
    * Generates a full HTML document for the given Mermaid syntax.
    */
-  generate(detailedSyntax: string, simplifiedSyntax: string, title: string = 'Architecture Diagram'): string {
+  generate(detailedSyntax: string, simplifiedSyntax: string, projectName: string = 'Architecture Diagram'): string {
     const baseDetailed = detailedSyntax.replace(/^flowchart (TD|LR|RL|BT)\n/, '');
     const baseSimplified = simplifiedSyntax.replace(/^flowchart (TD|LR|RL|BT)\n/, '');
 
@@ -14,7 +14,7 @@ export class HTMLGenerator {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title}</title>
+    <title>${projectName} - Architecture Diagram</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -46,6 +46,11 @@ export class HTMLGenerator {
             margin: 0;
             font-size: 1.1rem;
             font-weight: 600;
+        }
+        .project-label {
+            color: #64748b;
+            font-weight: 400;
+            margin-right: 0.5rem;
         }
         .controls {
             display: flex;
@@ -106,7 +111,10 @@ export class HTMLGenerator {
 </head>
 <body>
     <header>
-        <h1>${title}</h1>
+        <div>
+            <span class="project-label">Project:</span>
+            <h1>${projectName}</h1>
+        </div>
         <div class="controls">
             <div class="group" id="view-group">
                 <button onclick="setView('simplified')" id="btn-simplified" class="active">High-Level</button>
