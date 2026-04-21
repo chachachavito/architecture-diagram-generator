@@ -43,7 +43,7 @@ architecture-generator .
 
 ## Configuration
 
-Custom rules can be defined in `architecture-config.json`:
+Custom rules can be defined in an optional `architecture-config.json` file in your project root:
 
 ```json
 {
