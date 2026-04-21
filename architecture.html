@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>architecture-diagram-generator - Architecture Diagram</title>
+    <title>architecture-diagram-generator - Architecture Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -95,30 +95,40 @@
         .mermaid svg {
             max-width: none !important;
             height: auto !important;
+            cursor: pointer;
+        }
+        .breadcrumb {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-left: 1rem;
+            cursor: pointer;
+        }
+        .breadcrumb:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <header>
-        <div>
+        <div style="display: flex; align-items: center;">
             <span class="project-label">Project:</span>
             <h1>architecture-diagram-generator</h1>
+            <span id="breadcrumb" class="breadcrumb" style="display:none" onclick="resetView()">↩ Back to High-Level</span>
         </div>
         <div class="controls">
             <div class="group" id="view-group">
-                <button onclick="setView('simplified')" id="btn-simplified" class="active">High-Level</button>
-                <button onclick="setView('detailed')" id="btn-detailed">Detailed</button>
+                <button onclick="changeView('high-level')" id="btn-high-level" class="active">High-Level</button>
+                <button onclick="changeView('detailed')" id="btn-detailed">Detailed</button>
             </div>
             <div class="group" id="direction-group">
                 <button onclick="setDirection('TD')" id="btn-TD">Vertical (TD)</button>
                 <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal (LR)</button>
                 <button onclick="setDirection('RL')" id="btn-RL">Horizontal (RL)</button>
-                <button onclick="setDirection('BT')" id="btn-BT">Bottom-Up (BT)</button>
             </div>
             <button class="action-btn" onclick="window.print()">Save PDF</button>
             <button class="action-btn" onclick="zoom(0.1)">Zoom +</button>
             <button class="action-btn" onclick="zoom(-0.1)">Zoom -</button>
-            <button class="action-btn" onclick="resetZoom()">Reset</button>
         </div>
     </header>
     <div id="diagram-container">
@@ -128,177 +138,16 @@
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         
-        const syntaxes = {
-            detailed: `  subgraph Core ["Core"]
-      src_cli_ts["📦 Cli"]
-      src_index_ts["📦 Src/Index"]
-    subgraph Core_core ["core"]
-      src_core_ArchitectureClassifier_ts["📦 ArchitectureClassifier"]
-      src_core_ArchitectureFilter_ts["📦 ArchitectureFilter"]
-      src_core_ArchitecturePipeline_ts["📦 ArchitecturePipeline"]
-      src_core_ConfigurationLoader_ts["📦 ConfigurationLoader"]
-      src_core_ConfigValidator_ts["📦 ConfigValidator"]
-      src_core_DependencyGraph_ts["📦 DependencyGraph"]
-      src_core_DependencyGraphBuilder_ts["📦 DependencyGraphBuilder"]
-      src_core_FileDiscovery_ts["📦 FileDiscovery"]
-      src_core_GraphTypes_ts["📦 GraphTypes"]
-      src_core_index_ts["📦 Core/Index"]
-      src_core_MetadataGenerator_ts["📦 MetadataGenerator"]
-      src_core_ModuleCache_ts["📦 ModuleCache"]
-      src_core_Normalizer_ts["📦 Normalizer"]
-      src_core_OutputTypes_ts["📦 OutputTypes"]
-      src_core_ParallelFileProcessor_ts["📦 ParallelFileProcessor"]
-    end
-    subgraph Core_generators ["generators"]
-      src_generators_DiagramGenerator_ts["📦 DiagramGenerator"]
-      src_generators_HTMLGenerator_ts["📦 HTMLGenerator"]
-      src_generators_index_ts["📦 Generators/Index"]
-      src_generators_MermaidRenderer_ts["📦 MermaidRenderer"]
-      src_generators_VisualExporter_ts["📦 VisualExporter"]
-      src_generators_VisualMapper_ts["📦 VisualMapper"]
-    end
-    subgraph Core_parsers ["parsers"]
-      src_parsers_ASTParser_ts["📦 ASTParser"]
-      src_parsers_index_ts["📦 Parsers/Index"]
-      src_parsers_MermaidParser_ts["📦 MermaidParser"]
-    end
-    subgraph Core_utils ["utils"]
-      src_utils_errors_ts["📦 Errors"]
-      src_utils_index_ts["📦 Utils/Index"]
-      src_utils_logger_ts["📦 Logger"]
-      src_utils_OutputWriter_ts["📦 OutputWriter"]
-    end
-  end
-  subgraph External ["External"]
-      child_process["☁️ child_process"]
-      crypto["☁️ crypto"]
-      dbNames["☁️ dbNames"]
-      dbPatterns["☁️ dbPatterns"]
-      fs["☁️ fs"]
-      fs_promises["☁️ fs/promises"]
-      glob["☁️ glob"]
-      path["☁️ path"]
-      puppeteer["☁️ puppeteer"]
-      this["☁️ this"]
-      ts_morph["☁️ ts-morph"]
-      typescript["☁️ typescript"]
-      zod["☁️ zod"]
-  end
-  src_cli_ts --> fs_promises
-  src_cli_ts --> path
-  src_core_ArchitectureClassifier_ts --> src_core_ConfigValidator_ts
-  src_core_ArchitectureClassifier_ts --> src_core_GraphTypes_ts
-  src_core_ArchitectureClassifier_ts --> this
-  src_core_ArchitectureFilter_ts --> src_core_DependencyGraph_ts
-  src_core_ArchitecturePipeline_ts --> src_core_ArchitectureClassifier_ts
-  src_core_ArchitecturePipeline_ts --> src_core_ConfigValidator_ts
-  src_core_ArchitecturePipeline_ts --> src_core_GraphTypes_ts
-  src_core_ArchitecturePipeline_ts --> src_core_Normalizer_ts
-  src_core_ConfigurationLoader_ts --> fs_promises
-  src_core_ConfigurationLoader_ts --> path
-  src_core_ConfigValidator_ts --> src_core_GraphTypes_ts
-  src_core_ConfigValidator_ts --> zod
-  src_core_DependencyGraph_ts --> src_core_GraphTypes_ts
-  src_core_DependencyGraphBuilder_ts --> path
-  src_core_DependencyGraphBuilder_ts --> src_core_DependencyGraph_ts
-  src_core_DependencyGraphBuilder_ts --> src_core_GraphTypes_ts
-  src_core_FileDiscovery_ts --> fs_promises
-  src_core_FileDiscovery_ts --> glob
-  src_core_FileDiscovery_ts --> path
-  src_core_FileDiscovery_ts --> src_utils_errors_ts
-  src_core_index_ts --> src_core_ArchitectureClassifier_ts
-  src_core_index_ts --> src_core_ArchitectureFilter_ts
-  src_core_index_ts --> src_core_ArchitecturePipeline_ts
-  src_core_index_ts --> src_core_ConfigurationLoader_ts
-  src_core_index_ts --> src_core_ConfigValidator_ts
-  src_core_index_ts --> src_core_DependencyGraph_ts
-  src_core_index_ts --> src_core_DependencyGraphBuilder_ts
-  src_core_index_ts --> src_core_FileDiscovery_ts
-  src_core_index_ts --> src_core_GraphTypes_ts
-  src_core_index_ts --> src_core_MetadataGenerator_ts
-  src_core_index_ts --> src_core_ModuleCache_ts
-  src_core_index_ts --> src_core_Normalizer_ts
-  src_core_index_ts --> src_core_OutputTypes_ts
-  src_core_index_ts --> src_core_ParallelFileProcessor_ts
-  src_core_MetadataGenerator_ts --> fs_promises
-  src_core_MetadataGenerator_ts --> path
-  src_core_MetadataGenerator_ts --> src_core_ArchitectureClassifier_ts
-  src_core_MetadataGenerator_ts --> src_core_DependencyGraph_ts
-  src_core_ModuleCache_ts --> crypto
-  src_core_ModuleCache_ts --> fs_promises
-  src_core_ModuleCache_ts --> path
-  src_core_Normalizer_ts --> path
-  src_core_Normalizer_ts --> src_core_GraphTypes_ts
-  src_core_OutputTypes_ts --> src_core_GraphTypes_ts
-  src_core_ParallelFileProcessor_ts --> src_core_ModuleCache_ts
-  src_generators_DiagramGenerator_ts --> src_core_GraphTypes_ts
-  src_generators_DiagramGenerator_ts --> src_generators_MermaidRenderer_ts
-  src_generators_DiagramGenerator_ts --> src_generators_VisualMapper_ts
-  src_generators_index_ts --> src_generators_DiagramGenerator_ts
-  src_generators_index_ts --> src_generators_HTMLGenerator_ts
-  src_generators_index_ts --> src_generators_VisualExporter_ts
-  src_generators_MermaidRenderer_ts --> src_core_GraphTypes_ts
-  src_generators_MermaidRenderer_ts --> src_generators_VisualMapper_ts
-  src_generators_VisualExporter_ts --> child_process
-  src_generators_VisualExporter_ts --> fs
-  src_generators_VisualExporter_ts --> path
-  src_generators_VisualExporter_ts --> puppeteer
-  src_generators_VisualExporter_ts --> src_generators_DiagramGenerator_ts
-  src_generators_VisualMapper_ts --> src_core_GraphTypes_ts
-  src_index_ts --> src_generators_DiagramGenerator_ts
-  src_index_ts --> src_generators_MermaidRenderer_ts
-  src_index_ts --> src_generators_VisualExporter_ts
-  src_index_ts --> src_generators_VisualMapper_ts
-  src_index_ts --> src_parsers_ASTParser_ts
-  src_index_ts --> src_parsers_MermaidParser_ts
-  src_parsers_ASTParser_ts --> dbNames
-  src_parsers_ASTParser_ts --> dbPatterns
-  src_parsers_ASTParser_ts --> fs_promises
-  src_parsers_ASTParser_ts --> path
-  src_parsers_ASTParser_ts --> src_core_ModuleCache_ts
-  src_parsers_ASTParser_ts --> src_utils_errors_ts
-  src_parsers_ASTParser_ts --> ts_morph
-  src_parsers_ASTParser_ts --> typescript
-  src_parsers_index_ts --> src_parsers_ASTParser_ts
-  src_parsers_index_ts --> src_parsers_MermaidParser_ts
-  src_utils_index_ts --> src_utils_errors_ts
-  src_utils_index_ts --> src_utils_logger_ts
-  src_utils_index_ts --> src_utils_OutputWriter_ts
-  src_utils_OutputWriter_ts --> fs_promises
-  src_utils_OutputWriter_ts --> path
-  src_utils_OutputWriter_ts --> src_utils_errors_ts
-`,
-            simplified: `  subgraph External
-    External_shared["shared 13 files"]
-  end
-  subgraph Core
-    Core_shared["shared 2 files"]
-    Core_core["core 15 files"]
-    Core_generators["generators 6 files"]
-    Core_parsers["parsers 3 files"]
-    Core_utils["utils 4 files"]
-  end
-  Core_shared --> External_shared
-  Core_core --> External_shared
-  Core_core --> Core_utils
-  Core_generators --> Core_core
-  Core_generators --> External_shared
-  Core_shared --> Core_generators
-  Core_shared --> Core_parsers
-  Core_parsers --> External_shared
-  Core_parsers --> Core_core
-  Core_parsers --> Core_utils
-  Core_utils --> External_shared
-`
-        };
-        
-        let currentView = 'simplified';
+        const graph = {"nodes":[{"id":"child_process","metadata":{"type":"external","source":"inferred","label":"child_process","layer":"External","domain":"shared"},"type":"external","label":"child_process","externalCalls":[]},{"id":"crypto","metadata":{"type":"external","source":"inferred","label":"crypto","layer":"External","domain":"shared"},"type":"external","label":"crypto","externalCalls":[]},{"id":"dbNames","metadata":{"type":"external","source":"inferred","label":"dbNames","layer":"External","domain":"shared"},"type":"external","label":"dbNames","externalCalls":[]},{"id":"dbPatterns","metadata":{"type":"external","source":"inferred","label":"dbPatterns","layer":"External","domain":"shared"},"type":"external","label":"dbPatterns","externalCalls":[]},{"id":"fs","metadata":{"type":"external","source":"inferred","label":"fs","layer":"External","domain":"shared"},"type":"external","label":"fs","externalCalls":[]},{"id":"fs/promises","metadata":{"type":"external","source":"inferred","label":"fs/promises","layer":"External","domain":"shared"},"type":"external","label":"fs/promises","externalCalls":[]},{"id":"glob","metadata":{"type":"external","source":"inferred","label":"glob","layer":"External","domain":"shared"},"type":"external","label":"glob","externalCalls":[]},{"id":"path","metadata":{"type":"external","source":"inferred","label":"path","layer":"External","domain":"shared"},"type":"external","label":"path","externalCalls":[]},{"id":"puppeteer","metadata":{"type":"external","source":"inferred","label":"puppeteer","layer":"External","domain":"shared"},"type":"external","label":"puppeteer","externalCalls":[]},{"id":"src/cli.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":158,"complexity":20},"label":"Cli","layer":"Core","domain":"shared"},"type":"module","externalCalls":[]},{"id":"src/core/ArchitectureClassifier.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":149,"complexity":37},"label":"ArchitectureClassifier","layer":"Core","domain":"core"},"type":"module","externalCalls":[{"type":"database","target":"this","location":{"line":73,"column":32}},{"type":"database","target":"this","location":{"line":74,"column":32}},{"type":"database","target":"this","location":{"line":79,"column":33}},{"type":"database","target":"this","location":{"line":80,"column":33}},{"type":"database","target":"this","location":{"line":85,"column":31}},{"type":"database","target":"this","location":{"line":86,"column":31}}]},{"id":"src/core/ArchitectureFilter.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":374,"complexity":60},"label":"ArchitectureFilter","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ArchitecturePipeline.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":106,"complexity":14},"label":"ArchitecturePipeline","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ConfigurationLoader.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":388,"complexity":60},"label":"ConfigurationLoader","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ConfigValidator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":47,"complexity":1},"label":"ConfigValidator","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/DependencyGraph.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":111,"complexity":10},"label":"DependencyGraph","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/DependencyGraphBuilder.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":135,"complexity":17},"label":"DependencyGraphBuilder","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/FileDiscovery.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":237,"complexity":56},"label":"FileDiscovery","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/GraphTypes.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":117,"complexity":1},"label":"GraphTypes","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":35,"complexity":1},"label":"Core/Index","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/MetadataGenerator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":510,"complexity":47},"label":"MetadataGenerator","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ModuleCache.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":204,"complexity":12},"label":"ModuleCache","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/Normalizer.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":78,"complexity":12},"label":"Normalizer","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/OutputTypes.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":20,"complexity":8},"label":"OutputTypes","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ParallelFileProcessor.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":89,"complexity":6},"label":"ParallelFileProcessor","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/generators/DiagramGenerator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":59,"complexity":1},"label":"DiagramGenerator","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/HTMLGenerator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":272,"complexity":1},"label":"HTMLGenerator","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":10,"complexity":1},"label":"Generators/Index","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/MermaidRenderer.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":112,"complexity":30},"label":"MermaidRenderer","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/VisualExporter.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":219,"complexity":24},"label":"VisualExporter","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/VisualMapper.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":37,"complexity":7},"label":"VisualMapper","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":35,"complexity":1},"label":"Src/Index","layer":"Core","domain":"shared"},"type":"module","externalCalls":[]},{"id":"src/parsers/ASTParser.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":524,"complexity":63},"label":"ASTParser","layer":"Core","domain":"parsers"},"type":"module","externalCalls":[{"type":"database","target":"dbPatterns","location":{"line":406,"column":15}},{"type":"database","target":"dbNames","location":{"line":416,"column":15}},{"type":"database","target":"dbPatterns","location":{"line":435,"column":13}},{"type":"database","target":"dbPatterns","location":{"line":448,"column":13}}]},{"id":"src/parsers/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":21,"complexity":1},"label":"Parsers/Index","layer":"Core","domain":"parsers"},"type":"module","externalCalls":[]},{"id":"src/parsers/MermaidParser.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":581,"complexity":91},"label":"MermaidParser","layer":"Core","domain":"parsers"},"type":"module","externalCalls":[]},{"id":"src/utils/errors.ts","metadata":{"type":"module","source":"inferred","inheritance":[{"name":"Error","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"}],"decorators":[],"metrics":{"sloc":208,"complexity":7},"label":"Errors","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"src/utils/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":22,"complexity":1},"label":"Utils/Index","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"src/utils/logger.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":248,"complexity":17},"label":"Logger","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"src/utils/OutputWriter.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":71,"complexity":6},"label":"OutputWriter","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"this","metadata":{"type":"external","source":"inferred","label":"this","layer":"External","domain":"shared"},"type":"external","label":"this","externalCalls":[]},{"id":"ts-morph","metadata":{"type":"external","source":"inferred","label":"ts-morph","layer":"External","domain":"shared"},"type":"external","label":"ts-morph","externalCalls":[]},{"id":"typescript","metadata":{"type":"external","source":"inferred","label":"typescript","layer":"External","domain":"shared"},"type":"external","label":"typescript","externalCalls":[]},{"id":"zod","metadata":{"type":"external","source":"inferred","label":"zod","layer":"External","domain":"shared"},"type":"external","label":"zod","externalCalls":[]}],"edges":[{"id":"src/cli.ts->fs/promises:import","from":"src/cli.ts","to":"fs/promises","type":"import"},{"id":"src/cli.ts->path:import","from":"src/cli.ts","to":"path","type":"import"},{"id":"src/core/ArchitectureClassifier.ts->src/core/ConfigValidator.ts:import","from":"src/core/ArchitectureClassifier.ts","to":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitectureClassifier.ts->src/core/GraphTypes.ts:import","from":"src/core/ArchitectureClassifier.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitectureClassifier.ts->this:external-call","from":"src/core/ArchitectureClassifier.ts","to":"this","type":"external-call"},{"id":"src/core/ArchitectureFilter.ts->src/core/DependencyGraph.ts:import","from":"src/core/ArchitectureFilter.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/ArchitectureClassifier.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/ConfigValidator.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/GraphTypes.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/Normalizer.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/Normalizer.ts","type":"import","isTypeOnly":false},{"id":"src/core/ConfigurationLoader.ts->fs/promises:import","from":"src/core/ConfigurationLoader.ts","to":"fs/promises","type":"import"},{"id":"src/core/ConfigurationLoader.ts->path:import","from":"src/core/ConfigurationLoader.ts","to":"path","type":"import"},{"id":"src/core/ConfigValidator.ts->src/core/GraphTypes.ts:import","from":"src/core/ConfigValidator.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/ConfigValidator.ts->zod:import","from":"src/core/ConfigValidator.ts","to":"zod","type":"import"},{"id":"src/core/DependencyGraph.ts->src/core/GraphTypes.ts:import","from":"src/core/DependencyGraph.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/DependencyGraphBuilder.ts->path:import","from":"src/core/DependencyGraphBuilder.ts","to":"path","type":"import"},{"id":"src/core/DependencyGraphBuilder.ts->src/core/DependencyGraph.ts:import","from":"src/core/DependencyGraphBuilder.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/DependencyGraphBuilder.ts->src/core/GraphTypes.ts:import","from":"src/core/DependencyGraphBuilder.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/FileDiscovery.ts->fs/promises:import","from":"src/core/FileDiscovery.ts","to":"fs/promises","type":"import"},{"id":"src/core/FileDiscovery.ts->glob:import","from":"src/core/FileDiscovery.ts","to":"glob","type":"import"},{"id":"src/core/FileDiscovery.ts->path:import","from":"src/core/FileDiscovery.ts","to":"path","type":"import"},{"id":"src/core/FileDiscovery.ts->src/utils/errors.ts:import","from":"src/core/FileDiscovery.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ArchitectureClassifier.ts:import","from":"src/core/index.ts","to":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ArchitectureFilter.ts:import","from":"src/core/index.ts","to":"src/core/ArchitectureFilter.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ArchitecturePipeline.ts:import","from":"src/core/index.ts","to":"src/core/ArchitecturePipeline.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ConfigurationLoader.ts:import","from":"src/core/index.ts","to":"src/core/ConfigurationLoader.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ConfigValidator.ts:import","from":"src/core/index.ts","to":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/DependencyGraph.ts:import","from":"src/core/index.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/DependencyGraphBuilder.ts:import","from":"src/core/index.ts","to":"src/core/DependencyGraphBuilder.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/FileDiscovery.ts:import","from":"src/core/index.ts","to":"src/core/FileDiscovery.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/GraphTypes.ts:import","from":"src/core/index.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/MetadataGenerator.ts:import","from":"src/core/index.ts","to":"src/core/MetadataGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ModuleCache.ts:import","from":"src/core/index.ts","to":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/Normalizer.ts:import","from":"src/core/index.ts","to":"src/core/Normalizer.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/OutputTypes.ts:import","from":"src/core/index.ts","to":"src/core/OutputTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ParallelFileProcessor.ts:import","from":"src/core/index.ts","to":"src/core/ParallelFileProcessor.ts","type":"import","isTypeOnly":false},{"id":"src/core/MetadataGenerator.ts->fs/promises:import","from":"src/core/MetadataGenerator.ts","to":"fs/promises","type":"import"},{"id":"src/core/MetadataGenerator.ts->path:import","from":"src/core/MetadataGenerator.ts","to":"path","type":"import"},{"id":"src/core/MetadataGenerator.ts->src/core/ArchitectureClassifier.ts:import","from":"src/core/MetadataGenerator.ts","to":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":true},{"id":"src/core/MetadataGenerator.ts->src/core/DependencyGraph.ts:import","from":"src/core/MetadataGenerator.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/ModuleCache.ts->crypto:import","from":"src/core/ModuleCache.ts","to":"crypto","type":"import"},{"id":"src/core/ModuleCache.ts->fs/promises:import","from":"src/core/ModuleCache.ts","to":"fs/promises","type":"import"},{"id":"src/core/ModuleCache.ts->path:import","from":"src/core/ModuleCache.ts","to":"path","type":"import"},{"id":"src/core/Normalizer.ts->path:import","from":"src/core/Normalizer.ts","to":"path","type":"import"},{"id":"src/core/Normalizer.ts->src/core/GraphTypes.ts:import","from":"src/core/Normalizer.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/OutputTypes.ts->src/core/GraphTypes.ts:import","from":"src/core/OutputTypes.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/ParallelFileProcessor.ts->src/core/ModuleCache.ts:import","from":"src/core/ParallelFileProcessor.ts","to":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false},{"id":"src/generators/DiagramGenerator.ts->src/core/GraphTypes.ts:import","from":"src/generators/DiagramGenerator.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/generators/DiagramGenerator.ts->src/generators/MermaidRenderer.ts:import","from":"src/generators/DiagramGenerator.ts","to":"src/generators/MermaidRenderer.ts","type":"import","isTypeOnly":false},{"id":"src/generators/DiagramGenerator.ts->src/generators/VisualMapper.ts:import","from":"src/generators/DiagramGenerator.ts","to":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false},{"id":"src/generators/index.ts->src/generators/DiagramGenerator.ts:import","from":"src/generators/index.ts","to":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/generators/index.ts->src/generators/HTMLGenerator.ts:import","from":"src/generators/index.ts","to":"src/generators/HTMLGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/generators/index.ts->src/generators/VisualExporter.ts:import","from":"src/generators/index.ts","to":"src/generators/VisualExporter.ts","type":"import","isTypeOnly":false},{"id":"src/generators/MermaidRenderer.ts->src/core/GraphTypes.ts:import","from":"src/generators/MermaidRenderer.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/generators/MermaidRenderer.ts->src/generators/VisualMapper.ts:import","from":"src/generators/MermaidRenderer.ts","to":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false},{"id":"src/generators/VisualExporter.ts->child_process:import","from":"src/generators/VisualExporter.ts","to":"child_process","type":"import"},{"id":"src/generators/VisualExporter.ts->fs:import","from":"src/generators/VisualExporter.ts","to":"fs","type":"import"},{"id":"src/generators/VisualExporter.ts->path:import","from":"src/generators/VisualExporter.ts","to":"path","type":"import"},{"id":"src/generators/VisualExporter.ts->puppeteer:import","from":"src/generators/VisualExporter.ts","to":"puppeteer","type":"import"},{"id":"src/generators/VisualExporter.ts->src/generators/DiagramGenerator.ts:import","from":"src/generators/VisualExporter.ts","to":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/generators/VisualMapper.ts->src/core/GraphTypes.ts:import","from":"src/generators/VisualMapper.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/DiagramGenerator.ts:import","from":"src/index.ts","to":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/MermaidRenderer.ts:import","from":"src/index.ts","to":"src/generators/MermaidRenderer.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/VisualExporter.ts:import","from":"src/index.ts","to":"src/generators/VisualExporter.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/VisualMapper.ts:import","from":"src/index.ts","to":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/parsers/ASTParser.ts:import","from":"src/index.ts","to":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/parsers/MermaidParser.ts:import","from":"src/index.ts","to":"src/parsers/MermaidParser.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/ASTParser.ts->dbNames:external-call","from":"src/parsers/ASTParser.ts","to":"dbNames","type":"external-call"},{"id":"src/parsers/ASTParser.ts->dbPatterns:external-call","from":"src/parsers/ASTParser.ts","to":"dbPatterns","type":"external-call"},{"id":"src/parsers/ASTParser.ts->fs/promises:import","from":"src/parsers/ASTParser.ts","to":"fs/promises","type":"import"},{"id":"src/parsers/ASTParser.ts->path:import","from":"src/parsers/ASTParser.ts","to":"path","type":"import"},{"id":"src/parsers/ASTParser.ts->src/core/ModuleCache.ts:import","from":"src/parsers/ASTParser.ts","to":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/ASTParser.ts->src/utils/errors.ts:import","from":"src/parsers/ASTParser.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/ASTParser.ts->ts-morph:import","from":"src/parsers/ASTParser.ts","to":"ts-morph","type":"import"},{"id":"src/parsers/ASTParser.ts->typescript:import","from":"src/parsers/ASTParser.ts","to":"typescript","type":"import"},{"id":"src/parsers/index.ts->src/parsers/ASTParser.ts:import","from":"src/parsers/index.ts","to":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/index.ts->src/parsers/MermaidParser.ts:import","from":"src/parsers/index.ts","to":"src/parsers/MermaidParser.ts","type":"import","isTypeOnly":false},{"id":"src/utils/index.ts->src/utils/errors.ts:import","from":"src/utils/index.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false},{"id":"src/utils/index.ts->src/utils/logger.ts:import","from":"src/utils/index.ts","to":"src/utils/logger.ts","type":"import","isTypeOnly":false},{"id":"src/utils/index.ts->src/utils/OutputWriter.ts:import","from":"src/utils/index.ts","to":"src/utils/OutputWriter.ts","type":"import","isTypeOnly":false},{"id":"src/utils/OutputWriter.ts->fs/promises:import","from":"src/utils/OutputWriter.ts","to":"fs/promises","type":"import"},{"id":"src/utils/OutputWriter.ts->path:import","from":"src/utils/OutputWriter.ts","to":"path","type":"import"},{"id":"src/utils/OutputWriter.ts->src/utils/errors.ts:import","from":"src/utils/OutputWriter.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false}],"version":"0.4.1"};
+        let currentView = 'high-level'; // 'high-level' | 'detailed' | 'drill-down'
         let currentDirection = 'LR';
+        let currentDomain = null;
         let scale = 1;
 
         mermaid.initialize({ 
             startOnLoad: false,
             theme: 'base',
+            securityLevel: 'loose',
             flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
             themeVariables: {
                 primaryColor: '#eff6ff',
@@ -308,38 +157,118 @@
             }
         });
 
-        window.setView = async (view) => {
-            currentView = view;
-            document.querySelectorAll('#view-group button').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + view).classList.add('active');
-            await render();
+        // Event listener for clicks on nodes
+        window.onNodeClick = (id) => {
+            if (currentView === 'high-level') {
+                const parts = id.split('_');
+                const domain = parts.slice(1).join('_');
+                drillDown(domain);
+            }
         };
 
-        window.setDirection = async (dir) => {
+        function drillDown(domain) {
+            currentDomain = domain;
+            currentView = 'drill-down';
+            document.getElementById('breadcrumb').style.display = 'block';
+            document.getElementById('breadcrumb').innerText = '↩ Back from ' + domain;
+            render();
+        }
+
+        window.resetView = () => {
+            currentView = 'high-level';
+            currentDomain = null;
+            document.getElementById('breadcrumb').style.display = 'none';
+            render();
+        };
+
+        window.changeView = (view) => {
+            currentView = view;
+            currentDomain = null;
+            document.getElementById('breadcrumb').style.display = 'none';
+            document.querySelectorAll('#view-group button').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + view).classList.add('active');
+            render();
+        };
+
+        window.setDirection = (dir) => {
             currentDirection = dir;
             document.querySelectorAll('#direction-group button').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-' + dir).classList.add('active');
-            await render();
+            render();
         };
 
         async function render() {
+            const syntax = generateMermaidSyntax();
             const container = document.getElementById('mermaid-graph');
             container.removeAttribute('data-processed');
-            container.innerHTML = 'flowchart ' + currentDirection + '\n' + syntaxes[currentView];
+            container.innerHTML = syntax;
             await mermaid.run({ nodes: [container] });
             applyZoom();
         }
 
-        window.zoom = (delta) => {
-            scale = Math.max(0.1, scale + delta);
-            applyZoom();
-        };
+        function generateMermaidSyntax() {
+            let syntax = 'flowchart ' + currentDirection + '\n';
+            
+            if (currentView === 'high-level') {
+                const domainMap = new Map();
+                graph.nodes.forEach(n => {
+                    const key = (n.metadata.layer || 'Core') + '_' + (n.metadata.domain || 'shared');
+                    if (!domainMap.has(key)) domainMap.set(key, { layer: n.metadata.layer || 'Core', domain: n.metadata.domain || 'shared', count: 0 });
+                    domainMap.get(key).count++;
+                });
 
-        window.resetZoom = () => {
-            scale = 1;
-            applyZoom();
-        };
+                // Render Subgraphs
+                const layers = [...new Set(graph.nodes.map(n => n.metadata.layer || 'Core'))];
+                layers.forEach(layer => {
+                    syntax += '  subgraph ' + safeId(layer) + ' ["' + layer + '"]\n';
+                    [...domainMap.values()].filter(d => d.layer === layer).forEach(d => {
+                        const id = safeId(layer + '_' + d.domain);
+                        syntax += '    ' + id + '["' + d.domain + ' (' + d.count + ' files)"]\n';
+                        syntax += '    click ' + id + ' call onNodeClick("' + id + '")\n';
+                    });
+                    syntax += '  end\n';
+                });
 
+                // Edges
+                const domainEdges = new Set();
+                graph.edges.forEach(e => {
+                    const fromNode = graph.nodes.find(n => n.id === e.from);
+                    const toNode = graph.nodes.find(n => n.id === e.to);
+                    if (fromNode && toNode) {
+                        const from = safeId(fromNode.metadata.layer || 'Core') + '_' + safeId(fromNode.metadata.domain || 'shared');
+                        const to = safeId(toNode.metadata.layer || 'Core') + '_' + safeId(toNode.metadata.domain || 'shared');
+                        if (from !== to) domainEdges.add(from + ' --> ' + to);
+                    }
+                });
+                domainEdges.forEach(e => syntax += '  ' + e + '\n');
+
+            } else {
+                // Detailed or Drill-down
+                const nodes = currentView === 'drill-down' 
+                    ? graph.nodes.filter(n => (n.metadata.domain || 'shared') === currentDomain)
+                    : graph.nodes;
+                
+                const nodeIds = new Set(nodes.map(n => n.id));
+                
+                nodes.forEach(n => {
+                    syntax += '  ' + safeId(n.id) + '["' + n.id.split('/').pop() + '"]\n';
+                });
+
+                graph.edges.forEach(e => {
+                    if (nodeIds.has(e.from) && nodeIds.has(e.to)) {
+                        syntax += '  ' + safeId(e.from) + ' --> ' + safeId(e.to) + '\n';
+                    }
+                });
+            }
+            
+            return syntax;
+        }
+
+        function safeId(id) {
+            return id.replace(/[^a-zA-Z0-9]/g, '_');
+        }
+
+        window.zoom = (delta) => { scale = Math.max(0.1, scale + delta); applyZoom(); };
         function applyZoom() {
             const svg = document.querySelector('.mermaid svg');
             if (svg) {

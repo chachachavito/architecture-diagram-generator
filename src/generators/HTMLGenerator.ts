@@ -19,6 +19,7 @@ export class HTMLGenerator {
             --card-bg: #ffffff;
             --text-primary: #1e293b;
             --accent-color: #3b82f6;
+            --accent-soft: #eff6ff;
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -39,6 +40,11 @@ export class HTMLGenerator {
             align-items: center;
             z-index: 10;
         }
+        .title-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
         h1 {
             margin: 0;
             font-size: 1.1rem;
@@ -47,7 +53,17 @@ export class HTMLGenerator {
         .project-label {
             color: #64748b;
             font-weight: 400;
-            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .context-badge {
+            background: var(--accent-soft);
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: none;
+            border: 1px solid #dbeafe;
         }
         .controls {
             display: flex;
@@ -105,24 +121,36 @@ export class HTMLGenerator {
             height: auto !important;
             cursor: pointer;
         }
-        .breadcrumb {
-            font-size: 0.8rem;
+        .back-btn {
+            font-size: 0.75rem;
             color: #64748b;
-            margin-left: 1rem;
             cursor: pointer;
+            display: none;
+            align-items: center;
+            gap: 0.25rem;
+            background: #f1f5f9;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            border: 1px solid #e2e8f0;
         }
-        .breadcrumb:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
+        .back-btn:hover {
+            background: #e2e8f0;
+            color: var(--text-primary);
         }
     </style>
 </head>
 <body>
     <header>
-        <div style="display: flex; align-items: center;">
-            <span class="project-label">Project:</span>
-            <h1>${projectName}</h1>
-            <span id="breadcrumb" class="breadcrumb" style="display:none" onclick="resetView()">↩ Back to High-Level</span>
+        <div class="title-area">
+            <div onclick="resetView()" style="cursor:pointer">
+                <span class="project-label">Project:</span>
+                <h1>${projectName}</h1>
+            </div>
+            <div id="context-badge" class="context-badge"></div>
+            <div id="back-btn" class="back-btn" onclick="resetView()">
+                <span>←</span> Back to High-Level
+            </div>
         </div>
         <div class="controls">
             <div class="group" id="view-group">
@@ -134,9 +162,9 @@ export class HTMLGenerator {
                 <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal (LR)</button>
                 <button onclick="setDirection('RL')" id="btn-RL">Horizontal (RL)</button>
             </div>
-            <button class="action-btn" onclick="window.print()">Save PDF</button>
             <button class="action-btn" onclick="zoom(0.1)">Zoom +</button>
             <button class="action-btn" onclick="zoom(-0.1)">Zoom -</button>
+            <button class="action-btn" onclick="resetZoom()">Reset</button>
         </div>
     </header>
     <div id="diagram-container">
@@ -147,7 +175,7 @@ export class HTMLGenerator {
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         
         const graph = ${JSON.stringify(graph)};
-        let currentView = 'high-level'; // 'high-level' | 'detailed' | 'drill-down'
+        let currentView = 'high-level'; 
         let currentDirection = 'LR';
         let currentDomain = null;
         let scale = 1;
@@ -165,7 +193,6 @@ export class HTMLGenerator {
             }
         });
 
-        // Event listener for clicks on nodes
         window.onNodeClick = (id) => {
             if (currentView === 'high-level') {
                 const parts = id.split('_');
@@ -177,26 +204,47 @@ export class HTMLGenerator {
         function drillDown(domain) {
             currentDomain = domain;
             currentView = 'drill-down';
-            document.getElementById('breadcrumb').style.display = 'block';
-            document.getElementById('breadcrumb').innerText = '↩ Back from ' + domain;
+            updateUI();
             render();
         }
 
         window.resetView = () => {
             currentView = 'high-level';
             currentDomain = null;
-            document.getElementById('breadcrumb').style.display = 'none';
+            updateUI();
             render();
         };
 
         window.changeView = (view) => {
             currentView = view;
             currentDomain = null;
-            document.getElementById('breadcrumb').style.display = 'none';
-            document.querySelectorAll('#view-group button').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + view).classList.add('active');
+            updateUI();
             render();
         };
+
+        function updateUI() {
+            const badge = document.getElementById('context-badge');
+            const backBtn = document.getElementById('back-btn');
+            const viewGroup = document.getElementById('view-group');
+            
+            if (currentView === 'drill-down') {
+                badge.style.display = 'block';
+                badge.innerText = 'Domain: ' + currentDomain;
+                backBtn.style.display = 'flex';
+                viewGroup.style.opacity = '0.5';
+                viewGroup.style.pointerEvents = 'none';
+            } else {
+                badge.style.display = 'none';
+                backBtn.style.display = 'none';
+                viewGroup.style.opacity = '1';
+                viewGroup.style.pointerEvents = 'all';
+            }
+
+            document.querySelectorAll('#view-group button').forEach(b => {
+                b.classList.remove('active');
+                if (b.id === 'btn-' + currentView) b.classList.add('active');
+            });
+        }
 
         window.setDirection = (dir) => {
             currentDirection = dir;
@@ -220,12 +268,13 @@ export class HTMLGenerator {
             if (currentView === 'high-level') {
                 const domainMap = new Map();
                 graph.nodes.forEach(n => {
-                    const key = (n.metadata.layer || 'Core') + '_' + (n.metadata.domain || 'shared');
-                    if (!domainMap.has(key)) domainMap.set(key, { layer: n.metadata.layer || 'Core', domain: n.metadata.domain || 'shared', count: 0 });
+                    const layer = n.metadata.layer || 'Core';
+                    const domain = n.metadata.domain || 'shared';
+                    const key = layer + '_' + domain;
+                    if (!domainMap.has(key)) domainMap.set(key, { layer, domain, count: 0 });
                     domainMap.get(key).count++;
                 });
 
-                // Render Subgraphs
                 const layers = [...new Set(graph.nodes.map(n => n.metadata.layer || 'Core'))];
                 layers.forEach(layer => {
                     syntax += '  subgraph ' + safeId(layer) + ' ["' + layer + '"]\\n';
@@ -237,7 +286,6 @@ export class HTMLGenerator {
                     syntax += '  end\\n';
                 });
 
-                // Edges
                 const domainEdges = new Set();
                 graph.edges.forEach(e => {
                     const fromNode = graph.nodes.find(n => n.id === e.from);
@@ -251,16 +299,24 @@ export class HTMLGenerator {
                 domainEdges.forEach(e => syntax += '  ' + e + '\\n');
 
             } else {
-                // Detailed or Drill-down
                 const nodes = currentView === 'drill-down' 
                     ? graph.nodes.filter(n => (n.metadata.domain || 'shared') === currentDomain)
                     : graph.nodes;
                 
                 const nodeIds = new Set(nodes.map(n => n.id));
+
+                if (currentView === 'drill-down') {
+                    syntax += '  subgraph InternalView ["Internal view of ' + currentDomain + '"]\\n';
+                }
                 
                 nodes.forEach(n => {
-                    syntax += '  ' + safeId(n.id) + '["' + n.id.split('/').pop() + '"]\\n';
+                    const label = n.id.split('/').pop();
+                    syntax += '    ' + safeId(n.id) + '["' + label + '"]\\n';
                 });
+
+                if (currentView === 'drill-down') {
+                    syntax += '  end\\n';
+                }
 
                 graph.edges.forEach(e => {
                     if (nodeIds.has(e.from) && nodeIds.has(e.to)) {
@@ -277,6 +333,7 @@ export class HTMLGenerator {
         }
 
         window.zoom = (delta) => { scale = Math.max(0.1, scale + delta); applyZoom(); };
+        window.resetZoom = () => { scale = 1; applyZoom(); };
         function applyZoom() {
             const svg = document.querySelector('.mermaid svg');
             if (svg) {
