@@ -190,6 +190,7 @@ export class HTMLGenerator {
         const graph = ${JSON.stringify(graph)};
         let currentView = 'high-level'; 
         let currentDirection = 'LR';
+        let currentLayer = null;
         let currentDomain = null;
         let scale = 1;
 
@@ -215,15 +216,17 @@ export class HTMLGenerator {
         });
 
         window.onNodeClick = (id) => {
-            if (currentView === 'high-level') {
-                // ID is n_LAYER_DOMAIN
+            if (currentView === 'high-level' && id.startsWith('n_dom_')) {
+                // ID is n_dom_LAYER_DOMAIN
                 const parts = id.split('_');
-                const domain = parts.slice(2).join('_');
-                drillDown(domain);
+                const layer = parts[2];
+                const domain = parts.slice(3).join('_');
+                drillDown(layer, domain);
             }
         };
 
-        function drillDown(domain) {
+        function drillDown(layer, domain) {
+            currentLayer = layer;
             currentDomain = domain;
             currentView = 'drill-down';
             updateUI();
@@ -232,6 +235,7 @@ export class HTMLGenerator {
 
         window.resetView = () => {
             currentView = 'high-level';
+            currentLayer = null;
             currentDomain = null;
             updateUI();
             render();
@@ -239,6 +243,7 @@ export class HTMLGenerator {
 
         window.changeView = (view) => {
             currentView = view;
+            currentLayer = null;
             currentDomain = null;
             updateUI();
             render();
@@ -251,7 +256,7 @@ export class HTMLGenerator {
             
             if (currentView === 'drill-down') {
                 badge.style.display = 'block';
-                badge.innerText = currentDomain.toUpperCase();
+                badge.innerText = currentLayer.toUpperCase() + ' > ' + currentDomain.toUpperCase();
                 backBtn.style.display = 'flex';
                 viewGroup.style.opacity = '0.4';
                 viewGroup.style.pointerEvents = 'none';
@@ -326,13 +331,16 @@ export class HTMLGenerator {
 
             } else {
                 const nodes = currentView === 'drill-down' 
-                    ? graph.nodes.filter(n => (n.metadata.domain || 'shared') === currentDomain)
+                    ? graph.nodes.filter(n => 
+                        (n.metadata.layer || 'Core') === currentLayer && 
+                        (n.metadata.domain || 'shared') === currentDomain
+                      )
                     : graph.nodes;
                 
                 const nodeIds = new Set(nodes.map(n => n.id));
 
                 if (currentView === 'drill-down') {
-                    syntax += '  subgraph ' + safeId(currentDomain) + ' ["DOMAIN: ' + cleanLabel(currentDomain).toUpperCase() + '"]\\n';
+                    syntax += '  subgraph ' + safeId(currentLayer + '_' + currentDomain) + ' ["' + cleanLabel(currentLayer).toUpperCase() + ' > ' + cleanLabel(currentDomain).toUpperCase() + '"]\\n';
                 }
                 
                 nodes.forEach(n => {
@@ -355,7 +363,6 @@ export class HTMLGenerator {
         }
 
         function getDomainId(layer, domain) {
-            // Using a consistent separator that safeId will handle predictably
             return safeId('dom_' + layer + '_' + domain);
         }
 

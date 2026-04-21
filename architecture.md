@@ -49,6 +49,7 @@ head
     meta charset=#quot;UTF-8#quot;
     meta name=#quot;viewport#quot; content=#quot;width=device-width, initial-scale=1"]
       child_process["☁️ child_process"]
+      commander["☁️ commander"]
       crypto["☁️ crypto"]
       dbNames["☁️ dbNames"]
       dbPatterns["☁️ dbPatterns"]
@@ -62,8 +63,15 @@ head
       typescript["☁️ typescript"]
       zod["☁️ zod"]
   end
+  src_cli_ts --> commander
   src_cli_ts --> fs_promises
   src_cli_ts --> path
+  src_cli_ts --> src_core_ArchitecturePipeline_ts
+  src_cli_ts --> src_core_DependencyGraphBuilder_ts
+  src_cli_ts --> src_core_FileDiscovery_ts
+  src_cli_ts --> src_generators_DiagramGenerator_ts
+  src_cli_ts --> src_generators_HTMLGenerator_ts
+  src_cli_ts --> src_parsers_ASTParser_ts
   src_core_ArchitectureClassifier_ts --> src_core_ConfigValidator_ts
   src_core_ArchitectureClassifier_ts --> src_core_GraphTypes_ts
   src_core_ArchitectureClassifier_ts --> this

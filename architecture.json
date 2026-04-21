@@ -1,6 +1,6 @@
 {
-  "version": "0.4.5",
-  "generatedAt": "2026-04-21T15:56:49.576Z",
+  "version": "0.4.6",
+  "generatedAt": "2026-04-21T16:02:39.965Z",
   "graph": {
     "nodes": [
       {
@@ -27,6 +27,19 @@
         },
         "type": "external",
         "label": "child_process",
+        "externalCalls": []
+      },
+      {
+        "id": "commander",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "commander",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "commander",
         "externalCalls": []
       },
       {
@@ -141,8 +154,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 158,
-            "complexity": 20
+            "sloc": 114,
+            "complexity": 9
           },
           "label": "Cli",
           "layer": "Core",
@@ -496,7 +509,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 347,
+            "sloc": 358,
             "complexity": 1
           },
           "label": "HTMLGenerator",
@@ -864,6 +877,12 @@
     ],
     "edges": [
       {
+        "id": "src/cli.ts->commander:import",
+        "from": "src/cli.ts",
+        "to": "commander",
+        "type": "import"
+      },
+      {
         "id": "src/cli.ts->fs/promises:import",
         "from": "src/cli.ts",
         "to": "fs/promises",
@@ -874,6 +893,48 @@
         "from": "src/cli.ts",
         "to": "path",
         "type": "import"
+      },
+      {
+        "id": "src/cli.ts->src/core/ArchitecturePipeline.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/core/ArchitecturePipeline.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/cli.ts->src/core/DependencyGraphBuilder.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/core/DependencyGraphBuilder.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/cli.ts->src/core/FileDiscovery.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/core/FileDiscovery.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/cli.ts->src/generators/DiagramGenerator.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/generators/DiagramGenerator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/cli.ts->src/generators/HTMLGenerator.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/generators/HTMLGenerator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/cli.ts->src/parsers/ASTParser.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/parsers/ASTParser.ts",
+        "type": "import",
+        "isTypeOnly": false
       },
       {
         "id": "src/core/ArchitectureClassifier.ts->src/core/ConfigValidator.ts:import",
@@ -1423,6 +1484,6 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.4.5"
+    "version": "0.4.6"
   }
 }

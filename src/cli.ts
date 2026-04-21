@@ -2,8 +2,9 @@ import { Command } from 'commander';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ASTParser } from './parsers/ASTParser';
-import { GraphBuilder } from './core/GraphBuilder';
-import { ArchitecturePipeline } from './core/Pipeline';
+import { FileDiscovery } from './core/FileDiscovery';
+import { DependencyGraphBuilder } from './core/DependencyGraphBuilder';
+import { ArchitecturePipeline } from './core/ArchitecturePipeline';
 import { DiagramGenerator } from './generators/DiagramGenerator';
 import { HTMLGenerator } from './generators/HTMLGenerator';
 
@@ -30,7 +31,7 @@ async function main() {
 
     if (options.help) {
       console.log(`
-Architecture Diagram Generator (v0.4.6)
+Architecture Diagram Generator (v0.4.7)
 
 Usage: architecture-generator [project-root] [options]
 
@@ -47,7 +48,7 @@ Options:
         const pkg = JSON.parse(await fs.readFile(path.join(__dirname, '../package.json'), 'utf-8'));
         console.log(`v${pkg.version}`);
       } catch (e) {
-        console.log('v0.4.6');
+        console.log('v0.4.7');
       }
       process.exit(0);
     }
@@ -56,21 +57,39 @@ Options:
 
     // 1. Discovery
     console.log('Step 2: Scanning for files...');
-    const parser = new ASTParser(absProjectRoot);
-    const files = await parser.discoverFiles();
+    const discovery = new FileDiscovery();
+    const fileList = await discovery.discover(absProjectRoot, { rootDir: absProjectRoot });
+    const allFiles = [
+      ...fileList.routes,
+      ...fileList.api,
+      ...fileList.components,
+      ...fileList.utilities,
+      ...(fileList.config || [])
+    ];
 
     // 2. Parsing
-    console.log('Step 3: Parsing AST and extracting metadata...');
-    const sourceGraph = await parser.parseFiles(files);
+    console.log(`Step 3: Parsing AST and extracting metadata from ${allFiles.length} files...`);
+    const parser = new ASTParser(absProjectRoot);
+    const parsedModules = [];
+    for (const file of allFiles) {
+      try {
+        const parsed = await parser.parse(file);
+        parsedModules.push(parsed);
+      } catch (err) {
+        if (options.debug) {
+          console.error(`Warning: Failed to parse ${file}: ${err}`);
+        }
+      }
+    }
 
     // 3. Graph Building
-    const builder = new GraphBuilder();
-    // (Additional processing if needed)
+    const builder = new DependencyGraphBuilder(absProjectRoot);
+    const sourceGraph = builder.build(parsedModules);
 
     // 4. Run Pipeline
     console.log('Step 4: Normalizing architecture and applying rules...');
     const pipeline = new ArchitecturePipeline({
-      version: '0.4.6',
+      version: '0.4.7',
       config: {},
       debug: options.debug,
       rootDir: absProjectRoot
@@ -87,7 +106,7 @@ Options:
     // 6. Write Output
     console.log('Step 7: Saving output files...');
     const output = {
-      version: '0.4.6',
+      version: '0.4.7',
       generatedAt: new Date().toISOString(),
       graph
     };
