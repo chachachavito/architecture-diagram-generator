@@ -133,14 +133,14 @@ ${mermaidSyntax}
         };
         
         function applyZoom() {
-            const svg = document.querySelector('svg');
+            const svg = document.querySelector('.mermaid svg');
             if (svg) {
-                svg.style.transform = \`scale(\${scale})\`;
+                svg.style.transform = `scale(${scale})`;
                 svg.style.transformOrigin = 'top center';
             }
         }
     </script>
 </body>
-</html>`;
+</html>`.trim();
   }
 }

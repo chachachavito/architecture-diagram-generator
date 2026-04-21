@@ -77,7 +77,12 @@ export class MermaidRenderer {
   }
 
   private escapeLabel(label: string): string {
-    // Escape quotes and ensure no internal Mermaid syntax breaks the label
-    return label.replace(/"/g, '#quot;').replace(/[\[\]\(\)\{\}]/g, '');
+    // Remove all characters that commonly break Mermaid syntax
+    return label
+      .replace(/"/g, '#quot;')
+      .replace(/[\[\]\(\)\{\}]/g, '')
+      .replace(/[<>|]/g, '')
+      .replace(/--+/g, '-')
+      .trim();
   }
 }
