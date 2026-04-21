@@ -1,7 +1,10 @@
 {
-  "name": "architecture-diagram-generator",
+  "name": "@chavitochavito/architecture-diagram-generator",
   "version": "0.3.0",
   "description": "Automated architecture diagram generator for Next.js projects",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -39,16 +42,16 @@
     "mermaid",
     "documentation"
   ],
-  "author": "chachachavito",
+  "author": "chavitochavito",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chachachavito/architecture-diagram-generator.git"
+    "url": "git+https://github.com/chavitochavito/architecture-diagram-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/chachachavito/architecture-diagram-generator/issues"
+    "url": "https://github.com/chavitochavito/architecture-diagram-generator/issues"
   },
-  "homepage": "https://github.com/chachachavito/architecture-diagram-generator#readme",
+  "homepage": "https://github.com/chavitochavito/architecture-diagram-generator#readme",
   "files": [
     "dist",
     "README.md",

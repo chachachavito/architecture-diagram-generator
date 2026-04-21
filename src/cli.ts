@@ -64,7 +64,7 @@ async function main(): Promise<void> {
 
     if (options.help) {
       console.log(`
-Architecture Diagram Generator (v2.1)
+Architecture Diagram Generator (v0.3.0)
 
 Usage: architecture-generator [project-root] [options]
 
@@ -134,7 +134,7 @@ Description:
 
     // 4. Run Pipeline
     const pipeline = new ArchitecturePipeline({
-      version: '2.1.0',
+      version: '0.3.0',
       config,
       debug: options.debug,
       rootDir: options.projectRoot
@@ -148,7 +148,7 @@ Description:
 
     // 6. Write Output
     const output = {
-      version: '2.1.0',
+      version: '0.3.0',
       generatedAt: new Date().toISOString(),
       graph
     };

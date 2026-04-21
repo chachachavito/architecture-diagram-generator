@@ -3,9 +3,9 @@
 **Understand your TypeScript architecture in seconds.**
 No configuration required for most projects.
 
-[![npm version](https://img.shields.io/npm/v/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
-[![npm downloads](https://img.shields.io/npm/dm/architecture-diagram-generator.svg)](https://www.npmjs.com/package/architecture-diagram-generator)
-[![license](https://img.shields.io/npm/l/architecture-diagram-generator.svg)](https://github.com/chachachavito/architecture-diagram-generator/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@chavitochavito/architecture-diagram-generator.svg)](https://www.npmjs.com/package/@chavitochavito/architecture-diagram-generator)
+[![npm downloads](https://img.shields.io/npm/dm/@chavitochavito/architecture-diagram-generator.svg)](https://www.npmjs.com/package/@chavitochavito/architecture-diagram-generator)
+[![license](https://img.shields.io/npm/l/@chavitochavito/architecture-diagram-generator.svg)](https://github.com/chavitochavito/architecture-diagram-generator/blob/main/LICENSE)
 
 ## Who is this for?
 
@@ -63,7 +63,7 @@ Powered by **ts-morph** for deep semantic analysis.
 Use the JSON output for automated validation:
 
 1. **Extract**: `architecture-diagram-generator` — Generates the enriched graph.
-2. **Audit**: [architecture-analyzer](https://github.com/chachachavito/architecture-analyzer) — Validates rules, inheritance, and complexity.
+2. **Audit**: [architecture-analyzer](https://github.com/chavitochavito/architecture-analyzer) — Validates rules, inheritance, and complexity.
 
 ## Supported Environments
 
@@ -82,4 +82,4 @@ Use the JSON output for automated validation:
 Run locally or in CI to keep your architecture in sync.
 
 ---
-MIT License • Created by [chachachavito](https://github.com/chachachavito)
+MIT License • Created by [chavitochavito](https://github.com/chavitochavito)
