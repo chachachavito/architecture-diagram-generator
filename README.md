@@ -1,4 +1,4 @@
-# Architecture Diagram Generator (v0.4.13)
+# Architecture Diagram Generator (v0.4.14)
 
 ![Interactive Dashboard](docs/dashboard-preview.png)
 *Interactive Dashboard with drill-down capabilities*
