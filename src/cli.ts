@@ -2,11 +2,14 @@
 import { Command } from 'commander';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { FileDiscovery } from './core/FileDiscovery';
+import { ASTParser } from './parsers/ASTParser';
+import { DependencyGraphBuilder } from './core/DependencyGraphBuilder';
 import { ArchitecturePipeline } from './core/ArchitecturePipeline';
 import { DiagramGenerator } from './generators/DiagramGenerator';
 import { HTMLGenerator } from './generators/HTMLGenerator';
 
-const VERSION = '0.4.11';
+const VERSION = '0.4.12';
 
 async function main() {
   const program = new Command();
@@ -25,8 +28,39 @@ async function main() {
 
         console.log(`Analyzing project at: ${absProjectRoot}`);
 
-        // 1. Run Pipeline
-        console.log('Step 1: Normalizing architecture and applying rules...');
+        // 1. File Discovery
+        console.log('Step 1: Discovering files...');
+        const discovery = new FileDiscovery();
+        const fileList = await discovery.discover(absProjectRoot, { rootDir: absProjectRoot });
+        
+        const allFiles = [
+          ...fileList.routes,
+          ...fileList.api,
+          ...fileList.components,
+          ...fileList.utilities,
+          ...(fileList.config || [])
+        ];
+
+        // 2. Parse AST
+        console.log(`Step 2: Parsing ${allFiles.length} files...`);
+        const parser = new ASTParser(absProjectRoot);
+        const parsedModules = [];
+        for (const file of allFiles) {
+          try {
+            const module = await parser.parse(file);
+            parsedModules.push(module);
+          } catch (e) {
+            if (options.debug) console.error(`   Warning: Failed to parse ${file}`);
+          }
+        }
+
+        // 3. Build Dependency Graph
+        console.log('Step 3: Building dependency graph...');
+        const builder = new DependencyGraphBuilder();
+        const sourceGraph = builder.build(parsedModules);
+
+        // 4. Run Pipeline
+        console.log('Step 4: Normalizing architecture and applying rules...');
         const pipeline = new ArchitecturePipeline({
           version: VERSION,
           config: {},
@@ -34,15 +68,16 @@ async function main() {
           rootDir: absProjectRoot
         });
 
-        const graph = await pipeline.run();
+        const result = await pipeline.run(sourceGraph);
+        const graph = result.graph;
 
-        // 2. Generate Diagram
-        console.log('Step 2: Generating interactive diagrams...');
+        // 5. Generate Diagram
+        console.log('Step 5: Generating interactive diagrams...');
         const generator = new DiagramGenerator();
         const diagram = generator.generate(graph);
 
-        // 3. Write Output
-        console.log('Step 3: Saving output files...');
+        // 6. Write Output
+        console.log('Step 6: Saving output files...');
         const output = {
           version: VERSION,
           generatedAt: new Date().toISOString(),
