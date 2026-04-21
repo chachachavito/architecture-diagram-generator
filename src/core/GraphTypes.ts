@@ -19,6 +19,9 @@ export interface NodeMetadata {
   type: NodeType;
   source: SourcePriority;
   label?: string;
+  inheritance?: any[];
+  decorators?: string[];
+  metrics?: any;
   [key: string]: any;
 }
 
@@ -45,6 +48,7 @@ export interface GraphEdge {
   from: string;
   to: string;
   type: 'import' | 'external-call';
+  isTypeOnly?: boolean;
 }
 
 /**

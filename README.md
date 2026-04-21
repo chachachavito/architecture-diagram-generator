@@ -44,30 +44,38 @@ flowchart TD
   src_core_Pipeline_ts --> zod
 ```
 
+## Core Engine (v0.3.0)
+
+Powered by **ts-morph** for deep semantic analysis.
+
+- **Type-Safe Dependencies**: Distinguishes between runtime and type-only imports.
+- **Inheritance Mapping**: Automatically detects `extends` and `implements` relations.
+- **Code Metrics**: Provides Cyclomatic Complexity and SLOC for every module.
+- **External Services**: High-precision detection of DB clients (Prisma, Mongoose) and API calls using TypeScript's TypeChecker.
+
 ## Artifacts
 
-- **`architecture.json`**: Dependency graph
-- **`architecture.md`**: Mermaid diagram
+- **`architecture.json`**: Enriched dependency graph with metrics and inheritance data.
+- **`architecture.md`**: Mermaid diagram visualizing your project structure.
 
 ## Automated Governance Pipeline
 
 Use the JSON output for automated validation:
 
-1. **Extract**: `architecture-diagram-generator` — Generates the graph
-2. **Audit**: [architecture-analyzer](https://github.com/chachachavito/architecture-analyzer) — Validates rules and detects issues
+1. **Extract**: `architecture-diagram-generator` — Generates the enriched graph.
+2. **Audit**: [architecture-analyzer](https://github.com/chachachavito/architecture-analyzer) — Validates rules, inheritance, and complexity.
 
 ## Supported Environments
 
 - Next.js (App/Pages router)
 - Layered Architectures (Core, Domain, Infra)
 - Monorepos (pnpm, yarn workspaces)
-
-For custom layouts, use an `architecture-config.json` in the root.
+- NestJS & Framework-heavy projects (Decorator support)
 
 ## Limitations
 
-- **Convention-based**: Relies on standard folder naming and import patterns
-- **TypeScript ecosystem**: Supports .ts and .tsx only
+- **TypeScript focus**: Optimal performance on TS/TSX projects.
+- **Memory usage**: Semantic analysis requires more memory for large project graphs.
 
 ## Call to Action
 

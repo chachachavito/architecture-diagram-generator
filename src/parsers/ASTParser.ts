@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import { Project, SourceFile, SyntaxKind } from 'ts-morph';
 import * as path from 'path';
 import * as fs from 'fs/promises';
 import { ModuleCache } from '../core/ModuleCache';
@@ -11,6 +12,7 @@ export interface ImportStatement {
   source: string;        // Path of imported module
   specifiers: string[];  // Imported names
   isExternal: boolean;   // If it's external dependency (node_modules)
+  isTypeOnly: boolean;   // If it's a type-only import
   importKind?: 'named' | 'default' | 'namespace' | 'side-effect' | 'dynamic' | 'require';
 }
 
@@ -40,6 +42,17 @@ export interface SourceLocation {
   column?: number;
 }
 
+export interface InheritanceInfo {
+  name: string;
+  type: 'extends' | 'implements';
+  module?: string;
+}
+
+export interface ModuleMetrics {
+  complexity: number;
+  sloc: number;
+}
+
 /**
  * Interface representing module metadata
  */
@@ -47,6 +60,9 @@ export interface ModuleMetadata {
   hasDefaultExport: boolean;
   isReactComponent: boolean;
   isApiRoute: boolean;
+  inheritance: InheritanceInfo[];
+  decorators: string[];
+  metrics: ModuleMetrics;
 }
 
 /**
@@ -67,10 +83,44 @@ export interface ParsedModule {
 export class ASTParser {
   private rootDir: string;
   private cache?: ModuleCache;
+  private static project: Project | null = null;
 
   constructor(rootDir: string, cache?: ModuleCache) {
     this.rootDir = rootDir;
     this.cache = cache;
+  }
+
+  /**
+   * Gets or initializes the ts-morph project singleton
+   */
+  private getProject(): Project {
+    if (!ASTParser.project) {
+      const tsConfigPath = path.join(this.rootDir, 'tsconfig.json');
+      
+      // Check if tsconfig exists
+      let projectOptions: any = {
+        skipAddingFilesFromTsConfig: true,
+      };
+
+      try {
+        // We use a sync-like check or just provide the path and let ts-morph handle it if it exists
+        // But ts-morph throws if tsConfigFilePath is provided but not found.
+        // So we should only provide it if it exists.
+        // Using a simple flag to check existence.
+        projectOptions.tsConfigFilePath = tsConfigPath;
+        ASTParser.project = new Project(projectOptions);
+      } catch (e) {
+        // Fallback to default project without tsconfig
+        ASTParser.project = new Project({
+          compilerOptions: {
+            allowJs: true,
+            target: ts.ScriptTarget.ESNext,
+            module: ts.ModuleKind.CommonJS,
+          }
+        });
+      }
+    }
+    return ASTParser.project;
   }
 
   /**
@@ -92,21 +142,16 @@ export class ASTParser {
       }
     }
 
-    // Read file content
-    let content: string;
-    try {
-      content = await fs.readFile(absolutePath, 'utf-8');
-    } catch (error) {
-      throw new FileReadError(filePath, error instanceof Error ? error : new Error(String(error)));
+    // Get source file from ts-morph project
+    const project = this.getProject();
+    let sourceFile = project.getSourceFile(absolutePath);
+    
+    if (!sourceFile) {
+      sourceFile = project.addSourceFileAtPath(absolutePath);
     }
 
-    // Create source file
-    const sourceFile = ts.createSourceFile(
-      filePath,
-      content,
-      ts.ScriptTarget.Latest,
-      true
-    );
+    // Refresh from disk to ensure we have the latest content if it changed
+    await sourceFile.refreshFromFileSystem();
 
     // Extract imports and exports
     const imports = this.extractImports(sourceFile, filePath);
@@ -130,380 +175,293 @@ export class ASTParser {
     return result;
   }
 
-  /**
-   * Extracts import statements from an AST
-   * @param sourceFile - TypeScript source file AST
-   * @param filePath - Path of the file being parsed
-   * @returns ImportStatement[] - Array of import statements
-   */
-  extractImports(sourceFile: ts.SourceFile, filePath: string): ImportStatement[] {
+  extractImports(sourceFile: SourceFile, filePath: string): ImportStatement[] {
     const imports: ImportStatement[] = [];
 
-    const visit = (node: ts.Node) => {
-      // Handle import declarations: import { x } from 'module'
-      if (ts.isImportDeclaration(node)) {
-        const moduleSpecifier = node.moduleSpecifier;
-        
-        if (ts.isStringLiteral(moduleSpecifier)) {
-          const source = moduleSpecifier.text;
-          const specifiers: string[] = [];
-          let importKind: ImportStatement['importKind'] = 'named';
+    // 1. Standard imports
+    sourceFile.getImportDeclarations().forEach(importDecl => {
+      const source = importDecl.getModuleSpecifierValue();
+      const isTypeOnly = importDecl.isTypeOnly();
+      const specifiers: string[] = [];
+      let importKind: ImportStatement['importKind'] = 'named';
 
-          // Extract imported names
-          if (!node.importClause) {
-            // Side-effect import: import 'module'
-            importKind = 'side-effect';
-          } else {
-            // Default import: import X from 'module'
-            if (node.importClause.name) {
-              specifiers.push(node.importClause.name.text);
-              importKind = 'default';
-            }
+      const defaultImport = importDecl.getDefaultImport();
+      if (defaultImport) {
+        specifiers.push(defaultImport.getText());
+        importKind = 'default';
+      }
 
-            if (node.importClause.namedBindings) {
-              // Namespace import: import * as X from 'module'
-              if (ts.isNamespaceImport(node.importClause.namedBindings)) {
-                specifiers.push(node.importClause.namedBindings.name.text);
-                importKind = 'namespace';
-              }
-              // Named imports: import { a, b } from 'module'
-              else if (ts.isNamedImports(node.importClause.namedBindings)) {
-                node.importClause.namedBindings.elements.forEach((element) => {
-                  specifiers.push(element.name.text);
-                });
-                // If there's also a default import, named takes precedence
-                importKind = 'named';
-              }
-            }
-          }
+      const namespaceImport = importDecl.getNamespaceImport();
+      if (namespaceImport) {
+        specifiers.push(namespaceImport.getText());
+        importKind = 'namespace';
+      }
 
+      importDecl.getNamedImports().forEach(named => {
+        specifiers.push(named.getName());
+        importKind = 'named';
+      });
+
+      if (specifiers.length === 0 && !defaultImport && !namespaceImport) {
+        importKind = 'side-effect';
+      }
+
+      const isExternal = this.isExternalModule(source);
+      const resolvedSource = isExternal 
+        ? source 
+        : this.resolveRelativeImport(source, filePath);
+
+      imports.push({
+        source: resolvedSource,
+        specifiers,
+        isExternal,
+        isTypeOnly,
+        importKind,
+      });
+    });
+
+    // 2. Dynamic imports and require calls
+    sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression).forEach(call => {
+      const expression = call.getExpression();
+      
+      // Dynamic import()
+      if (expression.getKind() === SyntaxKind.ImportKeyword) {
+        const args = call.getArguments();
+        if (args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral) {
+          const source = args[0].asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue();
           const isExternal = this.isExternalModule(source);
-          const resolvedSource = isExternal 
-            ? source 
-            : this.resolveRelativeImport(source, filePath);
+          const resolvedSource = isExternal ? source : this.resolveRelativeImport(source, filePath);
+          
+          imports.push({
+            source: resolvedSource,
+            specifiers: [],
+            isExternal,
+            isTypeOnly: false, // Dynamic imports are runtime
+            importKind: 'dynamic',
+          });
+        }
+      }
+
+      // require()
+      if (expression.getKind() === SyntaxKind.Identifier && expression.getText() === 'require') {
+        const args = call.getArguments();
+        if (args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral) {
+          const source = args[0].asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue();
+          const isExternal = this.isExternalModule(source);
+          const resolvedSource = isExternal ? source : this.resolveRelativeImport(source, filePath);
 
           imports.push({
             source: resolvedSource,
-            specifiers,
+            specifiers: [],
             isExternal,
-            importKind,
+            isTypeOnly: false,
+            importKind: 'require',
           });
         }
       }
+    });
 
-      // Handle call expressions: require() and dynamic import()
-      if (ts.isCallExpression(node)) {
-        // Handle require calls: const x = require('module')
-        if (node.expression.kind === ts.SyntaxKind.Identifier) {
-          const identifier = node.expression as ts.Identifier;
-          if (identifier.text === 'require' && node.arguments.length > 0) {
-            const arg = node.arguments[0];
-            if (ts.isStringLiteral(arg)) {
-              const source = arg.text;
-              const isExternal = this.isExternalModule(source);
-              const resolvedSource = isExternal 
-                ? source 
-                : this.resolveRelativeImport(source, filePath);
-
-              imports.push({
-                source: resolvedSource,
-                specifiers: [],
-                isExternal,
-                importKind: 'require',
-              });
-            }
-          }
-        }
-
-        // Handle dynamic imports: import('module') or await import('./module')
-        if (node.expression.kind === ts.SyntaxKind.ImportKeyword && node.arguments.length > 0) {
-          const arg = node.arguments[0];
-          if (ts.isStringLiteral(arg)) {
-            const source = arg.text;
-            const isExternal = this.isExternalModule(source);
-            const resolvedSource = isExternal 
-              ? source 
-              : this.resolveRelativeImport(source, filePath);
-
-            imports.push({
-              source: resolvedSource,
-              specifiers: [],
-              isExternal,
-              importKind: 'dynamic',
-            });
-          }
-        }
-      }
-
-      // Handle re-exports with source: export { x } from 'module' and export * from 'module'
-      if (ts.isExportDeclaration(node) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
-        const source = node.moduleSpecifier.text;
+    // 3. Re-exports with source
+    sourceFile.getExportDeclarations().forEach(exportDecl => {
+      const moduleSpecifier = exportDecl.getModuleSpecifierValue();
+      if (moduleSpecifier) {
+        const source = moduleSpecifier;
         const specifiers: string[] = [];
-        let importKind: ImportStatement['importKind'];
+        let importKind: ImportStatement['importKind'] = 'named';
 
-        if (!node.exportClause) {
-          // export * from 'module' or export * as ns from 'module'
+        if (exportDecl.isNamespaceExport()) {
           importKind = 'namespace';
-        } else if (ts.isNamespaceExport(node.exportClause)) {
-          // export * as ns from 'module'
-          specifiers.push(node.exportClause.name.text);
-          importKind = 'namespace';
-        } else if (ts.isNamedExports(node.exportClause)) {
-          // export { x, y } from 'module'
-          node.exportClause.elements.forEach((element) => {
-            specifiers.push(element.name.text);
-          });
-          importKind = 'named';
+          const name = exportDecl.getNamespaceExport()?.getName();
+          if (name) specifiers.push(name);
         } else {
+          exportDecl.getNamedExports().forEach(named => {
+            specifiers.push(named.getName());
+          });
           importKind = 'named';
         }
 
         const isExternal = this.isExternalModule(source);
-        const resolvedSource = isExternal 
-          ? source 
-          : this.resolveRelativeImport(source, filePath);
+        const resolvedSource = isExternal ? source : this.resolveRelativeImport(source, filePath);
 
         imports.push({
           source: resolvedSource,
           specifiers,
           isExternal,
+          isTypeOnly: exportDecl.isTypeOnly(),
           importKind,
         });
       }
+    });
 
-      ts.forEachChild(node, visit);
-    };
-
-    visit(sourceFile);
     return imports;
   }
 
-  /**
-   * Extracts export statements from an AST
-   * @param sourceFile - TypeScript source file AST
-   * @returns ExportStatement[] - Array of export statements
-   */
-  extractExports(sourceFile: ts.SourceFile): ExportStatement[] {
+  extractExports(sourceFile: SourceFile): ExportStatement[] {
     const exports: ExportStatement[] = [];
 
-    const visit = (node: ts.Node) => {
-      // Export declarations: export { x, y }
-      if (ts.isExportDeclaration(node)) {
-        if (node.exportClause && ts.isNamedExports(node.exportClause)) {
-          node.exportClause.elements.forEach((element) => {
-            exports.push({
-              name: element.name.text,
-              type: 'variable',
-              isDefault: false,
-            });
-          });
-        }
-      }
-
-      // Export assignments: export = something (CommonJS)
-      if (ts.isExportAssignment(node)) {
+    // Named exports: export { x, y }
+    sourceFile.getExportDeclarations().forEach(exportDecl => {
+      exportDecl.getNamedExports().forEach(named => {
         exports.push({
-          name: 'default',
-          type: 'default',
-          isDefault: true,
+          name: named.getName(),
+          type: 'variable',
+          isDefault: false,
         });
-      }
+      });
+    });
 
-      // Check for export modifiers on declarations
-      const modifiers = ts.canHaveModifiers(node) ? ts.getModifiers(node) : undefined;
-      const hasExportModifier = modifiers?.some(
-        (m) => m.kind === ts.SyntaxKind.ExportKeyword
-      );
-      const hasDefaultModifier = modifiers?.some(
-        (m) => m.kind === ts.SyntaxKind.DefaultKeyword
-      );
+    // Default exports and assignments
+    sourceFile.getExportAssignments().forEach(assign => {
+      exports.push({
+        name: 'default',
+        type: 'default',
+        isDefault: true,
+      });
+    });
 
-      if (hasExportModifier) {
-        // Export function declaration: export function foo() {}
-        if (ts.isFunctionDeclaration(node) && node.name) {
-          exports.push({
-            name: node.name.text,
-            type: 'function',
-            isDefault: hasDefaultModifier || false,
-          });
-        }
+    // Declarations with export modifier
+    sourceFile.getFunctions().filter(f => f.isExported()).forEach(f => {
+      exports.push({
+        name: f.getName() || 'default',
+        type: 'function',
+        isDefault: f.isDefaultExport(),
+      });
+    });
 
-        // Export class declaration: export class Foo {}
-        if (ts.isClassDeclaration(node) && node.name) {
-          exports.push({
-            name: node.name.text,
-            type: 'class',
-            isDefault: hasDefaultModifier || false,
-          });
-        }
+    sourceFile.getClasses().filter(c => c.isExported()).forEach(c => {
+      exports.push({
+        name: c.getName() || 'default',
+        type: 'class',
+        isDefault: c.isDefaultExport(),
+      });
+    });
 
-        // Export variable statement: export const x = 1
-        if (ts.isVariableStatement(node)) {
-          node.declarationList.declarations.forEach((declaration) => {
-            if (ts.isIdentifier(declaration.name)) {
-              exports.push({
-                name: declaration.name.text,
-                type: 'variable',
-                isDefault: hasDefaultModifier || false,
-              });
-            }
-          });
-        }
+    sourceFile.getVariableStatements().filter(v => v.isExported()).forEach(v => {
+      v.getDeclarations().forEach(decl => {
+        exports.push({
+          name: decl.getName(),
+          type: 'variable',
+          isDefault: false,
+        });
+      });
+    });
 
-        // Export type/interface: export type X = ..., export interface Y {}
-        if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) {
-          exports.push({
-            name: node.name.text,
-            type: 'type',
-            isDefault: hasDefaultModifier || false,
-          });
-        }
-      }
+    sourceFile.getInterfaces().filter(i => i.isExported()).forEach(i => {
+      exports.push({
+        name: i.getName(),
+        type: 'type',
+        isDefault: i.isDefaultExport(),
+      });
+    });
 
-      ts.forEachChild(node, visit);
-    };
+    sourceFile.getTypeAliases().filter(t => t.isExported()).forEach(t => {
+      exports.push({
+        name: t.getName(),
+        type: 'type',
+        isDefault: t.isDefaultExport(),
+      });
+    });
 
-    visit(sourceFile);
     return exports;
   }
 
-  /**
-   * Detects external API calls in the code (fetch, axios, database clients, etc.)
-   * @param sourceFile - TypeScript source file AST
-   * @returns ExternalCall[] - Array of external calls
-   */
-  private detectExternalCalls(sourceFile: ts.SourceFile): ExternalCall[] {
+  private detectExternalCalls(sourceFile: SourceFile): ExternalCall[] {
     const calls: ExternalCall[] = [];
+    const typeChecker = this.getProject().getTypeChecker();
 
-    // Track database-related import names (e.g. prisma, mongoose, pg)
-    const dbIdentifiers = new Set<string>();
+    sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression).forEach(call => {
+      const expression = call.getExpression();
+      const text = expression.getText();
+      const { line, column } = sourceFile.getLineAndColumnAtPos(call.getStart());
 
-    // First pass: collect database client identifiers from imports
-    const collectDbImports = (node: ts.Node) => {
-      if (ts.isImportDeclaration(node)) {
-        const moduleSpecifier = node.moduleSpecifier;
-        if (ts.isStringLiteral(moduleSpecifier)) {
-          const source = moduleSpecifier.text;
-          const dbPackages = ['@prisma/client', 'mongoose', 'pg', 'mysql', 'mysql2', 'sqlite3', 'better-sqlite3', 'typeorm', 'sequelize', 'knex', 'mongodb'];
-          if (dbPackages.some(pkg => source === pkg || source.startsWith(pkg + '/'))) {
-            if (node.importClause) {
-              if (node.importClause.name) {
-                dbIdentifiers.add(node.importClause.name.text);
-              }
-              if (node.importClause.namedBindings) {
-                if (ts.isNamespaceImport(node.importClause.namedBindings)) {
-                  dbIdentifiers.add(node.importClause.namedBindings.name.text);
-                } else if (ts.isNamedImports(node.importClause.namedBindings)) {
-                  node.importClause.namedBindings.elements.forEach(el => {
-                    dbIdentifiers.add(el.name.text);
-                  });
-                }
-              }
-            }
+      let detected = false;
+
+      // 1. fetch('url')
+      if (text === 'fetch') {
+        const args = call.getArguments();
+        const target = args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral 
+          ? args[0].asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue() 
+          : '';
+        calls.push({ type: 'fetch', target, location: { line, column } });
+        detected = true;
+      }
+
+      // 2. axios.get('url') or axios('url')
+      if (!detected && (text === 'axios' || text.startsWith('axios.'))) {
+        const args = call.getArguments();
+        const target = args.length > 0 && args[0].getKind() === SyntaxKind.StringLiteral 
+          ? args[0].asKindOrThrow(SyntaxKind.StringLiteral).getLiteralValue() 
+          : '';
+        calls.push({ type: 'axios', target, location: { line, column } });
+        detected = true;
+      }
+
+      // 3. Database detection (Type-based + Heuristics)
+      if (!detected) {
+        try {
+          const type = typeChecker.getTypeAtLocation(expression);
+          const typeText = type.getText();
+          
+          const dbPatterns = ['PrismaClient', 'MongoClient', 'Mongoose', 'Sequelize', 'Knex', 'Pool'];
+          if (dbPatterns.some(p => typeText.includes(p))) {
+            calls.push({ type: 'database', target: typeText, location: { line, column } });
+            detected = true;
+          }
+        } catch (e) {}
+
+        // Fallback: Name-based heuristics for DB (essential for tests without node_modules)
+        if (!detected) {
+          const dbNames = ['prisma', 'db', 'database', 'repo', 'repository', 'knex', 'sequelize', 'mongoose', 'mongodb'];
+          const lowerText = text.toLowerCase();
+          if (dbNames.some(name => lowerText.includes(name))) {
+            // Extract the base object name (e.g., 'prisma' from 'prisma.user.findMany')
+            const target = text.split('.')[0];
+            calls.push({ type: 'database', target, location: { line, column } });
           }
         }
       }
-      ts.forEachChild(node, collectDbImports);
-    };
-    collectDbImports(sourceFile);
+    });
 
-    const getLocation = (node: ts.Node): SourceLocation => {
-      const { line, character } = sourceFile.getLineAndCharacterOfPosition(node.getStart());
-      return { line: line + 1, column: character };
-    };
+    // Detect 'new' expressions for DB clients
+    sourceFile.getDescendantsOfKind(SyntaxKind.NewExpression).forEach(newExpr => {
+      let detected = false;
+      const dbPatterns = ['PrismaClient', 'MongoClient', 'Mongoose', 'Sequelize', 'DataSource', 'Pool'];
+      
+      try {
+        const type = typeChecker.getTypeAtLocation(newExpr);
+        const typeText = type.getText();
+        const { line } = sourceFile.getLineAndColumnAtPos(newExpr.getStart());
+        
+        if (dbPatterns.some(p => typeText.includes(p))) {
+          let target = typeText;
+          if (target.includes('Sequelize')) target = 'sequelize';
+          if (target.includes('PrismaClient')) target = 'prisma';
+          if (target.includes('MongoClient')) target = 'mongodb';
+          
+          calls.push({ type: 'database', target, location: { line, column: 0 } });
+          detected = true;
+        }
+      } catch (e) {}
 
-    const getStringArg = (args: ts.NodeArray<ts.Expression>): string => {
-      if (args.length > 0 && ts.isStringLiteral(args[0])) {
-        return args[0].text;
-      }
-      return '';
-    };
-
-    const visit = (node: ts.Node) => {
-      // Detect: new PrismaClient(), new MongoClient(), etc.
-      if (ts.isNewExpression(node)) {
-        const expr = node.expression;
-        const name = ts.isIdentifier(expr) ? expr.text : '';
-        const dbConstructors: Record<string, string> = {
-          PrismaClient: 'prisma',
-          MongoClient: 'mongodb',
-          Mongoose: 'mongoose',
-          Pool: 'pg',
-          Client: 'pg',
-          Sequelize: 'sequelize',
-          DataSource: 'typeorm',
-        };
-        if (name in dbConstructors) {
-          calls.push({ type: 'database', target: dbConstructors[name], location: getLocation(node) });
+      if (!detected) {
+        const text = newExpr.getExpression().getText();
+        if (dbPatterns.some(p => text.includes(p))) {
+          const { line } = sourceFile.getLineAndColumnAtPos(newExpr.getStart());
+          let target = text;
+          if (target === 'Sequelize') target = 'sequelize';
+          if (target === 'PrismaClient') target = 'prisma';
+          if (target === 'MongoClient') target = 'mongodb';
+          
+          calls.push({ type: 'database', target, location: { line, column: 0 } });
         }
       }
+    });
 
-      if (ts.isCallExpression(node)) {
-        const expr = node.expression;
-
-        // Detect: fetch('url', ...)
-        if (ts.isIdentifier(expr) && expr.text === 'fetch') {
-          const target = getStringArg(node.arguments);
-          calls.push({ type: 'fetch', target, location: getLocation(node) });
-        }
-
-        // Detect: axios('url'), axios.get/post/put/delete/patch/request('url')
-        if (ts.isIdentifier(expr) && expr.text === 'axios') {
-          const target = getStringArg(node.arguments);
-          calls.push({ type: 'axios', target, location: getLocation(node) });
-        }
-
-        if (ts.isPropertyAccessExpression(expr)) {
-          const obj = expr.expression;
-          const method = expr.name.text;
-
-          // axios.get/post/put/delete/patch/head/options/request
-          if (ts.isIdentifier(obj) && obj.text === 'axios') {
-            const axiosMethods = ['get', 'post', 'put', 'delete', 'patch', 'head', 'options', 'request', 'create'];
-            if (axiosMethods.includes(method)) {
-              const target = getStringArg(node.arguments);
-              calls.push({ type: 'axios', target, location: getLocation(node) });
-            }
-          }
-
-          // Detect database client method calls: prisma.user.findMany(), mongoose.connect(), etc.
-          if (ts.isIdentifier(obj) && dbIdentifiers.has(obj.text)) {
-            calls.push({ type: 'database', target: obj.text, location: getLocation(node) });
-          }
-
-          // Detect prisma.* (common variable name even without explicit import tracking)
-          if (ts.isIdentifier(obj) && (obj.text === 'prisma' || obj.text === 'db')) {
-            // Only add if not already captured via dbIdentifiers
-            if (!dbIdentifiers.has(obj.text)) {
-              calls.push({ type: 'database', target: obj.text, location: getLocation(node) });
-            }
-          }
-
-          // Detect mongoose.connect(), mongoose.model(), etc.
-          if (ts.isIdentifier(obj) && obj.text === 'mongoose') {
-            if (!dbIdentifiers.has('mongoose')) {
-              calls.push({ type: 'database', target: 'mongoose', location: getLocation(node) });
-            }
-          }
-        }
-      }
-
-      ts.forEachChild(node, visit);
-    };
-
-    visit(sourceFile);
     return calls;
   }
 
-  /**
-   * Extracts metadata about the module
-   * @param sourceFile - TypeScript source file AST
-   * @param exports - Extracted exports
-   * @param filePath - Path of the file being parsed
-   * @returns ModuleMetadata - Module metadata
-   */
   private extractMetadata(
-    sourceFile: ts.SourceFile,
+    sourceFile: SourceFile,
     exports: ExportStatement[],
     filePath: string
   ): ModuleMetadata {
@@ -511,7 +469,9 @@ export class ASTParser {
     
     // Check if it's a React component (has JSX and exports a component)
     let isReactComponent = false;
-    const hasJSX = this.hasJSXElements(sourceFile);
+    const hasJSX = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement).length > 0 || 
+                   sourceFile.getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement).length > 0;
+    
     const hasComponentExport = exports.some(
       (exp) => exp.type === 'function' || exp.type === 'class'
     );
@@ -521,32 +481,92 @@ export class ASTParser {
     const normalizedPath = filePath.replace(/\\/g, '/');
     const isApiRoute = normalizedPath.includes('/api/');
 
+    // Phase 3: New metadata
+    const inheritance = this.extractInheritance(sourceFile);
+    const decorators = this.extractDecorators(sourceFile);
+    const metrics = this.calculateMetrics(sourceFile);
+
     return {
       hasDefaultExport,
       isReactComponent,
       isApiRoute,
+      inheritance,
+      decorators,
+      metrics
     };
   }
 
-  /**
-   * Checks if the source file contains JSX elements
-   * @param sourceFile - TypeScript source file AST
-   * @returns boolean - True if JSX elements are found
-   */
-  private hasJSXElements(sourceFile: ts.SourceFile): boolean {
-    let hasJSX = false;
+  private extractInheritance(sourceFile: SourceFile): InheritanceInfo[] {
+    const inheritance: InheritanceInfo[] = [];
 
-    const visit = (node: ts.Node) => {
-      if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
-        hasJSX = true;
-        return;
+    sourceFile.getClasses().forEach(cls => {
+      const extendsExpr = cls.getExtends();
+      if (extendsExpr) {
+        inheritance.push({
+          name: extendsExpr.getText(),
+          type: 'extends'
+        });
       }
-      ts.forEachChild(node, visit);
-    };
 
-    visit(sourceFile);
-    return hasJSX;
+      cls.getImplements().forEach(imp => {
+        inheritance.push({
+          name: imp.getText(),
+          type: 'implements'
+        });
+      });
+    });
+
+    return inheritance;
   }
+
+  private extractDecorators(sourceFile: SourceFile): string[] {
+    const decorators = new Set<string>();
+
+    sourceFile.getDescendantsOfKind(SyntaxKind.Decorator).forEach(dec => {
+      const text = dec.getName();
+      if (text) decorators.add(text);
+    });
+
+    return Array.from(decorators);
+  }
+
+  private calculateMetrics(sourceFile: SourceFile): ModuleMetrics {
+    // 1. SLOC (excluding empty lines and simple comments if possible)
+    const text = sourceFile.getFullText();
+    const lines = text.split('\n').filter(line => line.trim().length > 0);
+    const sloc = lines.length;
+
+    // 2. Cyclomatic Complexity (Basic decision point counting)
+    let complexity = 1; // Base complexity
+    const decisionPoints = [
+      SyntaxKind.IfStatement,
+      SyntaxKind.ForStatement,
+      SyntaxKind.ForInStatement,
+      SyntaxKind.ForOfStatement,
+      SyntaxKind.WhileStatement,
+      SyntaxKind.DoStatement,
+      SyntaxKind.CaseClause,
+      SyntaxKind.ConditionalExpression, // ternary
+      SyntaxKind.BinaryExpression // logic operators (&&, ||)
+    ];
+
+    sourceFile.getDescendants().forEach(node => {
+      const kind = node.getKind();
+      if (decisionPoints.includes(kind)) {
+        if (kind === SyntaxKind.BinaryExpression) {
+          const operator = (node as any).getOperatorToken().getKind();
+          if (operator === SyntaxKind.AmpersandAmpersandToken || operator === SyntaxKind.BarBarToken) {
+            complexity++;
+          }
+        } else {
+          complexity++;
+        }
+      }
+    });
+
+    return { sloc, complexity };
+  }
+
 
   /**
    * Determines if a module is external (from node_modules)

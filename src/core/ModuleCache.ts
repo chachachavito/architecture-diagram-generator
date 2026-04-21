@@ -10,6 +10,7 @@ export interface CacheEntry {
   hash: string;
   timestamp: number;
   module: ParsedModule;
+  version?: string; // Version of the tool that generated this entry
 }
 
 /**
@@ -31,6 +32,7 @@ export class ModuleCache {
   private stats: CacheStats = { hits: 0, misses: 0, invalidations: 0 };
   private cacheDir: string;
   private enabled: boolean;
+  private readonly CURRENT_VERSION = '0.3.0'; // Invalidate cache for new engine
 
   constructor(cacheDir?: string) {
     this.cacheDir = cacheDir || path.join(process.cwd(), '.cache', 'ast-parser');
@@ -47,7 +49,7 @@ export class ModuleCache {
     const entry = this.cache.get(filePath);
     if (entry) {
       const currentHash = await this.getFileHash(filePath);
-      if (currentHash === entry.hash) {
+      if (currentHash === entry.hash && entry.version === this.CURRENT_VERSION) {
         this.stats.hits++;
         return entry.module;
       } else {
@@ -68,7 +70,7 @@ export class ModuleCache {
       const persistedEntry = await this.loadFromDisk(filePath);
       if (persistedEntry) {
         const currentHash = await this.getFileHash(filePath);
-        if (currentHash === persistedEntry.hash) {
+        if (currentHash === persistedEntry.hash && persistedEntry.version === this.CURRENT_VERSION) {
           // Restore to in-memory cache
           this.cache.set(filePath, persistedEntry);
           this.fileHashes.set(filePath, persistedEntry.hash);
@@ -98,6 +100,7 @@ export class ModuleCache {
       hash,
       timestamp: Date.now(),
       module,
+      version: this.CURRENT_VERSION,
     };
 
     // Store in in-memory cache

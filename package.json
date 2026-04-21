@@ -1,6 +1,6 @@
 {
   "name": "architecture-diagram-generator",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "Automated architecture diagram generator for Next.js projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,6 +19,7 @@
   "dependencies": {
     "dotenv": "^17.4.2",
     "glob": "^13.0.0",
+    "ts-morph": "^28.0.0",
     "typescript": "^5.3.3",
     "zod": "^4.3.6"
   },

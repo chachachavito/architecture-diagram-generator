@@ -68,6 +68,7 @@ export class DependencyGraphBuilder {
               from: absoluteFrom,
               to: absoluteTo,
               type: 'import',
+              isTypeOnly: importStmt.isTypeOnly,
             });
           }
         }
@@ -115,6 +116,9 @@ export class DependencyGraphBuilder {
       metadata: {
         type: 'module',
         source: 'inferred',
+        inheritance: module.metadata.inheritance,
+        decorators: module.metadata.decorators,
+        metrics: module.metadata.metrics,
       },
       type: 'module', // Legacy
       externalCalls: module.externalCalls,
