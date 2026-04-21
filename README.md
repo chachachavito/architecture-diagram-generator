@@ -1,24 +1,20 @@
 # Architecture Diagram Generator (v0.4.14)
 
-![Interactive Dashboard](docs/dashboard-preview.png)
-*Interactive Dashboard with drill-down capabilities*
-
 ![Static Diagram](docs/diagram.png)
-*Static architecture overview*
+*Automated architecture overview*
 
 **Understand your TypeScript architecture in seconds.**
-Automated dependency analysis and interactive visualization for modern web projects.
+Automated dependency analysis and architectural visualization for modern web projects.
 
 ## Overview
 
-Architecture Diagram Generator is a zero-config tool that transforms your codebase into a high-fidelity interactive dashboard. It performs deep semantic analysis using **ts-morph** to map connections, external integrations, and architectural layers.
+Architecture Diagram Generator is a zero-config tool that transforms your codebase into high-fidelity architectural documentation. It performs deep semantic analysis using **ts-morph** to map connections, external integrations, and layers.
 
 ## Key Features
 
-- **Interactive HTML Dashboard**: Premium visualization with drill-down capabilities (click on domains to see internal files).
-- **Automated Layer Classification**: Intelligently categorizes modules into UI, API, and Core layers.
+- **Automated Layer Classification**: Intelligently categorizes modules into UI, API, and Core layers based on project structure.
 - **Deep Semantic Analysis**: Detects real imports, dynamic calls, and external service integrations (fetch, axios, databases).
-- **Mermaid.js Integration**: Generates deterministic Mermaid syntax for Git documentation.
+- **Mermaid.js Integration**: Generates deterministic Mermaid syntax for Git documentation and READMEs.
 - **Zero Configuration**: Works out of the box for most Next.js and TypeScript projects.
 
 ## Installation
@@ -37,9 +33,9 @@ architecture-generator .
 
 ### Output Files
 
-- `architecture.html`: Interactive premium dashboard (Open in browser).
 - `architecture.md`: Static Mermaid diagram for GitHub/GitLab.
 - `architecture.json`: Raw dependency graph data for programmatic use.
+- `architecture.html`: Local interactive visualization.
 
 ## Configuration
 
