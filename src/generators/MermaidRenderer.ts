@@ -12,18 +12,30 @@ export class MermaidRenderer {
     let output = '%%{init: {"maxTextSize": 1000000}}%%\n';
     output += 'flowchart TD\n';
 
-    // Group by Layer
-    const layers = this.groupByLayer(snapshot);
+    // Group by Layer -> Domain
+    const layers = this.groupData(snapshot);
     const sortedLayers = Array.from(layers.keys()).sort();
 
     for (const layerName of sortedLayers) {
-      const nodes = layers.get(layerName)!;
+      const domains = layers.get(layerName)!;
       output += `  subgraph ${layerName}\n`;
-      for (const node of nodes) {
-        const token = visualTokens.get(node.id);
-        const label = this.escapeLabel(token?.label || node.id);
-        const icon = token?.icon ? `${token.icon} ` : '';
-        output += `    ${this.safeId(node.id)}["${icon}${label}"]\n`;
+      
+      for (const [domainName, nodes] of domains.entries()) {
+        const hasDomain = domainName !== 'shared' && domainName !== '';
+        if (hasDomain) {
+          output += `    subgraph ${layerName}_${this.safeId(domainName)} ["${domainName}"]\n`;
+        }
+        
+        for (const node of nodes) {
+          const token = visualTokens.get(node.id);
+          const label = this.escapeLabel(token?.label || node.id);
+          const icon = token?.icon ? `${token.icon} ` : '';
+          output += `      ${this.safeId(node.id)}["${icon}${label}"]\n`;
+        }
+
+        if (hasDomain) {
+          output += '    end\n';
+        }
       }
       output += '  end\n';
     }
@@ -43,12 +55,18 @@ export class MermaidRenderer {
     return output;
   }
 
-  private groupByLayer(snapshot: GraphSnapshot): Map<string, any[]> {
-    const layers = new Map<string, any[]>();
+  private groupData(snapshot: GraphSnapshot): Map<string, Map<string, any[]>> {
+    const layers = new Map<string, Map<string, any[]>>();
+    
     for (const node of snapshot.nodes) {
       const layer = node.metadata.layer || 'Core';
-      if (!layers.has(layer)) layers.set(layer, []);
-      layers.get(layer)!.push(node);
+      const domain = node.metadata.domain || 'shared';
+      
+      if (!layers.has(layer)) layers.set(layer, new Map());
+      const domains = layers.get(layer)!;
+      
+      if (!domains.has(domain)) domains.set(domain, []);
+      domains.get(domain)!.push(node);
     }
     return layers;
   }

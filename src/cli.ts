@@ -13,7 +13,7 @@ import {
   validateConfig,
 } from './core';
 import { ASTParser } from './parsers';
-import { DiagramGenerator } from './generators';
+import { DiagramGenerator, HTMLGenerator } from './generators';
 import { Logger, LogLevel, NoFilesFoundError } from './utils';
 
 interface CLIOptions {
@@ -64,7 +64,7 @@ async function main(): Promise<void> {
 
     if (options.help) {
       console.log(`
-Architecture Diagram Generator (v0.3.2)
+Architecture Diagram Generator (v0.3.3)
 
 Usage: architecture-generator [project-root] [options]
 
@@ -86,7 +86,7 @@ Description:
         const pkg = JSON.parse(await fs.readFile(path.join(__dirname, '../package.json'), 'utf-8'));
         console.log(`v${pkg.version}`);
       } catch (e) {
-        console.log('v0.3.2');
+        console.log('v0.3.3');
       }
       process.exit(0);
     }
@@ -134,7 +134,7 @@ Description:
 
     // 4. Run Pipeline
     const pipeline = new ArchitecturePipeline({
-      version: '0.3.2',
+      version: '0.3.3',
       config,
       debug: options.debug,
       rootDir: options.projectRoot
@@ -148,7 +148,7 @@ Description:
 
     // 6. Write Output
     const output = {
-      version: '0.3.2',
+      version: '0.3.3',
       generatedAt: new Date().toISOString(),
       graph
     };
@@ -158,8 +158,14 @@ Description:
     const mdPath = options.outputPath.replace('.json', '.md');
     await fs.writeFile(mdPath, `# Architecture Diagram\n\n\`\`\`mermaid\n${diagram.syntax}\n\`\`\``);
 
+    const htmlGenerator = new HTMLGenerator();
+    const htmlContent = htmlGenerator.generate(diagram.syntax);
+    const htmlPath = options.outputPath.replace('.json', '.html');
+    await fs.writeFile(htmlPath, htmlContent);
+
     console.log(`✅ Architecture graph written to ${options.outputPath}`);
     console.log(`✅ Diagram written to ${mdPath}`);
+    console.log(`✅ Interactive HTML written to ${htmlPath}`);
 
     process.exit(0);
   } catch (error) {

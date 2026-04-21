@@ -26,6 +26,7 @@ CLI output:
 ```text
 ✔ architecture.md created
 ✔ architecture.json created
+✔ architecture.html created (Interactive!)
 ```
 
 ## Example Output
@@ -44,10 +45,12 @@ flowchart TD
   src_core_Pipeline_ts --> zod
 ```
 
-## Core Engine (v0.3.2)
+## Core Engine (v0.3.3)
 
 Powered by **ts-morph** for deep semantic analysis.
 
+- **Interactive HTML**: Export as a self-contained HTML page with zoom/pan support.
+- **Domain Grouping**: Automatically clusters modules by domain for high readability.
 - **Type-Safe Dependencies**: Distinguishes between runtime and type-only imports.
 - **Inheritance Mapping**: Automatically detects `extends` and `implements` relations.
 - **Code Metrics**: Provides Cyclomatic Complexity and SLOC for every module.
@@ -57,6 +60,7 @@ Powered by **ts-morph** for deep semantic analysis.
 
 - **`architecture.json`**: Enriched dependency graph with metrics and inheritance data.
 - **`architecture.md`**: Mermaid diagram visualizing your project structure.
+- **`architecture.html`**: Premium interactive dashboard for architectural exploration.
 
 ## Automated Governance Pipeline
 

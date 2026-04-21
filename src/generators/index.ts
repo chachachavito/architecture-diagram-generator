@@ -7,3 +7,4 @@ export type {
 } from './DiagramGenerator';
 export { VisualExporter } from './VisualExporter';
 export type { ExportOptions } from './VisualExporter';
+export { HTMLGenerator } from './HTMLGenerator';
