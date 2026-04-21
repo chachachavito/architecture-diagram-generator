@@ -1,6 +1,6 @@
 # Architecture Diagram Generator (v0.4.15)
 
-![Static Diagram](docs/diagram.png)
+![Diagram](https://raw.githubusercontent.com/chachachavito/architecture-diagram-generator/main/docs/diagram.png)
 *Automated architecture overview*
 
 **Understand your TypeScript architecture in seconds.**
