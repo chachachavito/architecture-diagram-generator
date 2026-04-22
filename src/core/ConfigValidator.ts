@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { ArchitectureLayer, NodeType, IssueSeverity } from './GraphTypes';
 
 /**
  * Zod schema for architecture.config.json
@@ -35,7 +34,7 @@ export type ProjectConfig = z.infer<typeof ConfigSchema>;
 /**
  * Validates and normalizes project configuration
  */
-export function validateConfig(config: any): ProjectConfig {
+export function validateConfig(config: unknown): ProjectConfig {
   try {
     return ConfigSchema.parse(config);
   } catch (error) {
@@ -44,7 +43,7 @@ export function validateConfig(config: any): ProjectConfig {
   }
 }
 export class ConfigValidator {
-  validate(config: any): ProjectConfig {
+  validate(config: unknown): ProjectConfig {
     return validateConfig(config);
   }
 }

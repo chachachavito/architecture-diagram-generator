@@ -7,7 +7,7 @@
 
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import { MermaidParser, MermaidPrettyPrinter, MermaidAST, roundTripTest } from './MermaidParser';
+import { MermaidParser, MermaidPrettyPrinter, MermaidAST } from './MermaidParser';
 
 /**
  * Property 1: Round-trip preservation

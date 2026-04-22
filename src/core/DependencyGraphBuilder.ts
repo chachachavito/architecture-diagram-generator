@@ -2,11 +2,7 @@ import * as path from 'path';
 import { ParsedModule } from '../parsers';
 import { 
   GraphNode, 
-  GraphEdge, 
   SourceGraph, 
-  NodeType, 
-  ArchitectureLayer,
-  SourcePriority 
 } from './GraphTypes';
 import { DependencyGraph } from './DependencyGraph';
 

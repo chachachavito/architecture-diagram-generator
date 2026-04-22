@@ -10,7 +10,7 @@ export class GeneratorError extends Error {
   constructor(
     message: string,
     public code: string,
-    public context?: Record<string, any>
+    public context?: Record<string, unknown>
   ) {
     super(message);
     this.name = 'GeneratorError';

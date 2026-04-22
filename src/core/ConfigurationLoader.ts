@@ -189,6 +189,7 @@ export class ConfigurationLoader {
    * @param obj - Object or value to interpolate
    * @returns Interpolated object or value
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private interpolateEnvVars(obj: any): any {
     if (typeof obj === 'string') {
       return obj.replace(/\${([^}]+)}/g, (_, envVar) => process.env[envVar] || '');
@@ -199,6 +200,7 @@ export class ConfigurationLoader {
     }
     
     if (typeof obj === 'object' && obj !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const result: Record<string, any> = {};
       for (const key in obj) {
         result[key] = this.interpolateEnvVars(obj[key]);

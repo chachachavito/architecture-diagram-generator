@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Logger, LogLevel } from './logger';
 import {
-  GeneratorError,
   FileReadError,
   ParseError,
   InvalidProjectRootError,

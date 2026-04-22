@@ -143,7 +143,7 @@ export class MermaidParser {
 
       // Parse body
       let currentSubgraph: MermaidSubgraph | null = null;
-      let subgraphStack: MermaidSubgraph[] = [];
+      const subgraphStack: MermaidSubgraph[] = [];
 
       for (let i = headerLineIndex + 1; i < lines.length; i++) {
         this.currentLine = i + 1;

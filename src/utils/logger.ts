@@ -51,7 +51,7 @@ export class Logger {
   /**
    * Log a debug message
    */
-  debug(message: string, data?: any): void {
+  debug(message: string, data?: unknown): void {
     if (this.logLevel <= LogLevel.DEBUG) {
       console.log(`🔍 DEBUG: ${message}`, data ? JSON.stringify(data, null, 2) : '');
     }

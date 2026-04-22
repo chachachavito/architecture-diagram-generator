@@ -13,11 +13,13 @@ export interface Output {
 /**
  * Validates that the output object conforms to the Output interface.
  */
-export function validateOutputSchema(output: any): output is Output {
+export function validateOutputSchema(output: unknown): output is Output {
   if (!output || typeof output !== 'object') return false;
-  if (typeof output.version !== 'string') return false;
-  if (!output.graph || typeof output.graph !== 'object') return false;
-  if (!Array.isArray(output.graph.nodes) || !Array.isArray(output.graph.edges)) return false;
+  const o = output as Record<string, unknown>;
+  if (typeof o.version !== 'string') return false;
+  if (!o.graph || typeof o.graph !== 'object') return false;
+  const g = o.graph as Record<string, unknown>;
+  if (!Array.isArray(g.nodes) || !Array.isArray(g.edges)) return false;
   
   return true;
 }

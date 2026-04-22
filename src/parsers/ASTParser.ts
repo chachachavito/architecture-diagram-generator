@@ -1,9 +1,8 @@
 import * as ts from 'typescript';
 import { Project, SourceFile, SyntaxKind } from 'ts-morph';
 import * as path from 'path';
-import * as fs from 'fs/promises';
 import { ModuleCache } from '../core/ModuleCache';
-import { FileReadError, ParseError } from '../utils/errors';
+import { ParseError } from '../utils/errors';
 
 /**
  * Interface representing an import statement in a module
@@ -98,7 +97,8 @@ export class ASTParser {
       const tsConfigPath = path.join(this.rootDir, 'tsconfig.json');
       
       // Check if tsconfig exists
-      let projectOptions: any = {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const projectOptions: any = {
         skipAddingFilesFromTsConfig: true,
       };
 
@@ -109,7 +109,7 @@ export class ASTParser {
         // Using a simple flag to check existence.
         projectOptions.tsConfigFilePath = tsConfigPath;
         ASTParser.project = new Project(projectOptions);
-      } catch (e) {
+      } catch {
         // Fallback to default project without tsconfig
         ASTParser.project = new Project({
           compilerOptions: {
@@ -318,7 +318,7 @@ export class ASTParser {
     });
 
     // Default exports and assignments
-    sourceFile.getExportAssignments().forEach(assign => {
+    sourceFile.getExportAssignments().forEach(_assign => {
       exports.push({
         name: 'default',
         type: 'default',
@@ -427,7 +427,9 @@ export class ASTParser {
             calls.push({ type: 'database', target: typeText, location: { line, column } });
             detected = true;
           }
-        } catch (e) {}
+        } catch {
+          // Type checking failed, fall back to name-based detection
+        }
 
         // Fallback: Name-based heuristics for DB (essential for tests without node_modules)
         if (!detected) {
@@ -466,7 +468,9 @@ export class ASTParser {
             detected = true;
           }
         }
-      } catch (e) {}
+      } catch {
+        // Type checking failed, fall back to name-based detection
+      }
 
       if (!detected) {
         const text = newExpr.getExpression().getText();
@@ -581,6 +585,7 @@ export class ASTParser {
       const kind = node.getKind();
       if (decisionPoints.includes(kind)) {
         if (kind === SyntaxKind.BinaryExpression) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const operator = (node as any).getOperatorToken().getKind();
           if (operator === SyntaxKind.AmpersandAmpersandToken || operator === SyntaxKind.BarBarToken) {
             complexity++;

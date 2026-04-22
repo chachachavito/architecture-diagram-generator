@@ -34,7 +34,6 @@ describe('ASTParser Integration Tests', () => {
     const result = await parser.parse(filePath);
 
     const externalImports = result.imports.filter(i => i.isExternal);
-    const internalImports = result.imports.filter(i => !i.isExternal);
 
     // Should have external imports (glob, path, fs)
     expect(externalImports.length).toBeGreaterThan(0);

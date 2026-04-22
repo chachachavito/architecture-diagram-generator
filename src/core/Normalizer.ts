@@ -1,5 +1,5 @@
 import path from 'path';
-import { SourceGraph, ClassifiedGraph } from './GraphTypes';
+import { SourceGraph } from './GraphTypes';
 
 /**
  * Normalizer handles path normalization and label creation.

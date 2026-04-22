@@ -5,9 +5,7 @@ import {
   ConfigurationLoader, 
   DEFAULT_CONFIG, 
   FullProjectConfig, 
-  ValidationResult,
   CURRENT_CONFIG_VERSION,
-  CONFIG_VERSIONS,
 } from './ConfigurationLoader';
 
 describe('ConfigurationLoader', () => {
@@ -357,7 +355,8 @@ describe('ConfigurationLoader', () => {
       const userConfig: Partial<FullProjectConfig> = {
         output: {
           directory: './new-dir',
-        } as any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as Partial<FullProjectConfig>['output'] as any,
       };
 
       const result = loader.merge(userConfig, DEFAULT_CONFIG);
@@ -465,6 +464,7 @@ describe('ConfigurationLoader', () => {
       const config = await loader.load(configPath);
 
       expect(config.rootDir).toBe('./app');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect((config as any).unknownField).toBeUndefined();
     });
   });

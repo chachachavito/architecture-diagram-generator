@@ -357,10 +357,6 @@ export class ChangeDetector {
       return null;
     }
 
-    // Reconstruct a minimal previous graph from metadata
-    // Note: This is a simplified comparison since we don't have full graph data
-    const previousGraph = new DependencyGraph();
-
     // We can only do limited comparison without full graph data
     // Return a summary-based comparison
     const currentMetadata = generator.generate(current);
@@ -399,7 +395,7 @@ export class ChangeDetector {
         layer: node.layer || node.metadata?.layer,
         domain: node.domain || node.metadata?.domain,
       })),
-      edges: graph.edges.map((e: any) => ({
+      edges: graph.edges.map((e: GraphEdge) => ({
         from: e.from,
         to: e.to,
         type: e.type,

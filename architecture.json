@@ -1,6 +1,6 @@
 {
-  "version": "0.4.13",
-  "generatedAt": "2026-04-21T17:06:00.213Z",
+  "version": "0.4.16",
+  "generatedAt": "2026-04-22T02:21:23.239Z",
   "graph": {
     "nodes": [
       {
@@ -205,7 +205,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 106,
+            "sloc": 107,
             "complexity": 14
           },
           "label": "ArchitecturePipeline",
@@ -223,7 +223,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 388,
+            "sloc": 390,
             "complexity": 60
           },
           "label": "ConfigurationLoader",
@@ -241,7 +241,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 47,
+            "sloc": 46,
             "complexity": 1
           },
           "label": "ConfigValidator",
@@ -259,7 +259,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 111,
+            "sloc": 112,
             "complexity": 10
           },
           "label": "DependencyGraph",
@@ -277,7 +277,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 135,
+            "sloc": 131,
             "complexity": 17
           },
           "label": "DependencyGraphBuilder",
@@ -349,7 +349,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 510,
+            "sloc": 507,
             "complexity": 47
           },
           "label": "MetadataGenerator",
@@ -403,7 +403,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 20,
+            "sloc": 22,
             "complexity": 8
           },
           "label": "OutputTypes",
@@ -439,7 +439,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 59,
+            "sloc": 57,
             "complexity": 1
           },
           "label": "DiagramGenerator",
@@ -493,7 +493,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 112,
+            "sloc": 109,
             "complexity": 30
           },
           "label": "MermaidRenderer",
@@ -547,7 +547,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 546,
+            "sloc": 551,
             "complexity": 75
           },
           "label": "ASTParser",
@@ -568,7 +568,7 @@
             "type": "database",
             "target": "dbNames",
             "location": {
-              "line": 436,
+              "line": 438,
               "column": 15
             }
           },
@@ -576,7 +576,7 @@
             "type": "database",
             "target": "dbPatterns",
             "location": {
-              "line": 457,
+              "line": 459,
               "column": 13
             }
           },
@@ -584,7 +584,7 @@
             "type": "database",
             "target": "dbPatterns",
             "location": {
-              "line": 473,
+              "line": 477,
               "column": 13
             }
           }
@@ -923,13 +923,6 @@
         "from": "src/core/ConfigurationLoader.ts",
         "to": "path",
         "type": "import"
-      },
-      {
-        "id": "src/core/ConfigValidator.ts->src/core/GraphTypes.ts:import",
-        "from": "src/core/ConfigValidator.ts",
-        "to": "src/core/GraphTypes.ts",
-        "type": "import",
-        "isTypeOnly": false
       },
       {
         "id": "src/core/ConfigValidator.ts->zod:import",
@@ -1276,12 +1269,6 @@
         "type": "external-call"
       },
       {
-        "id": "src/parsers/ASTParser.ts->fs/promises:import",
-        "from": "src/parsers/ASTParser.ts",
-        "to": "fs/promises",
-        "type": "import"
-      },
-      {
         "id": "src/parsers/ASTParser.ts->path:import",
         "from": "src/parsers/ASTParser.ts",
         "to": "path",
@@ -1368,6 +1355,6 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.4.13"
+    "version": "0.4.16"
   }
 }

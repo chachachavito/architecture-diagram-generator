@@ -1,4 +1,4 @@
-import { FileDiscovery, FileList, ProjectConfig } from './FileDiscovery';
+import { FileDiscovery, ProjectConfig } from './FileDiscovery';
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';

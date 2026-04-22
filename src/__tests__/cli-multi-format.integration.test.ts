@@ -1,16 +1,15 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { existsSync, unlinkSync, rmdirSync, readdirSync } from 'fs';
-import { join } from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import { execSync } from 'child_process';
 
 describe('CLI - Multi-format Output Integration', () => {
-  const testProjectDir = join(process.cwd(), '.test-cli-project');
-  const testOutputDir = join(testProjectDir, 'output');
+  const testProjectDir = path.join(process.cwd(), '.test-cli-project');
 
   beforeEach(() => {
     // Create test project directory
-    if (!existsSync(testProjectDir)) {
-      require('fs').mkdirSync(testProjectDir, { recursive: true });
+    if (!fs.existsSync(testProjectDir)) {
+      fs.mkdirSync(testProjectDir, { recursive: true });
     }
 
     // Create sample files
@@ -21,12 +20,12 @@ describe('CLI - Multi-format Output Integration', () => {
     };
 
     for (const [filePath, content] of Object.entries(sampleFiles)) {
-      const fullPath = join(testProjectDir, filePath);
-      const dir = require('path').dirname(fullPath);
-      if (!existsSync(dir)) {
-        require('fs').mkdirSync(dir, { recursive: true });
+      const fullPath = path.join(testProjectDir, filePath);
+      const dir = path.dirname(fullPath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
       }
-      require('fs').writeFileSync(fullPath, content);
+      fs.writeFileSync(fullPath, content);
     }
 
     // Create package.json
@@ -35,8 +34,8 @@ describe('CLI - Multi-format Output Integration', () => {
       version: '1.0.0',
       type: 'module',
     };
-    require('fs').writeFileSync(
-      join(testProjectDir, 'package.json'),
+    fs.writeFileSync(
+      path.join(testProjectDir, 'package.json'),
       JSON.stringify(packageJson, null, 2)
     );
 
@@ -48,8 +47,8 @@ describe('CLI - Multi-format Output Integration', () => {
         lib: ['ES2020', 'dom'],
       },
     };
-    require('fs').writeFileSync(
-      join(testProjectDir, 'tsconfig.json'),
+    fs.writeFileSync(
+      path.join(testProjectDir, 'tsconfig.json'),
       JSON.stringify(tsconfig, null, 2)
     );
   });
@@ -58,18 +57,18 @@ describe('CLI - Multi-format Output Integration', () => {
     // Clean up test project
     try {
       const removeDir = (dir: string) => {
-        if (existsSync(dir)) {
-          const files = readdirSync(dir);
+        if (fs.existsSync(dir)) {
+          const files = fs.readdirSync(dir);
           for (const file of files) {
-            const filePath = join(dir, file);
-            const stat = require('fs').statSync(filePath);
+            const filePath = path.join(dir, file);
+            const stat = fs.statSync(filePath);
             if (stat.isDirectory()) {
               removeDir(filePath);
             } else {
-              unlinkSync(filePath);
+              fs.unlinkSync(filePath);
             }
           }
-          rmdirSync(dir);
+          fs.rmdirSync(dir);
         }
       };
       removeDir(testProjectDir);
@@ -79,8 +78,8 @@ describe('CLI - Multi-format Output Integration', () => {
   });
 
   it('should generate markdown output by default', () => {
-    const outputPath = join(testProjectDir, 'architecture.json');
-    const mdPath = join(testProjectDir, 'architecture.md');
+    const outputPath = path.join(testProjectDir, 'architecture.json');
+    const mdPath = path.join(testProjectDir, 'architecture.md');
     
     try {
       execSync(`node dist/cli.js ${testProjectDir}`, {
@@ -88,9 +87,9 @@ describe('CLI - Multi-format Output Integration', () => {
         cwd: process.cwd(),
       });
 
-      expect(existsSync(outputPath)).toBe(true);
-      expect(existsSync(mdPath)).toBe(true);
-      const content = require('fs').readFileSync(mdPath, 'utf-8');
+      expect(fs.existsSync(outputPath)).toBe(true);
+      expect(fs.existsSync(mdPath)).toBe(true);
+      const content = fs.readFileSync(mdPath, 'utf-8');
       expect(content).toContain('flowchart TD');
       expect(content).toContain('```mermaid');
     } catch (error) {
@@ -100,8 +99,8 @@ describe('CLI - Multi-format Output Integration', () => {
   });
 
   it('should support custom output path via --output flag', () => {
-    const customJson = join(testProjectDir, 'custom.json');
-    const customMd = join(testProjectDir, 'custom.md');
+    const customJson = path.join(testProjectDir, 'custom.json');
+    const customMd = path.join(testProjectDir, 'custom.md');
     
     try {
       execSync(`node dist/cli.js ${testProjectDir} --output ${customJson}`, {
@@ -109,8 +108,8 @@ describe('CLI - Multi-format Output Integration', () => {
         cwd: process.cwd(),
       });
 
-      expect(existsSync(customJson)).toBe(true);
-      expect(existsSync(customMd)).toBe(true);
+      expect(fs.existsSync(customJson)).toBe(true);
+      expect(fs.existsSync(customMd)).toBe(true);
     } catch (error) {
       console.error(error);
       throw error;

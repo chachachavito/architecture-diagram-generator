@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { ConfigurationLoader, CURRENT_CONFIG_VERSION } from '../core/ConfigurationLoader';
 
 describe('Configuration Versioning', () => {

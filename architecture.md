@@ -73,7 +73,6 @@ flowchart TD
   src_core_ArchitecturePipeline_ts --> src_core_Normalizer_ts
   src_core_ConfigurationLoader_ts --> fs_promises
   src_core_ConfigurationLoader_ts --> path
-  src_core_ConfigValidator_ts --> src_core_GraphTypes_ts
   src_core_ConfigValidator_ts --> zod
   src_core_DependencyGraph_ts --> src_core_GraphTypes_ts
   src_core_DependencyGraphBuilder_ts --> path
@@ -125,7 +124,6 @@ flowchart TD
   src_index_ts --> src_parsers_MermaidParser_ts
   src_parsers_ASTParser_ts --> dbNames
   src_parsers_ASTParser_ts --> dbPatterns
-  src_parsers_ASTParser_ts --> fs_promises
   src_parsers_ASTParser_ts --> path
   src_parsers_ASTParser_ts --> src_core_ModuleCache_ts
   src_parsers_ASTParser_ts --> src_utils_errors_ts

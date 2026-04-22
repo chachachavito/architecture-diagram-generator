@@ -5,7 +5,7 @@ export class HTMLGenerator {
   /**
    * Generates a full HTML document with embedded graph data and client-side renderer.
    */
-  generate(graph: any, projectName: string = 'Architecture Diagram'): string {
+  generate(graph: unknown, projectName: string = 'Architecture Diagram'): string {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>

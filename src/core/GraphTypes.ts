@@ -19,10 +19,10 @@ export interface NodeMetadata {
   type: NodeType;
   source: SourcePriority;
   label?: string;
-  inheritance?: any[];
+  inheritance?: unknown[];
   decorators?: string[];
-  metrics?: any;
-  [key: string]: any;
+  metrics?: unknown;
+  [key: string]: unknown;
 }
 
 /**
@@ -69,7 +69,7 @@ export interface ClassifiedGraph extends SourceGraph {
 /**
  * Deeply frozen snapshot of the graph for analysis
  */
-export interface GraphSnapshot extends ClassifiedGraph {}
+export type GraphSnapshot = ClassifiedGraph;
 
 /**
  * Performance thresholds and rule configurations
@@ -80,7 +80,7 @@ export interface ArchitectureRules {
   enabled: boolean;
   severity: IssueSeverity;
   thresholds?: Record<string, number>;
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
 }
 
 /**

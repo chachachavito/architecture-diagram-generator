@@ -1,5 +1,5 @@
 import { ArchitectureClassifier } from './ArchitectureClassifier';
-import { DependencyGraph, GraphNode } from './DependencyGraph';
+import { GraphNode } from './DependencyGraph';
 
 /**
  * Integration test demonstrating the full workflow of custom rule application
@@ -17,6 +17,7 @@ describe('ArchitectureClassifier Integration - Custom Rules', () => {
     ];
 
     // Create a configuration with custom layer and domain rules
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const config: any = {
       layers: {
         'Core': ['risk'],
@@ -47,6 +48,7 @@ describe('ArchitectureClassifier Integration - Custom Rules', () => {
       { id: '/project/app/api/risk/route.ts', metadata: { type: 'api', source: 'inferred' } }
     ];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const config: any = {
       layers: {
         'API': ['**/api/**'],

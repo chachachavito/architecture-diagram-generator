@@ -1,7 +1,5 @@
 import { 
-  ClassifiedGraph, 
   GraphSnapshot, 
-  ArchitectureLayer 
 } from '../core/GraphTypes';
 import { VisualMapper } from './VisualMapper';
 import { MermaidRenderer } from './MermaidRenderer';
@@ -47,7 +45,7 @@ export class DiagramGenerator {
   /**
    * Generates a Mermaid diagram from architectural data.
    */
-  generate(graph: GraphSnapshot, options: GenerationOptions = {}): MermaidDiagram {
+  generate(graph: GraphSnapshot, _options: GenerationOptions = {}): MermaidDiagram {
     const visualTokens = this.visualMapper.map(graph);
     const syntax = this.mermaidRenderer.render(graph, visualTokens, { simplified: false });
     const simplifiedSyntax = this.mermaidRenderer.render(graph, visualTokens, { simplified: true });

@@ -1,13 +1,10 @@
-import { ClassifiedGraph, GraphSnapshot } from '../core/GraphTypes';
+import { GraphSnapshot, GraphNode } from '../core/GraphTypes';
 import { VisualToken } from './VisualMapper';
 
 /**
  * MermaidRenderer generates deterministic Mermaid syntax from architectural data.
  */
 export class MermaidRenderer {
-  /**
-   * Renders the graph into Mermaid flowchart syntax
-   */
   /**
    * Renders the graph into Mermaid flowchart syntax
    */
@@ -103,8 +100,8 @@ export class MermaidRenderer {
     return output;
   }
 
-  private groupData(snapshot: GraphSnapshot): Map<string, Map<string, any[]>> {
-    const layers = new Map<string, Map<string, any[]>>();
+  private groupData(snapshot: GraphSnapshot): Map<string, Map<string, GraphNode[]>> {
+    const layers = new Map<string, Map<string, GraphNode[]>>();
     
     for (const node of snapshot.nodes) {
       const layer = node.metadata.layer || 'Core';
@@ -127,7 +124,7 @@ export class MermaidRenderer {
     // Remove all characters that commonly break Mermaid syntax
     return label
       .replace(/"/g, '#quot;')
-      .replace(/[\[\]\(\)\{\}]/g, '')
+      .replace(/[[\](){}]/g, '')
       .replace(/[<>|]/g, '')
       .replace(/--+/g, '-')
       .trim();
