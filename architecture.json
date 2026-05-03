@@ -1,6 +1,6 @@
 {
   "version": "0.4.16",
-  "generatedAt": "2026-04-22T02:21:23.239Z",
+  "generatedAt": "2026-05-03T04:06:49.903Z",
   "graph": {
     "nodes": [
       {
@@ -102,8 +102,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 96,
-            "complexity": 6
+            "sloc": 36,
+            "complexity": 2
           },
           "label": "Cli",
           "layer": "Core",
@@ -128,56 +128,7 @@
           "domain": "core"
         },
         "type": "module",
-        "externalCalls": [
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 73,
-              "column": 32
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 74,
-              "column": 32
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 79,
-              "column": 33
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 80,
-              "column": 33
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 85,
-              "column": 31
-            }
-          },
-          {
-            "type": "database",
-            "target": "this",
-            "location": {
-              "line": 86,
-              "column": 31
-            }
-          }
-        ]
+        "externalCalls": []
       },
       {
         "id": "src/core/ArchitectureFilter.ts",
@@ -187,8 +138,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 374,
-            "complexity": 60
+            "sloc": 378,
+            "complexity": 58
           },
           "label": "ArchitectureFilter",
           "layer": "Core",
@@ -205,8 +156,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 107,
-            "complexity": 14
+            "sloc": 204,
+            "complexity": 19
           },
           "label": "ArchitecturePipeline",
           "layer": "Core",
@@ -334,7 +285,7 @@
             "sloc": 35,
             "complexity": 1
           },
-          "label": "Core/Index",
+          "label": "Src / Core / Index",
           "layer": "Core",
           "domain": "core"
         },
@@ -385,7 +336,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 78,
+            "sloc": 85,
             "complexity": 12
           },
           "label": "Normalizer",
@@ -432,6 +383,29 @@
         "externalCalls": []
       },
       {
+        "id": "src/generators/D3Renderer.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [
+            {
+              "name": "IGraphRenderer",
+              "type": "implements"
+            }
+          ],
+          "decorators": [],
+          "metrics": {
+            "sloc": 608,
+            "complexity": 49
+          },
+          "label": "D3Renderer",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
         "id": "src/generators/DiagramGenerator.ts",
         "metadata": {
           "type": "module",
@@ -457,8 +431,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 365,
-            "complexity": 1
+            "sloc": 331,
+            "complexity": 2
           },
           "label": "HTMLGenerator",
           "layer": "Core",
@@ -475,10 +449,10 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 10,
+            "sloc": 11,
             "complexity": 1
           },
-          "label": "Generators/Index",
+          "label": "Src / Generators / Index",
           "layer": "Core",
           "domain": "generators"
         },
@@ -493,10 +467,51 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 109,
-            "complexity": 30
+            "sloc": 119,
+            "complexity": 34
           },
           "label": "MermaidRenderer",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/generators/SVGRenderer.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [
+            {
+              "name": "IGraphRenderer",
+              "type": "implements"
+            }
+          ],
+          "decorators": [],
+          "metrics": {
+            "sloc": 119,
+            "complexity": 11
+          },
+          "label": "SVGRenderer",
+          "layer": "Core",
+          "domain": "generators"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/generators/types.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 54,
+            "complexity": 1
+          },
+          "label": "Types",
           "layer": "Core",
           "domain": "generators"
         },
@@ -511,8 +526,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 38,
-            "complexity": 7
+            "sloc": 60,
+            "complexity": 13
           },
           "label": "VisualMapper",
           "layer": "Core",
@@ -532,7 +547,7 @@
             "sloc": 34,
             "complexity": 1
           },
-          "label": "Src/Index",
+          "label": "Src / Index",
           "layer": "Core",
           "domain": "shared"
         },
@@ -547,8 +562,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 551,
-            "complexity": 75
+            "sloc": 552,
+            "complexity": 76
           },
           "label": "ASTParser",
           "layer": "Core",
@@ -576,7 +591,7 @@
             "type": "database",
             "target": "dbPatterns",
             "location": {
-              "line": 459,
+              "line": 460,
               "column": 13
             }
           },
@@ -584,7 +599,7 @@
             "type": "database",
             "target": "dbPatterns",
             "location": {
-              "line": 477,
+              "line": 478,
               "column": 13
             }
           }
@@ -601,7 +616,7 @@
             "sloc": 21,
             "complexity": 1
           },
-          "label": "Parsers/Index",
+          "label": "Src / Parsers / Index",
           "layer": "Core",
           "domain": "parsers"
         },
@@ -700,7 +715,7 @@
             "sloc": 22,
             "complexity": 1
           },
-          "label": "Utils/Index",
+          "label": "Src / Utils / Index",
           "layer": "Core",
           "domain": "utils"
         },
@@ -741,19 +756,6 @@
           "domain": "utils"
         },
         "type": "module",
-        "externalCalls": []
-      },
-      {
-        "id": "this",
-        "metadata": {
-          "type": "external",
-          "source": "inferred",
-          "label": "this",
-          "layer": "External",
-          "domain": "shared"
-        },
-        "type": "external",
-        "label": "this",
         "externalCalls": []
       },
       {
@@ -804,12 +806,6 @@
         "type": "import"
       },
       {
-        "id": "src/cli.ts->fs/promises:import",
-        "from": "src/cli.ts",
-        "to": "fs/promises",
-        "type": "import"
-      },
-      {
         "id": "src/cli.ts->path:import",
         "from": "src/cli.ts",
         "to": "path",
@@ -819,41 +815,6 @@
         "id": "src/cli.ts->src/core/ArchitecturePipeline.ts:import",
         "from": "src/cli.ts",
         "to": "src/core/ArchitecturePipeline.ts",
-        "type": "import",
-        "isTypeOnly": false
-      },
-      {
-        "id": "src/cli.ts->src/core/DependencyGraphBuilder.ts:import",
-        "from": "src/cli.ts",
-        "to": "src/core/DependencyGraphBuilder.ts",
-        "type": "import",
-        "isTypeOnly": false
-      },
-      {
-        "id": "src/cli.ts->src/core/FileDiscovery.ts:import",
-        "from": "src/cli.ts",
-        "to": "src/core/FileDiscovery.ts",
-        "type": "import",
-        "isTypeOnly": false
-      },
-      {
-        "id": "src/cli.ts->src/generators/DiagramGenerator.ts:import",
-        "from": "src/cli.ts",
-        "to": "src/generators/DiagramGenerator.ts",
-        "type": "import",
-        "isTypeOnly": false
-      },
-      {
-        "id": "src/cli.ts->src/generators/HTMLGenerator.ts:import",
-        "from": "src/cli.ts",
-        "to": "src/generators/HTMLGenerator.ts",
-        "type": "import",
-        "isTypeOnly": false
-      },
-      {
-        "id": "src/cli.ts->src/parsers/ASTParser.ts:import",
-        "from": "src/cli.ts",
-        "to": "src/parsers/ASTParser.ts",
         "type": "import",
         "isTypeOnly": false
       },
@@ -872,17 +833,23 @@
         "isTypeOnly": false
       },
       {
-        "id": "src/core/ArchitectureClassifier.ts->this:external-call",
-        "from": "src/core/ArchitectureClassifier.ts",
-        "to": "this",
-        "type": "external-call"
-      },
-      {
         "id": "src/core/ArchitectureFilter.ts->src/core/DependencyGraph.ts:import",
         "from": "src/core/ArchitectureFilter.ts",
         "to": "src/core/DependencyGraph.ts",
         "type": "import",
         "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->fs/promises:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->path:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "path",
+        "type": "import"
       },
       {
         "id": "src/core/ArchitecturePipeline.ts->src/core/ArchitectureClassifier.ts:import",
@@ -899,6 +866,20 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/DependencyGraphBuilder.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/DependencyGraphBuilder.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/FileDiscovery.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/FileDiscovery.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
         "id": "src/core/ArchitecturePipeline.ts->src/core/GraphTypes.ts:import",
         "from": "src/core/ArchitecturePipeline.ts",
         "to": "src/core/GraphTypes.ts",
@@ -909,6 +890,34 @@
         "id": "src/core/ArchitecturePipeline.ts->src/core/Normalizer.ts:import",
         "from": "src/core/ArchitecturePipeline.ts",
         "to": "src/core/Normalizer.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/generators/DiagramGenerator.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/generators/DiagramGenerator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/generators/HTMLGenerator.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/generators/HTMLGenerator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/generators/SVGRenderer.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/generators/SVGRenderer.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/parsers/ASTParser.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/parsers/ASTParser.ts",
         "type": "import",
         "isTypeOnly": false
       },
@@ -1152,6 +1161,13 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/generators/D3Renderer.ts->src/generators/types.ts:import",
+        "from": "src/generators/D3Renderer.ts",
+        "to": "src/generators/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
         "id": "src/generators/DiagramGenerator.ts->src/core/GraphTypes.ts:import",
         "from": "src/generators/DiagramGenerator.ts",
         "to": "src/core/GraphTypes.ts",
@@ -1173,6 +1189,20 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/generators/HTMLGenerator.ts->src/generators/D3Renderer.ts:import",
+        "from": "src/generators/HTMLGenerator.ts",
+        "to": "src/generators/D3Renderer.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/generators/HTMLGenerator.ts->src/generators/types.ts:import",
+        "from": "src/generators/HTMLGenerator.ts",
+        "to": "src/generators/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
         "id": "src/generators/index.ts->src/generators/DiagramGenerator.ts:import",
         "from": "src/generators/index.ts",
         "to": "src/generators/DiagramGenerator.ts",
@@ -1183,6 +1213,13 @@
         "id": "src/generators/index.ts->src/generators/HTMLGenerator.ts:import",
         "from": "src/generators/index.ts",
         "to": "src/generators/HTMLGenerator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/generators/index.ts->src/generators/SVGRenderer.ts:import",
+        "from": "src/generators/index.ts",
+        "to": "src/generators/SVGRenderer.ts",
         "type": "import",
         "isTypeOnly": false
       },
@@ -1204,6 +1241,13 @@
         "id": "src/generators/MermaidRenderer.ts->src/generators/VisualMapper.ts:import",
         "from": "src/generators/MermaidRenderer.ts",
         "to": "src/generators/VisualMapper.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/generators/SVGRenderer.ts->src/generators/types.ts:import",
+        "from": "src/generators/SVGRenderer.ts",
+        "to": "src/generators/types.ts",
         "type": "import",
         "isTypeOnly": false
       },

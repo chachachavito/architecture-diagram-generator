@@ -1,0 +1,769 @@
+{
+  "nodes": [
+    {
+      "id": "app/Http/Controllers/AuthController.php",
+      "metadata": {
+        "label": "AuthController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/TenantController.php",
+      "metadata": {
+        "label": "TenantController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/SubscriptionController.php",
+      "metadata": {
+        "label": "SubscriptionController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 250,
+          "complexity": 20
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/InvoiceController.php",
+      "metadata": {
+        "label": "InvoiceController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/UserController.php",
+      "metadata": {
+        "label": "UserController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/DashboardController.php",
+      "metadata": {
+        "label": "DashboardController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/WebhookController.php",
+      "metadata": {
+        "label": "WebhookController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 300,
+          "complexity": 25
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/ReportController.php",
+      "metadata": {
+        "label": "ReportController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 220,
+          "complexity": 18
+        }
+      }
+    },
+    {
+      "id": "app/Http/Controllers/SettingsController.php",
+      "metadata": {
+        "label": "SettingsController",
+        "layer": "Service",
+        "domain": "controllers",
+        "type": "api",
+        "metrics": {
+          "sloc": 160,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "app/Models/User.php",
+      "metadata": {
+        "label": "User",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "app/Models/Tenant.php",
+      "metadata": {
+        "label": "Tenant",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 120,
+          "complexity": 6
+        }
+      }
+    },
+    {
+      "id": "app/Models/Subscription.php",
+      "metadata": {
+        "label": "Subscription",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "app/Models/Invoice.php",
+      "metadata": {
+        "label": "Invoice",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 100,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "app/Models/Plan.php",
+      "metadata": {
+        "label": "Plan",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "app/Models/Feature.php",
+      "metadata": {
+        "label": "Feature",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 60,
+          "complexity": 3
+        }
+      }
+    },
+    {
+      "id": "app/Models/AuditLog.php",
+      "metadata": {
+        "label": "AuditLog",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 70,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "app/Services/BillingService.php",
+      "metadata": {
+        "label": "BillingService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 400,
+          "complexity": 35
+        }
+      }
+    },
+    {
+      "id": "app/Services/TenantService.php",
+      "metadata": {
+        "label": "TenantService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 300,
+          "complexity": 22
+        }
+      }
+    },
+    {
+      "id": "app/Services/SubscriptionService.php",
+      "metadata": {
+        "label": "SubscriptionService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 350,
+          "complexity": 28
+        }
+      }
+    },
+    {
+      "id": "app/Services/NotificationService.php",
+      "metadata": {
+        "label": "NotificationService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "app/Services/ReportService.php",
+      "metadata": {
+        "label": "ReportService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 250,
+          "complexity": 18
+        }
+      }
+    },
+    {
+      "id": "app/Services/AuditService.php",
+      "metadata": {
+        "label": "AuditService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "app/Jobs/ProcessInvoice.php",
+      "metadata": {
+        "label": "ProcessInvoice",
+        "layer": "Core",
+        "domain": "jobs",
+        "type": "service",
+        "metrics": {
+          "sloc": 120,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "app/Jobs/SendWelcomeEmail.php",
+      "metadata": {
+        "label": "SendWelcomeEmail",
+        "layer": "Core",
+        "domain": "jobs",
+        "type": "service",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "app/Jobs/SyncSubscription.php",
+      "metadata": {
+        "label": "SyncSubscription",
+        "layer": "Core",
+        "domain": "jobs",
+        "type": "service",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "app/Jobs/GenerateReport.php",
+      "metadata": {
+        "label": "GenerateReport",
+        "layer": "Core",
+        "domain": "jobs",
+        "type": "service",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "app/Events/TenantCreated.php",
+      "metadata": {
+        "label": "TenantCreated",
+        "layer": "Core",
+        "domain": "events",
+        "type": "module",
+        "metrics": {
+          "sloc": 30,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "app/Events/SubscriptionChanged.php",
+      "metadata": {
+        "label": "SubscriptionChanged",
+        "layer": "Core",
+        "domain": "events",
+        "type": "module",
+        "metrics": {
+          "sloc": 30,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "app/Events/InvoicePaid.php",
+      "metadata": {
+        "label": "InvoicePaid",
+        "layer": "Core",
+        "domain": "events",
+        "type": "module",
+        "metrics": {
+          "sloc": 30,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "app/Listeners/CreateTenantResources.php",
+      "metadata": {
+        "label": "CreateTenantResources",
+        "layer": "Core",
+        "domain": "events",
+        "type": "module",
+        "metrics": {
+          "sloc": 100,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "app/Listeners/NotifySubscriptionChange.php",
+      "metadata": {
+        "label": "NotifySubscriptionChange",
+        "layer": "Core",
+        "domain": "events",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "app/Http/Middleware/TenantMiddleware.php",
+      "metadata": {
+        "label": "TenantMiddleware",
+        "layer": "Service",
+        "domain": "middleware",
+        "type": "module",
+        "metrics": {
+          "sloc": 60,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "app/Http/Middleware/SubscriptionGuard.php",
+      "metadata": {
+        "label": "SubscriptionGuard",
+        "layer": "Service",
+        "domain": "middleware",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 6
+        }
+      }
+    },
+    {
+      "id": "resources/views/dashboard.blade.php",
+      "metadata": {
+        "label": "Dashboard View",
+        "layer": "UI",
+        "domain": "views",
+        "type": "page",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "resources/views/billing.blade.php",
+      "metadata": {
+        "label": "Billing View",
+        "layer": "UI",
+        "domain": "views",
+        "type": "page",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "resources/views/settings.blade.php",
+      "metadata": {
+        "label": "Settings View",
+        "layer": "UI",
+        "domain": "views",
+        "type": "page",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 3
+        }
+      }
+    },
+    {
+      "id": "config/billing.php",
+      "metadata": {
+        "label": "Billing Config",
+        "layer": "Utils",
+        "domain": "config",
+        "type": "module",
+        "metrics": {
+          "sloc": 40,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "config/tenancy.php",
+      "metadata": {
+        "label": "Tenancy Config",
+        "layer": "Utils",
+        "domain": "config",
+        "type": "module",
+        "metrics": {
+          "sloc": 30,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "laravel/cashier",
+      "metadata": {
+        "label": "Cashier (Stripe)",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "laravel/sanctum",
+      "metadata": {
+        "label": "Sanctum",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "spatie/laravel-permission",
+      "metadata": {
+        "label": "Spatie Permissions",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "redis",
+      "metadata": {
+        "label": "Redis",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "app/Http/Controllers/AuthController.php->app/Models/User.php",
+      "from": "app/Http/Controllers/AuthController.php",
+      "to": "app/Models/User.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/TenantController.php->app/Services/TenantService.php",
+      "from": "app/Http/Controllers/TenantController.php",
+      "to": "app/Services/TenantService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/SubscriptionController.php->app/Services/SubscriptionService.php",
+      "from": "app/Http/Controllers/SubscriptionController.php",
+      "to": "app/Services/SubscriptionService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/InvoiceController.php->app/Services/BillingService.php",
+      "from": "app/Http/Controllers/InvoiceController.php",
+      "to": "app/Services/BillingService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/DashboardController.php->app/Services/ReportService.php",
+      "from": "app/Http/Controllers/DashboardController.php",
+      "to": "app/Services/ReportService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/WebhookController.php->app/Services/BillingService.php",
+      "from": "app/Http/Controllers/WebhookController.php",
+      "to": "app/Services/BillingService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/WebhookController.php->app/Services/SubscriptionService.php",
+      "from": "app/Http/Controllers/WebhookController.php",
+      "to": "app/Services/SubscriptionService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/ReportController.php->app/Services/ReportService.php",
+      "from": "app/Http/Controllers/ReportController.php",
+      "to": "app/Services/ReportService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/SettingsController.php->app/Services/TenantService.php",
+      "from": "app/Http/Controllers/SettingsController.php",
+      "to": "app/Services/TenantService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/UserController.php->app/Models/User.php",
+      "from": "app/Http/Controllers/UserController.php",
+      "to": "app/Models/User.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/BillingService.php->app/Models/Invoice.php",
+      "from": "app/Services/BillingService.php",
+      "to": "app/Models/Invoice.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/BillingService.php->app/Models/Subscription.php",
+      "from": "app/Services/BillingService.php",
+      "to": "app/Models/Subscription.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/TenantService.php->app/Models/Tenant.php",
+      "from": "app/Services/TenantService.php",
+      "to": "app/Models/Tenant.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/SubscriptionService.php->app/Models/Subscription.php",
+      "from": "app/Services/SubscriptionService.php",
+      "to": "app/Models/Subscription.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/SubscriptionService.php->app/Models/Plan.php",
+      "from": "app/Services/SubscriptionService.php",
+      "to": "app/Models/Plan.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/ReportService.php->app/Models/Invoice.php",
+      "from": "app/Services/ReportService.php",
+      "to": "app/Models/Invoice.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/AuditService.php->app/Models/AuditLog.php",
+      "from": "app/Services/AuditService.php",
+      "to": "app/Models/AuditLog.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/BillingService.php->laravel/cashier",
+      "from": "app/Services/BillingService.php",
+      "to": "laravel/cashier",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/NotificationService.php->redis",
+      "from": "app/Services/NotificationService.php",
+      "to": "redis",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/AuthController.php->laravel/sanctum",
+      "from": "app/Http/Controllers/AuthController.php",
+      "to": "laravel/sanctum",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Middleware/TenantMiddleware.php->spatie/laravel-permission",
+      "from": "app/Http/Middleware/TenantMiddleware.php",
+      "to": "spatie/laravel-permission",
+      "type": "import"
+    },
+    {
+      "id": "app/Jobs/ProcessInvoice.php->app/Services/BillingService.php",
+      "from": "app/Jobs/ProcessInvoice.php",
+      "to": "app/Services/BillingService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Jobs/SendWelcomeEmail.php->app/Services/NotificationService.php",
+      "from": "app/Jobs/SendWelcomeEmail.php",
+      "to": "app/Services/NotificationService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Jobs/SyncSubscription.php->app/Services/SubscriptionService.php",
+      "from": "app/Jobs/SyncSubscription.php",
+      "to": "app/Services/SubscriptionService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Jobs/GenerateReport.php->app/Services/ReportService.php",
+      "from": "app/Jobs/GenerateReport.php",
+      "to": "app/Services/ReportService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Events/TenantCreated.php->app/Listeners/CreateTenantResources.php",
+      "from": "app/Events/TenantCreated.php",
+      "to": "app/Listeners/CreateTenantResources.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Events/SubscriptionChanged.php->app/Listeners/NotifySubscriptionChange.php",
+      "from": "app/Events/SubscriptionChanged.php",
+      "to": "app/Listeners/NotifySubscriptionChange.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Listeners/CreateTenantResources.php->app/Services/TenantService.php",
+      "from": "app/Listeners/CreateTenantResources.php",
+      "to": "app/Services/TenantService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Listeners/NotifySubscriptionChange.php->app/Services/NotificationService.php",
+      "from": "app/Listeners/NotifySubscriptionChange.php",
+      "to": "app/Services/NotificationService.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/TenantService.php->app/Events/TenantCreated.php",
+      "from": "app/Services/TenantService.php",
+      "to": "app/Events/TenantCreated.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/SubscriptionService.php->app/Events/SubscriptionChanged.php",
+      "from": "app/Services/SubscriptionService.php",
+      "to": "app/Events/SubscriptionChanged.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/BillingService.php->app/Events/InvoicePaid.php",
+      "from": "app/Services/BillingService.php",
+      "to": "app/Events/InvoicePaid.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/TenantController.php->app/Http/Middleware/TenantMiddleware.php",
+      "from": "app/Http/Controllers/TenantController.php",
+      "to": "app/Http/Middleware/TenantMiddleware.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Http/Controllers/SubscriptionController.php->app/Http/Middleware/SubscriptionGuard.php",
+      "from": "app/Http/Controllers/SubscriptionController.php",
+      "to": "app/Http/Middleware/SubscriptionGuard.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/BillingService.php->config/billing.php",
+      "from": "app/Services/BillingService.php",
+      "to": "config/billing.php",
+      "type": "import"
+    },
+    {
+      "id": "app/Services/TenantService.php->config/tenancy.php",
+      "from": "app/Services/TenantService.php",
+      "to": "config/tenancy.php",
+      "type": "import"
+    }
+  ],
+  "version": "mock-real-1.0"
+}

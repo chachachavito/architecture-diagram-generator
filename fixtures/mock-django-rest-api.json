@@ -1,0 +1,596 @@
+{
+  "nodes": [
+    {
+      "id": "api/views/auth_views.py",
+      "metadata": {
+        "label": "AuthViews",
+        "layer": "Service",
+        "domain": "views",
+        "type": "api",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "api/views/project_views.py",
+      "metadata": {
+        "label": "ProjectViews",
+        "layer": "Service",
+        "domain": "views",
+        "type": "api",
+        "metrics": {
+          "sloc": 250,
+          "complexity": 18
+        }
+      }
+    },
+    {
+      "id": "api/views/task_views.py",
+      "metadata": {
+        "label": "TaskViews",
+        "layer": "Service",
+        "domain": "views",
+        "type": "api",
+        "metrics": {
+          "sloc": 300,
+          "complexity": 22
+        }
+      }
+    },
+    {
+      "id": "api/views/comment_views.py",
+      "metadata": {
+        "label": "CommentViews",
+        "layer": "Service",
+        "domain": "views",
+        "type": "api",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "api/views/webhook_views.py",
+      "metadata": {
+        "label": "WebhookViews",
+        "layer": "Service",
+        "domain": "views",
+        "type": "api",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "api/serializers/user_serializer.py",
+      "metadata": {
+        "label": "UserSerializer",
+        "layer": "Service",
+        "domain": "serializers",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "api/serializers/project_serializer.py",
+      "metadata": {
+        "label": "ProjectSerializer",
+        "layer": "Service",
+        "domain": "serializers",
+        "type": "module",
+        "metrics": {
+          "sloc": 120,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "api/serializers/task_serializer.py",
+      "metadata": {
+        "label": "TaskSerializer",
+        "layer": "Service",
+        "domain": "serializers",
+        "type": "module",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "core/models/user.py",
+      "metadata": {
+        "label": "UserModel",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 100,
+          "complexity": 6
+        }
+      }
+    },
+    {
+      "id": "core/models/project.py",
+      "metadata": {
+        "label": "ProjectModel",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "core/models/task.py",
+      "metadata": {
+        "label": "TaskModel",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 14
+        }
+      }
+    },
+    {
+      "id": "core/models/comment.py",
+      "metadata": {
+        "label": "CommentModel",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "core/models/attachment.py",
+      "metadata": {
+        "label": "AttachmentModel",
+        "layer": "Core",
+        "domain": "models",
+        "type": "module",
+        "metrics": {
+          "sloc": 60,
+          "complexity": 3
+        }
+      }
+    },
+    {
+      "id": "core/services/project_service.py",
+      "metadata": {
+        "label": "ProjectService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 300,
+          "complexity": 25
+        }
+      }
+    },
+    {
+      "id": "core/services/task_service.py",
+      "metadata": {
+        "label": "TaskService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 350,
+          "complexity": 28
+        }
+      }
+    },
+    {
+      "id": "core/services/notification_service.py",
+      "metadata": {
+        "label": "NotificationService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "core/services/file_service.py",
+      "metadata": {
+        "label": "FileService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "workers/tasks/send_email.py",
+      "metadata": {
+        "label": "SendEmailTask",
+        "layer": "Core",
+        "domain": "workers",
+        "type": "service",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "workers/tasks/process_webhook.py",
+      "metadata": {
+        "label": "ProcessWebhook",
+        "layer": "Core",
+        "domain": "workers",
+        "type": "service",
+        "metrics": {
+          "sloc": 120,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "workers/tasks/generate_export.py",
+      "metadata": {
+        "label": "GenerateExport",
+        "layer": "Core",
+        "domain": "workers",
+        "type": "service",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "api/permissions/project_perms.py",
+      "metadata": {
+        "label": "ProjectPermissions",
+        "layer": "Service",
+        "domain": "permissions",
+        "type": "module",
+        "metrics": {
+          "sloc": 60,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "api/permissions/task_perms.py",
+      "metadata": {
+        "label": "TaskPermissions",
+        "layer": "Service",
+        "domain": "permissions",
+        "type": "module",
+        "metrics": {
+          "sloc": 50,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "core/utils/validators.py",
+      "metadata": {
+        "label": "Validators",
+        "layer": "Utils",
+        "domain": "utils",
+        "type": "module",
+        "metrics": {
+          "sloc": 100,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "core/utils/pagination.py",
+      "metadata": {
+        "label": "Pagination",
+        "layer": "Utils",
+        "domain": "utils",
+        "type": "module",
+        "metrics": {
+          "sloc": 60,
+          "complexity": 3
+        }
+      }
+    },
+    {
+      "id": "core/utils/cache.py",
+      "metadata": {
+        "label": "CacheUtils",
+        "layer": "Utils",
+        "domain": "utils",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "config/settings.py",
+      "metadata": {
+        "label": "Settings",
+        "layer": "Utils",
+        "domain": "config",
+        "type": "module",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "config/urls.py",
+      "metadata": {
+        "label": "URLs",
+        "layer": "Utils",
+        "domain": "config",
+        "type": "module",
+        "metrics": {
+          "sloc": 40,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "celery",
+      "metadata": {
+        "label": "Celery",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "django-rest-framework",
+      "metadata": {
+        "label": "DRF",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "boto3",
+      "metadata": {
+        "label": "AWS S3",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "redis-py",
+      "metadata": {
+        "label": "Redis",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "api/views/auth_views.py->api/serializers/user_serializer.py",
+      "from": "api/views/auth_views.py",
+      "to": "api/serializers/user_serializer.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/project_views.py->api/serializers/project_serializer.py",
+      "from": "api/views/project_views.py",
+      "to": "api/serializers/project_serializer.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/task_views.py->api/serializers/task_serializer.py",
+      "from": "api/views/task_views.py",
+      "to": "api/serializers/task_serializer.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/project_views.py->core/services/project_service.py",
+      "from": "api/views/project_views.py",
+      "to": "core/services/project_service.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/task_views.py->core/services/task_service.py",
+      "from": "api/views/task_views.py",
+      "to": "core/services/task_service.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/comment_views.py->core/models/comment.py",
+      "from": "api/views/comment_views.py",
+      "to": "core/models/comment.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/webhook_views.py->workers/tasks/process_webhook.py",
+      "from": "api/views/webhook_views.py",
+      "to": "workers/tasks/process_webhook.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/project_views.py->api/permissions/project_perms.py",
+      "from": "api/views/project_views.py",
+      "to": "api/permissions/project_perms.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/task_views.py->api/permissions/task_perms.py",
+      "from": "api/views/task_views.py",
+      "to": "api/permissions/task_perms.py",
+      "type": "import"
+    },
+    {
+      "id": "api/serializers/user_serializer.py->core/models/user.py",
+      "from": "api/serializers/user_serializer.py",
+      "to": "core/models/user.py",
+      "type": "import"
+    },
+    {
+      "id": "api/serializers/project_serializer.py->core/models/project.py",
+      "from": "api/serializers/project_serializer.py",
+      "to": "core/models/project.py",
+      "type": "import"
+    },
+    {
+      "id": "api/serializers/task_serializer.py->core/models/task.py",
+      "from": "api/serializers/task_serializer.py",
+      "to": "core/models/task.py",
+      "type": "import"
+    },
+    {
+      "id": "core/services/project_service.py->core/models/project.py",
+      "from": "core/services/project_service.py",
+      "to": "core/models/project.py",
+      "type": "import"
+    },
+    {
+      "id": "core/services/project_service.py->core/models/user.py",
+      "from": "core/services/project_service.py",
+      "to": "core/models/user.py",
+      "type": "import"
+    },
+    {
+      "id": "core/services/task_service.py->core/models/task.py",
+      "from": "core/services/task_service.py",
+      "to": "core/models/task.py",
+      "type": "import"
+    },
+    {
+      "id": "core/services/task_service.py->core/models/attachment.py",
+      "from": "core/services/task_service.py",
+      "to": "core/models/attachment.py",
+      "type": "import"
+    },
+    {
+      "id": "core/services/notification_service.py->workers/tasks/send_email.py",
+      "from": "core/services/notification_service.py",
+      "to": "workers/tasks/send_email.py",
+      "type": "import"
+    },
+    {
+      "id": "core/services/file_service.py->core/models/attachment.py",
+      "from": "core/services/file_service.py",
+      "to": "core/models/attachment.py",
+      "type": "import"
+    },
+    {
+      "id": "core/services/file_service.py->boto3",
+      "from": "core/services/file_service.py",
+      "to": "boto3",
+      "type": "import"
+    },
+    {
+      "id": "core/services/notification_service.py->redis-py",
+      "from": "core/services/notification_service.py",
+      "to": "redis-py",
+      "type": "import"
+    },
+    {
+      "id": "core/utils/cache.py->redis-py",
+      "from": "core/utils/cache.py",
+      "to": "redis-py",
+      "type": "import"
+    },
+    {
+      "id": "workers/tasks/send_email.py->core/services/notification_service.py",
+      "from": "workers/tasks/send_email.py",
+      "to": "core/services/notification_service.py",
+      "type": "import"
+    },
+    {
+      "id": "workers/tasks/generate_export.py->core/services/project_service.py",
+      "from": "workers/tasks/generate_export.py",
+      "to": "core/services/project_service.py",
+      "type": "import"
+    },
+    {
+      "id": "workers/tasks/process_webhook.py->core/services/task_service.py",
+      "from": "workers/tasks/process_webhook.py",
+      "to": "core/services/task_service.py",
+      "type": "import"
+    },
+    {
+      "id": "workers/tasks/send_email.py->celery",
+      "from": "workers/tasks/send_email.py",
+      "to": "celery",
+      "type": "import"
+    },
+    {
+      "id": "workers/tasks/process_webhook.py->celery",
+      "from": "workers/tasks/process_webhook.py",
+      "to": "celery",
+      "type": "import"
+    },
+    {
+      "id": "workers/tasks/generate_export.py->celery",
+      "from": "workers/tasks/generate_export.py",
+      "to": "celery",
+      "type": "import"
+    },
+    {
+      "id": "api/views/auth_views.py->django-rest-framework",
+      "from": "api/views/auth_views.py",
+      "to": "django-rest-framework",
+      "type": "import"
+    },
+    {
+      "id": "api/serializers/user_serializer.py->django-rest-framework",
+      "from": "api/serializers/user_serializer.py",
+      "to": "django-rest-framework",
+      "type": "import"
+    },
+    {
+      "id": "core/services/project_service.py->core/utils/validators.py",
+      "from": "core/services/project_service.py",
+      "to": "core/utils/validators.py",
+      "type": "import"
+    },
+    {
+      "id": "api/views/project_views.py->core/utils/pagination.py",
+      "from": "api/views/project_views.py",
+      "to": "core/utils/pagination.py",
+      "type": "import"
+    }
+  ],
+  "version": "mock-real-1.0"
+}

@@ -1,0 +1,833 @@
+{
+  "nodes": [
+    {
+      "id": "app/page.tsx",
+      "metadata": {
+        "label": "Home Page",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 120,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "app/products/page.tsx",
+      "metadata": {
+        "label": "Product List",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "app/products/[id]/page.tsx",
+      "metadata": {
+        "label": "Product Detail",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 250,
+          "complexity": 18
+        }
+      }
+    },
+    {
+      "id": "app/cart/page.tsx",
+      "metadata": {
+        "label": "Cart Page",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "app/checkout/page.tsx",
+      "metadata": {
+        "label": "Checkout Page",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 350,
+          "complexity": 25
+        }
+      }
+    },
+    {
+      "id": "app/auth/login/page.tsx",
+      "metadata": {
+        "label": "Login Page",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "app/auth/register/page.tsx",
+      "metadata": {
+        "label": "Register Page",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "app/admin/dashboard/page.tsx",
+      "metadata": {
+        "label": "Admin Dashboard",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 400,
+          "complexity": 30
+        }
+      }
+    },
+    {
+      "id": "app/admin/products/page.tsx",
+      "metadata": {
+        "label": "Admin Products",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 300,
+          "complexity": 22
+        }
+      }
+    },
+    {
+      "id": "app/admin/orders/page.tsx",
+      "metadata": {
+        "label": "Admin Orders",
+        "layer": "UI",
+        "domain": "pages",
+        "type": "page",
+        "metrics": {
+          "sloc": 280,
+          "complexity": 20
+        }
+      }
+    },
+    {
+      "id": "components/ProductCard.tsx",
+      "metadata": {
+        "label": "ProductCard",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 90,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "components/CartItem.tsx",
+      "metadata": {
+        "label": "CartItem",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 70,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "components/Navbar.tsx",
+      "metadata": {
+        "label": "Navbar",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 120,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "components/Footer.tsx",
+      "metadata": {
+        "label": "Footer",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 60,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "components/SearchBar.tsx",
+      "metadata": {
+        "label": "SearchBar",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 110,
+          "complexity": 7
+        }
+      }
+    },
+    {
+      "id": "components/PaymentForm.tsx",
+      "metadata": {
+        "label": "PaymentForm",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "components/OrderSummary.tsx",
+      "metadata": {
+        "label": "OrderSummary",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "components/AdminSidebar.tsx",
+      "metadata": {
+        "label": "AdminSidebar",
+        "layer": "UI",
+        "domain": "components",
+        "type": "component",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "app/api/products/route.ts",
+      "metadata": {
+        "label": "Products API",
+        "layer": "Service",
+        "domain": "api",
+        "type": "api",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "app/api/cart/route.ts",
+      "metadata": {
+        "label": "Cart API",
+        "layer": "Service",
+        "domain": "api",
+        "type": "api",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "app/api/orders/route.ts",
+      "metadata": {
+        "label": "Orders API",
+        "layer": "Service",
+        "domain": "api",
+        "type": "api",
+        "metrics": {
+          "sloc": 250,
+          "complexity": 20
+        }
+      }
+    },
+    {
+      "id": "app/api/auth/route.ts",
+      "metadata": {
+        "label": "Auth API",
+        "layer": "Service",
+        "domain": "api",
+        "type": "api",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "app/api/payments/route.ts",
+      "metadata": {
+        "label": "Payments API",
+        "layer": "Service",
+        "domain": "api",
+        "type": "api",
+        "metrics": {
+          "sloc": 300,
+          "complexity": 25
+        }
+      }
+    },
+    {
+      "id": "app/api/admin/stats/route.ts",
+      "metadata": {
+        "label": "Admin Stats API",
+        "layer": "Service",
+        "domain": "api",
+        "type": "api",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 14
+        }
+      }
+    },
+    {
+      "id": "lib/services/ProductService.ts",
+      "metadata": {
+        "label": "ProductService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 300,
+          "complexity": 22
+        }
+      }
+    },
+    {
+      "id": "lib/services/CartService.ts",
+      "metadata": {
+        "label": "CartService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "lib/services/OrderService.ts",
+      "metadata": {
+        "label": "OrderService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 400,
+          "complexity": 30
+        }
+      }
+    },
+    {
+      "id": "lib/services/AuthService.ts",
+      "metadata": {
+        "label": "AuthService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 250,
+          "complexity": 18
+        }
+      }
+    },
+    {
+      "id": "lib/services/PaymentService.ts",
+      "metadata": {
+        "label": "PaymentService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 350,
+          "complexity": 28
+        }
+      }
+    },
+    {
+      "id": "lib/services/EmailService.ts",
+      "metadata": {
+        "label": "EmailService",
+        "layer": "Core",
+        "domain": "services",
+        "type": "service",
+        "metrics": {
+          "sloc": 150,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "lib/prisma/client.ts",
+      "metadata": {
+        "label": "PrismaClient",
+        "layer": "Core",
+        "domain": "data",
+        "type": "module",
+        "metrics": {
+          "sloc": 40,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "lib/prisma/schema.prisma",
+      "metadata": {
+        "label": "Schema",
+        "layer": "Core",
+        "domain": "data",
+        "type": "module",
+        "metrics": {
+          "sloc": 200,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "lib/repositories/ProductRepo.ts",
+      "metadata": {
+        "label": "ProductRepo",
+        "layer": "Core",
+        "domain": "data",
+        "type": "module",
+        "metrics": {
+          "sloc": 180,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "lib/repositories/OrderRepo.ts",
+      "metadata": {
+        "label": "OrderRepo",
+        "layer": "Core",
+        "domain": "data",
+        "type": "module",
+        "metrics": {
+          "sloc": 220,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "lib/repositories/UserRepo.ts",
+      "metadata": {
+        "label": "UserRepo",
+        "layer": "Core",
+        "domain": "data",
+        "type": "module",
+        "metrics": {
+          "sloc": 160,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "lib/utils/auth.ts",
+      "metadata": {
+        "label": "Auth Utils",
+        "layer": "Utils",
+        "domain": "utils",
+        "type": "module",
+        "metrics": {
+          "sloc": 100,
+          "complexity": 6
+        }
+      }
+    },
+    {
+      "id": "lib/utils/validation.ts",
+      "metadata": {
+        "label": "Validation",
+        "layer": "Utils",
+        "domain": "utils",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "lib/utils/formatters.ts",
+      "metadata": {
+        "label": "Formatters",
+        "layer": "Utils",
+        "domain": "utils",
+        "type": "module",
+        "metrics": {
+          "sloc": 60,
+          "complexity": 3
+        }
+      }
+    },
+    {
+      "id": "hooks/useCart.ts",
+      "metadata": {
+        "label": "useCart",
+        "layer": "UI",
+        "domain": "hooks",
+        "type": "module",
+        "metrics": {
+          "sloc": 90,
+          "complexity": 6
+        }
+      }
+    },
+    {
+      "id": "hooks/useAuth.ts",
+      "metadata": {
+        "label": "useAuth",
+        "layer": "UI",
+        "domain": "hooks",
+        "type": "module",
+        "metrics": {
+          "sloc": 70,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "hooks/useProducts.ts",
+      "metadata": {
+        "label": "useProducts",
+        "layer": "UI",
+        "domain": "hooks",
+        "type": "module",
+        "metrics": {
+          "sloc": 80,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "stripe",
+      "metadata": {
+        "label": "Stripe",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "next-auth",
+      "metadata": {
+        "label": "NextAuth",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "@prisma/client",
+      "metadata": {
+        "label": "Prisma",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "resend",
+      "metadata": {
+        "label": "Resend",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "zod",
+      "metadata": {
+        "label": "Zod",
+        "layer": "External",
+        "domain": "shared",
+        "type": "external",
+        "metrics": {
+          "sloc": 0,
+          "complexity": 0
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "app/products/page.tsx->components/ProductCard.tsx",
+      "from": "app/products/page.tsx",
+      "to": "components/ProductCard.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/products/page.tsx->components/SearchBar.tsx",
+      "from": "app/products/page.tsx",
+      "to": "components/SearchBar.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/products/[id]/page.tsx->components/ProductCard.tsx",
+      "from": "app/products/[id]/page.tsx",
+      "to": "components/ProductCard.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/cart/page.tsx->components/CartItem.tsx",
+      "from": "app/cart/page.tsx",
+      "to": "components/CartItem.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/cart/page.tsx->components/OrderSummary.tsx",
+      "from": "app/cart/page.tsx",
+      "to": "components/OrderSummary.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/checkout/page.tsx->components/PaymentForm.tsx",
+      "from": "app/checkout/page.tsx",
+      "to": "components/PaymentForm.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/checkout/page.tsx->components/OrderSummary.tsx",
+      "from": "app/checkout/page.tsx",
+      "to": "components/OrderSummary.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/admin/dashboard/page.tsx->components/AdminSidebar.tsx",
+      "from": "app/admin/dashboard/page.tsx",
+      "to": "components/AdminSidebar.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/admin/products/page.tsx->components/AdminSidebar.tsx",
+      "from": "app/admin/products/page.tsx",
+      "to": "components/AdminSidebar.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/admin/orders/page.tsx->components/AdminSidebar.tsx",
+      "from": "app/admin/orders/page.tsx",
+      "to": "components/AdminSidebar.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/products/page.tsx->hooks/useProducts.ts",
+      "from": "app/products/page.tsx",
+      "to": "hooks/useProducts.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/cart/page.tsx->hooks/useCart.ts",
+      "from": "app/cart/page.tsx",
+      "to": "hooks/useCart.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/auth/login/page.tsx->hooks/useAuth.ts",
+      "from": "app/auth/login/page.tsx",
+      "to": "hooks/useAuth.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/page.tsx->components/Navbar.tsx",
+      "from": "app/page.tsx",
+      "to": "components/Navbar.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/page.tsx->components/Footer.tsx",
+      "from": "app/page.tsx",
+      "to": "components/Footer.tsx",
+      "type": "import"
+    },
+    {
+      "id": "app/api/products/route.ts->lib/services/ProductService.ts",
+      "from": "app/api/products/route.ts",
+      "to": "lib/services/ProductService.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/api/cart/route.ts->lib/services/CartService.ts",
+      "from": "app/api/cart/route.ts",
+      "to": "lib/services/CartService.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/api/orders/route.ts->lib/services/OrderService.ts",
+      "from": "app/api/orders/route.ts",
+      "to": "lib/services/OrderService.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/api/auth/route.ts->lib/services/AuthService.ts",
+      "from": "app/api/auth/route.ts",
+      "to": "lib/services/AuthService.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/api/payments/route.ts->lib/services/PaymentService.ts",
+      "from": "app/api/payments/route.ts",
+      "to": "lib/services/PaymentService.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/api/admin/stats/route.ts->lib/services/OrderService.ts",
+      "from": "app/api/admin/stats/route.ts",
+      "to": "lib/services/OrderService.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/ProductService.ts->lib/repositories/ProductRepo.ts",
+      "from": "lib/services/ProductService.ts",
+      "to": "lib/repositories/ProductRepo.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/OrderService.ts->lib/repositories/OrderRepo.ts",
+      "from": "lib/services/OrderService.ts",
+      "to": "lib/repositories/OrderRepo.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/AuthService.ts->lib/repositories/UserRepo.ts",
+      "from": "lib/services/AuthService.ts",
+      "to": "lib/repositories/UserRepo.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/CartService.ts->lib/repositories/ProductRepo.ts",
+      "from": "lib/services/CartService.ts",
+      "to": "lib/repositories/ProductRepo.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/PaymentService.ts->lib/repositories/OrderRepo.ts",
+      "from": "lib/services/PaymentService.ts",
+      "to": "lib/repositories/OrderRepo.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/OrderService.ts->lib/services/EmailService.ts",
+      "from": "lib/services/OrderService.ts",
+      "to": "lib/services/EmailService.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/OrderService.ts->lib/services/PaymentService.ts",
+      "from": "lib/services/OrderService.ts",
+      "to": "lib/services/PaymentService.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/repositories/ProductRepo.ts->lib/prisma/client.ts",
+      "from": "lib/repositories/ProductRepo.ts",
+      "to": "lib/prisma/client.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/repositories/OrderRepo.ts->lib/prisma/client.ts",
+      "from": "lib/repositories/OrderRepo.ts",
+      "to": "lib/prisma/client.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/repositories/UserRepo.ts->lib/prisma/client.ts",
+      "from": "lib/repositories/UserRepo.ts",
+      "to": "lib/prisma/client.ts",
+      "type": "import"
+    },
+    {
+      "id": "lib/prisma/client.ts->@prisma/client",
+      "from": "lib/prisma/client.ts",
+      "to": "@prisma/client",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/PaymentService.ts->stripe",
+      "from": "lib/services/PaymentService.ts",
+      "to": "stripe",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/AuthService.ts->next-auth",
+      "from": "lib/services/AuthService.ts",
+      "to": "next-auth",
+      "type": "import"
+    },
+    {
+      "id": "lib/services/EmailService.ts->resend",
+      "from": "lib/services/EmailService.ts",
+      "to": "resend",
+      "type": "import"
+    },
+    {
+      "id": "lib/utils/validation.ts->zod",
+      "from": "lib/utils/validation.ts",
+      "to": "zod",
+      "type": "import"
+    },
+    {
+      "id": "app/api/auth/route.ts->lib/utils/auth.ts",
+      "from": "app/api/auth/route.ts",
+      "to": "lib/utils/auth.ts",
+      "type": "import"
+    },
+    {
+      "id": "app/api/products/route.ts->lib/utils/validation.ts",
+      "from": "app/api/products/route.ts",
+      "to": "lib/utils/validation.ts",
+      "type": "import"
+    }
+  ],
+  "version": "mock-real-1.0"
+}

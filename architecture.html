@@ -4,20 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>architecture-diagram-generator - Architecture Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
     <style>
         :root {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --accent-color: #2563eb;
-            --accent-soft: #dbeafe;
-            --border-color: #e2e8f0;
+            --bg-main: #020617;
+            --bg-card: rgba(15, 23, 42, 0.8);
+            --bg-accent: rgba(56, 189, 248, 0.15);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #7dd3fc;
+            --accent-glow: rgba(56, 189, 248, 0.5);
+            --border: rgba(255, 255, 255, 0.08);
+            --glass: blur(16px) saturate(200%);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
         }
+
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(129, 140, 248, 0.05) 0px, transparent 50%);
             color: var(--text-primary);
             margin: 0;
             display: flex;
@@ -25,359 +36,758 @@
             height: 100vh;
             overflow: hidden;
         }
+
         header {
-            background: var(--card-bg);
-            padding: 0.75rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            -webkit-backdrop-filter: var(--glass);
+            padding: 0.85rem 2rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
-        .title-area {
+
+        .logo-area {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px var(--accent-glow);
+            color: white;
+        }
+
         h1 {
             margin: 0;
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .project-label {
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .context-badge {
-            background: var(--accent-color);
-            color: white;
-            padding: 0.2rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: none;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        .controls {
+
+        .main-container {
             display: flex;
-            gap: 0.75rem;
-            align-items: center;
+            flex: 1;
+            overflow: hidden;
         }
-        .group {
-            display: flex;
-            background: #f8fafc;
-            padding: 0.2rem;
-            border-radius: 8px;
-            gap: 0.2rem;
-            border: 1px solid var(--border-color);
-        }
-        button {
-            background: transparent;
-            border: none;
-            padding: 0.4rem 0.9rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            transition: all 0.15s ease;
-        }
-        button.active {
-            background: white;
-            color: var(--accent-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        button:hover:not(.active) {
-            color: var(--text-primary);
-            background: #f1f5f9;
-        }
-        .action-btn {
-            background: white;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        .action-btn:hover {
-            background: #f8fafc;
-        }
+
         #diagram-container {
             flex: 1;
-            overflow: auto;
-            padding: 3rem;
-            background: white;
-            background-image: 
-                linear-gradient(var(--bg-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--bg-color) 1px, transparent 1px);
-            background-size: 40px 40px;
+            position: relative;
+            background: var(--bg-main);
+            overflow: hidden;
         }
-        .mermaid {
+
+        .legend {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            z-index: 100;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-width: min-content;
+            flex-direction: column;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-lg);
         }
-        .mermaid svg {
-            max-width: none !important;
-            height: auto !important;
-            cursor: crosshair;
-            transition: transform 0.1s ease-out;
-        }
-        .back-btn {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            display: none;
+
+        .legend-item {
+            display: flex;
             align-items: center;
-            gap: 0.3rem;
-            background: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
+            gap: 0.75rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            color: var(--text-secondary);
         }
-        .back-btn:hover {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
         }
+
+        .toolbar {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+        }
+
+        .view-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.4rem 0.75rem;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-select:hover {
+            border-color: var(--accent);
+        }
+
+        .details-panel {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 300px;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 60;
+        }
+
+        .details-panel.open {
+            transform: translateX(0);
+        }
+
+        .btn {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn.active {
+            color: var(--accent);
+            background: var(--bg-accent);
+        }
+
+        .metric-card {
+            background: rgba(0,0,0,0.2);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        
+        #cy {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 10;
+          background: var(--bg-main);
+        }
+        #cy svg { display: block; width: 100%; height: 100%; }
+        rect.node-rect {
+          rx: 8;
+          cursor: pointer;
+          transition: opacity 0.2s;
+        }
+        line.edge {
+          pointer-events: none;
+        }
+        text.node-label {
+          font: 600 11px Outfit, sans-serif;
+          pointer-events: none;
+          fill: #f1f5f9;
+          text-anchor: middle;
+          dominant-baseline: central;
+        }
+        text.band-label {
+          font: 700 13px Outfit, sans-serif;
+          pointer-events: none;
+        }
+        text.domain-label {
+          font: 400 10px Outfit, sans-serif;
+          pointer-events: none;
+        }
+        rect.band {
+          pointer-events: none;
+        }
+        rect.band-accent {
+          pointer-events: none;
+        }
+        .node-tooltip {
+          position: absolute;
+          background: var(--bg-card);
+          backdrop-filter: var(--glass);
+          padding: 0.75rem;
+          border-radius: 8px;
+          border: 1px solid var(--border);
+          font-size: 0.75rem;
+          color: var(--text-primary);
+          pointer-events: none;
+          z-index: 2000;
+          display: none;
+          box-shadow: var(--shadow-lg);
+          max-width: 260px;
+        }
+        .tooltip-row { display: flex; justify-content: space-between; gap: 1rem; margin-top: 0.25rem; }
+        .tooltip-label { color: var(--text-secondary); }
+        .issue-item { padding: 0.5rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.75rem; line-height: 1.4; }
+        .issue-item.critical { background: rgba(239,68,68,0.15); border-left: 3px solid #ef4444; }
+        .issue-item.high     { background: rgba(251,146,60,0.15);  border-left: 3px solid #fb923c; }
+        .issue-item.medium   { background: rgba(251,191,36,0.15);  border-left: 3px solid #fbbf24; }
+        .issue-item.low      { background: rgba(148,163,184,0.1);  border-left: 3px solid #94a3b8; }
+      
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
     </style>
 </head>
 <body>
     <header>
-        <div class="title-area">
-            <div onclick="resetView()" style="cursor:pointer">
-                <span class="project-label">Project</span>
+        <div class="logo-area" onclick="resetView()" style="cursor:pointer">
+            <div class="logo-icon">A</div>
+            <div>
+                <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em;">Architect Dashboard</div>
                 <h1>architecture-diagram-generator</h1>
             </div>
-            <div id="context-badge" class="context-badge"></div>
-            <div id="back-btn" class="back-btn" onclick="resetView()">
-                <span>←</span> Exit Domain
-            </div>
         </div>
-        <div class="controls">
-            <div class="group" id="view-group">
-                <button onclick="changeView('high-level')" id="btn-high-level" class="active">High-Level</button>
-                <button onclick="changeView('detailed')" id="btn-detailed">Detailed</button>
-            </div>
-            <div class="group" id="direction-group">
-                <button onclick="setDirection('TD')" id="btn-TD">Vertical</button>
-                <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal</button>
-            </div>
-            <button class="action-btn" onclick="zoom(0.15)">Zoom +</button>
-            <button class="action-btn" onclick="zoom(-0.15)">Zoom -</button>
-            <button class="action-btn" onclick="resetZoom()">Reset</button>
+        <div class="stats-area" style="display: flex; gap: 2rem; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500;">
+            <div id="stat-modules"><strong>32</strong> modules</div>
+            <div id="stat-deps"><strong>10</strong> dependencies</div>
+            <div id="stat-date">03/05/2026</div>
         </div>
     </header>
-    <div id="diagram-container">
-        <div class="mermaid" id="mermaid-graph"></div>
+
+    <div class="main-container">
+        <main id="diagram-container">
+            <div id="cy"></div><div id="tooltip" class="node-tooltip"></div>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background: #14b8a6;"></div> UI</div>
+                <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div> API</div>
+                <div class="legend-item"><div class="legend-color" style="background: #fb923c;"></div> Action</div>
+                <div class="legend-item"><div class="legend-color" style="background: #818cf8;"></div> Service</div>
+                <div class="legend-item"><div class="legend-color" style="background: #a855f7;"></div> Core</div>
+                <div class="legend-item"><div class="legend-color" style="background: #64748b;"></div> External</div>
+
+                <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                    <div style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700;">Complexity</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> Low</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> Medium</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div> High</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> Critical</div>
+                </div>
+            </div>
+            <div id="details-panel" class="details-panel">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <h2 id="details-title" style="margin: 0; font-size: 1.1rem; color: var(--accent);">Node Details</h2>
+                    <button onclick="closeDetails()" style="background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;">&times;</button>
+                </div>
+                <div id="details-content">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Select a node to view its architectural properties.</p>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div style="display: flex; align-items: center; background: rgba(0,0,0,0.2); padding: 0.25rem 0.75rem; border-radius: 12px; border: 1px solid var(--border); width: 200px;">
+                    <span style="font-size: 0.8rem; opacity: 0.5; margin-right: 0.5rem;">🔍</span>
+                    <input type="text" id="node-search" placeholder="Search module..." 
+                        style="background: transparent; border: none; color: #fff; font-size: 0.75rem; outline: none; width: 100%;"
+                        oninput="window.searchNodes(this.value)">
+                </div>
+                <div style="width: 1px; height: 24px; background: var(--border); margin: 0 0.25rem;"></div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-right: 0.5rem;">
+                    <span style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Domain</span>
+                    <select class="view-select" onchange="window.filterDomain(this.value)">
+                        <option value="">All Domains</option>
+                        <option value="core">core</option><option value="generators">generators</option><option value="parsers">parsers</option><option value="shared">shared</option><option value="utils">utils</option>
+                    </select>
+                </div>
+                <div style="width: 1px; height: 24px; background: var(--border); margin: 0 0.25rem;"></div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn" onclick="window.resetZoom()">Reset View</button>
+                    <button class="btn" id="btn-macro" onclick="window.toggleMacroView()">Macro View</button>
+                    <div style="width: 1px; height: 16px; background: var(--border); margin: 0 0.25rem;"></div>
+                    <label style="font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                        <input type="checkbox" onchange="window.toggleHotspots(this.checked)" style="accent-color: var(--accent);">
+                        Hotspots only
+                    </label>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        
-        const graph = {"nodes":[{"id":"commander","metadata":{"type":"external","source":"inferred","label":"commander","layer":"External","domain":"shared"},"type":"external","label":"commander","externalCalls":[]},{"id":"crypto","metadata":{"type":"external","source":"inferred","label":"crypto","layer":"External","domain":"shared"},"type":"external","label":"crypto","externalCalls":[]},{"id":"dbNames","metadata":{"type":"external","source":"inferred","label":"dbNames","layer":"External","domain":"shared"},"type":"external","label":"dbNames","externalCalls":[]},{"id":"dbPatterns","metadata":{"type":"external","source":"inferred","label":"dbPatterns","layer":"External","domain":"shared"},"type":"external","label":"dbPatterns","externalCalls":[]},{"id":"fs/promises","metadata":{"type":"external","source":"inferred","label":"fs/promises","layer":"External","domain":"shared"},"type":"external","label":"fs/promises","externalCalls":[]},{"id":"glob","metadata":{"type":"external","source":"inferred","label":"glob","layer":"External","domain":"shared"},"type":"external","label":"glob","externalCalls":[]},{"id":"path","metadata":{"type":"external","source":"inferred","label":"path","layer":"External","domain":"shared"},"type":"external","label":"path","externalCalls":[]},{"id":"src/cli.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":96,"complexity":6},"label":"Cli","layer":"Core","domain":"shared"},"type":"module","externalCalls":[]},{"id":"src/core/ArchitectureClassifier.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":149,"complexity":37},"label":"ArchitectureClassifier","layer":"Core","domain":"core"},"type":"module","externalCalls":[{"type":"database","target":"this","location":{"line":73,"column":32}},{"type":"database","target":"this","location":{"line":74,"column":32}},{"type":"database","target":"this","location":{"line":79,"column":33}},{"type":"database","target":"this","location":{"line":80,"column":33}},{"type":"database","target":"this","location":{"line":85,"column":31}},{"type":"database","target":"this","location":{"line":86,"column":31}}]},{"id":"src/core/ArchitectureFilter.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":374,"complexity":60},"label":"ArchitectureFilter","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ArchitecturePipeline.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":107,"complexity":14},"label":"ArchitecturePipeline","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ConfigurationLoader.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":390,"complexity":60},"label":"ConfigurationLoader","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ConfigValidator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":46,"complexity":1},"label":"ConfigValidator","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/DependencyGraph.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":112,"complexity":10},"label":"DependencyGraph","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/DependencyGraphBuilder.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":131,"complexity":17},"label":"DependencyGraphBuilder","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/FileDiscovery.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":246,"complexity":56},"label":"FileDiscovery","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/GraphTypes.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":117,"complexity":1},"label":"GraphTypes","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":35,"complexity":1},"label":"Core/Index","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/MetadataGenerator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":507,"complexity":47},"label":"MetadataGenerator","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ModuleCache.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":204,"complexity":12},"label":"ModuleCache","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/Normalizer.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":78,"complexity":12},"label":"Normalizer","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/OutputTypes.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":22,"complexity":8},"label":"OutputTypes","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/core/ParallelFileProcessor.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":89,"complexity":6},"label":"ParallelFileProcessor","layer":"Core","domain":"core"},"type":"module","externalCalls":[]},{"id":"src/generators/DiagramGenerator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":57,"complexity":1},"label":"DiagramGenerator","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/HTMLGenerator.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":365,"complexity":1},"label":"HTMLGenerator","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":10,"complexity":1},"label":"Generators/Index","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/MermaidRenderer.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":109,"complexity":30},"label":"MermaidRenderer","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/generators/VisualMapper.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":38,"complexity":7},"label":"VisualMapper","layer":"Core","domain":"generators"},"type":"module","externalCalls":[]},{"id":"src/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":34,"complexity":1},"label":"Src/Index","layer":"Core","domain":"shared"},"type":"module","externalCalls":[]},{"id":"src/parsers/ASTParser.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":551,"complexity":75},"label":"ASTParser","layer":"Core","domain":"parsers"},"type":"module","externalCalls":[{"type":"database","target":"dbPatterns","location":{"line":426,"column":15}},{"type":"database","target":"dbNames","location":{"line":438,"column":15}},{"type":"database","target":"dbPatterns","location":{"line":459,"column":13}},{"type":"database","target":"dbPatterns","location":{"line":477,"column":13}}]},{"id":"src/parsers/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":21,"complexity":1},"label":"Parsers/Index","layer":"Core","domain":"parsers"},"type":"module","externalCalls":[]},{"id":"src/parsers/MermaidParser.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":581,"complexity":91},"label":"MermaidParser","layer":"Core","domain":"parsers"},"type":"module","externalCalls":[]},{"id":"src/utils/errors.ts","metadata":{"type":"module","source":"inferred","inheritance":[{"name":"Error","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"},{"name":"GeneratorError","type":"extends"}],"decorators":[],"metrics":{"sloc":208,"complexity":7},"label":"Errors","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"src/utils/index.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":22,"complexity":1},"label":"Utils/Index","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"src/utils/logger.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":248,"complexity":17},"label":"Logger","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"src/utils/OutputWriter.ts","metadata":{"type":"module","source":"inferred","inheritance":[],"decorators":[],"metrics":{"sloc":67,"complexity":5},"label":"OutputWriter","layer":"Core","domain":"utils"},"type":"module","externalCalls":[]},{"id":"this","metadata":{"type":"external","source":"inferred","label":"this","layer":"External","domain":"shared"},"type":"external","label":"this","externalCalls":[]},{"id":"ts-morph","metadata":{"type":"external","source":"inferred","label":"ts-morph","layer":"External","domain":"shared"},"type":"external","label":"ts-morph","externalCalls":[]},{"id":"typescript","metadata":{"type":"external","source":"inferred","label":"typescript","layer":"External","domain":"shared"},"type":"external","label":"typescript","externalCalls":[]},{"id":"zod","metadata":{"type":"external","source":"inferred","label":"zod","layer":"External","domain":"shared"},"type":"external","label":"zod","externalCalls":[]}],"edges":[{"id":"src/cli.ts->commander:import","from":"src/cli.ts","to":"commander","type":"import"},{"id":"src/cli.ts->fs/promises:import","from":"src/cli.ts","to":"fs/promises","type":"import"},{"id":"src/cli.ts->path:import","from":"src/cli.ts","to":"path","type":"import"},{"id":"src/cli.ts->src/core/ArchitecturePipeline.ts:import","from":"src/cli.ts","to":"src/core/ArchitecturePipeline.ts","type":"import","isTypeOnly":false},{"id":"src/cli.ts->src/core/DependencyGraphBuilder.ts:import","from":"src/cli.ts","to":"src/core/DependencyGraphBuilder.ts","type":"import","isTypeOnly":false},{"id":"src/cli.ts->src/core/FileDiscovery.ts:import","from":"src/cli.ts","to":"src/core/FileDiscovery.ts","type":"import","isTypeOnly":false},{"id":"src/cli.ts->src/generators/DiagramGenerator.ts:import","from":"src/cli.ts","to":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/cli.ts->src/generators/HTMLGenerator.ts:import","from":"src/cli.ts","to":"src/generators/HTMLGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/cli.ts->src/parsers/ASTParser.ts:import","from":"src/cli.ts","to":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitectureClassifier.ts->src/core/ConfigValidator.ts:import","from":"src/core/ArchitectureClassifier.ts","to":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitectureClassifier.ts->src/core/GraphTypes.ts:import","from":"src/core/ArchitectureClassifier.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitectureClassifier.ts->this:external-call","from":"src/core/ArchitectureClassifier.ts","to":"this","type":"external-call"},{"id":"src/core/ArchitectureFilter.ts->src/core/DependencyGraph.ts:import","from":"src/core/ArchitectureFilter.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/ArchitectureClassifier.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/ConfigValidator.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/GraphTypes.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/ArchitecturePipeline.ts->src/core/Normalizer.ts:import","from":"src/core/ArchitecturePipeline.ts","to":"src/core/Normalizer.ts","type":"import","isTypeOnly":false},{"id":"src/core/ConfigurationLoader.ts->fs/promises:import","from":"src/core/ConfigurationLoader.ts","to":"fs/promises","type":"import"},{"id":"src/core/ConfigurationLoader.ts->path:import","from":"src/core/ConfigurationLoader.ts","to":"path","type":"import"},{"id":"src/core/ConfigValidator.ts->zod:import","from":"src/core/ConfigValidator.ts","to":"zod","type":"import"},{"id":"src/core/DependencyGraph.ts->src/core/GraphTypes.ts:import","from":"src/core/DependencyGraph.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/DependencyGraphBuilder.ts->path:import","from":"src/core/DependencyGraphBuilder.ts","to":"path","type":"import"},{"id":"src/core/DependencyGraphBuilder.ts->src/core/DependencyGraph.ts:import","from":"src/core/DependencyGraphBuilder.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/DependencyGraphBuilder.ts->src/core/GraphTypes.ts:import","from":"src/core/DependencyGraphBuilder.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/FileDiscovery.ts->fs/promises:import","from":"src/core/FileDiscovery.ts","to":"fs/promises","type":"import"},{"id":"src/core/FileDiscovery.ts->glob:import","from":"src/core/FileDiscovery.ts","to":"glob","type":"import"},{"id":"src/core/FileDiscovery.ts->path:import","from":"src/core/FileDiscovery.ts","to":"path","type":"import"},{"id":"src/core/FileDiscovery.ts->src/utils/errors.ts:import","from":"src/core/FileDiscovery.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ArchitectureClassifier.ts:import","from":"src/core/index.ts","to":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ArchitectureFilter.ts:import","from":"src/core/index.ts","to":"src/core/ArchitectureFilter.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ArchitecturePipeline.ts:import","from":"src/core/index.ts","to":"src/core/ArchitecturePipeline.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ConfigurationLoader.ts:import","from":"src/core/index.ts","to":"src/core/ConfigurationLoader.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ConfigValidator.ts:import","from":"src/core/index.ts","to":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/DependencyGraph.ts:import","from":"src/core/index.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/DependencyGraphBuilder.ts:import","from":"src/core/index.ts","to":"src/core/DependencyGraphBuilder.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/FileDiscovery.ts:import","from":"src/core/index.ts","to":"src/core/FileDiscovery.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/GraphTypes.ts:import","from":"src/core/index.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/MetadataGenerator.ts:import","from":"src/core/index.ts","to":"src/core/MetadataGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ModuleCache.ts:import","from":"src/core/index.ts","to":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/Normalizer.ts:import","from":"src/core/index.ts","to":"src/core/Normalizer.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/OutputTypes.ts:import","from":"src/core/index.ts","to":"src/core/OutputTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/index.ts->src/core/ParallelFileProcessor.ts:import","from":"src/core/index.ts","to":"src/core/ParallelFileProcessor.ts","type":"import","isTypeOnly":false},{"id":"src/core/MetadataGenerator.ts->fs/promises:import","from":"src/core/MetadataGenerator.ts","to":"fs/promises","type":"import"},{"id":"src/core/MetadataGenerator.ts->path:import","from":"src/core/MetadataGenerator.ts","to":"path","type":"import"},{"id":"src/core/MetadataGenerator.ts->src/core/ArchitectureClassifier.ts:import","from":"src/core/MetadataGenerator.ts","to":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":true},{"id":"src/core/MetadataGenerator.ts->src/core/DependencyGraph.ts:import","from":"src/core/MetadataGenerator.ts","to":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false},{"id":"src/core/ModuleCache.ts->crypto:import","from":"src/core/ModuleCache.ts","to":"crypto","type":"import"},{"id":"src/core/ModuleCache.ts->fs/promises:import","from":"src/core/ModuleCache.ts","to":"fs/promises","type":"import"},{"id":"src/core/ModuleCache.ts->path:import","from":"src/core/ModuleCache.ts","to":"path","type":"import"},{"id":"src/core/Normalizer.ts->path:import","from":"src/core/Normalizer.ts","to":"path","type":"import"},{"id":"src/core/Normalizer.ts->src/core/GraphTypes.ts:import","from":"src/core/Normalizer.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/OutputTypes.ts->src/core/GraphTypes.ts:import","from":"src/core/OutputTypes.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/core/ParallelFileProcessor.ts->src/core/ModuleCache.ts:import","from":"src/core/ParallelFileProcessor.ts","to":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false},{"id":"src/generators/DiagramGenerator.ts->src/core/GraphTypes.ts:import","from":"src/generators/DiagramGenerator.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/generators/DiagramGenerator.ts->src/generators/MermaidRenderer.ts:import","from":"src/generators/DiagramGenerator.ts","to":"src/generators/MermaidRenderer.ts","type":"import","isTypeOnly":false},{"id":"src/generators/DiagramGenerator.ts->src/generators/VisualMapper.ts:import","from":"src/generators/DiagramGenerator.ts","to":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false},{"id":"src/generators/index.ts->src/generators/DiagramGenerator.ts:import","from":"src/generators/index.ts","to":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/generators/index.ts->src/generators/HTMLGenerator.ts:import","from":"src/generators/index.ts","to":"src/generators/HTMLGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/generators/index.ts->src/generators/VisualMapper.ts:import","from":"src/generators/index.ts","to":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false},{"id":"src/generators/MermaidRenderer.ts->src/core/GraphTypes.ts:import","from":"src/generators/MermaidRenderer.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/generators/MermaidRenderer.ts->src/generators/VisualMapper.ts:import","from":"src/generators/MermaidRenderer.ts","to":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false},{"id":"src/generators/VisualMapper.ts->src/core/GraphTypes.ts:import","from":"src/generators/VisualMapper.ts","to":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/DiagramGenerator.ts:import","from":"src/index.ts","to":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/HTMLGenerator.ts:import","from":"src/index.ts","to":"src/generators/HTMLGenerator.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/MermaidRenderer.ts:import","from":"src/index.ts","to":"src/generators/MermaidRenderer.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/generators/VisualMapper.ts:import","from":"src/index.ts","to":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/parsers/ASTParser.ts:import","from":"src/index.ts","to":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false},{"id":"src/index.ts->src/parsers/MermaidParser.ts:import","from":"src/index.ts","to":"src/parsers/MermaidParser.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/ASTParser.ts->dbNames:external-call","from":"src/parsers/ASTParser.ts","to":"dbNames","type":"external-call"},{"id":"src/parsers/ASTParser.ts->dbPatterns:external-call","from":"src/parsers/ASTParser.ts","to":"dbPatterns","type":"external-call"},{"id":"src/parsers/ASTParser.ts->path:import","from":"src/parsers/ASTParser.ts","to":"path","type":"import"},{"id":"src/parsers/ASTParser.ts->src/core/ModuleCache.ts:import","from":"src/parsers/ASTParser.ts","to":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/ASTParser.ts->src/utils/errors.ts:import","from":"src/parsers/ASTParser.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/ASTParser.ts->ts-morph:import","from":"src/parsers/ASTParser.ts","to":"ts-morph","type":"import"},{"id":"src/parsers/ASTParser.ts->typescript:import","from":"src/parsers/ASTParser.ts","to":"typescript","type":"import"},{"id":"src/parsers/index.ts->src/parsers/ASTParser.ts:import","from":"src/parsers/index.ts","to":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false},{"id":"src/parsers/index.ts->src/parsers/MermaidParser.ts:import","from":"src/parsers/index.ts","to":"src/parsers/MermaidParser.ts","type":"import","isTypeOnly":false},{"id":"src/utils/index.ts->src/utils/errors.ts:import","from":"src/utils/index.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false},{"id":"src/utils/index.ts->src/utils/logger.ts:import","from":"src/utils/index.ts","to":"src/utils/logger.ts","type":"import","isTypeOnly":false},{"id":"src/utils/index.ts->src/utils/OutputWriter.ts:import","from":"src/utils/index.ts","to":"src/utils/OutputWriter.ts","type":"import","isTypeOnly":false},{"id":"src/utils/OutputWriter.ts->fs/promises:import","from":"src/utils/OutputWriter.ts","to":"fs/promises","type":"import"},{"id":"src/utils/OutputWriter.ts->path:import","from":"src/utils/OutputWriter.ts","to":"path","type":"import"},{"id":"src/utils/OutputWriter.ts->src/utils/errors.ts:import","from":"src/utils/OutputWriter.ts","to":"src/utils/errors.ts","type":"import","isTypeOnly":false}],"version":"0.4.16"};
-        let currentView = 'high-level'; 
-        let currentDirection = 'LR';
-        let currentLayer = null;
-        let currentDomain = null;
-        let scale = 1;
+    <script>
+        window.addEventListener('load', () => {
+            
+        const analysisReport = null;
+        const issuesByNode = {};
+        if (analysisReport?.issues) {
+          analysisReport.issues.forEach(i => {
+            if (!issuesByNode[i.nodeId]) issuesByNode[i.nodeId] = [];
+            issuesByNode[i.nodeId].push(i);
+          });
+        }
+        window.issuesByNode   = issuesByNode;
+        window.analysisReport = analysisReport;
 
-        mermaid.initialize({ 
-            startOnLoad: false,
-            theme: 'base',
-            securityLevel: 'loose',
-            flowchart: { 
-                useMaxWidth: false, 
-                htmlLabels: true, 
-                curve: 'basis',
-                rankspacing: 80,
-                nodespacing: 50
-            },
-            themeVariables: {
-                primaryColor: '#ffffff',
-                primaryTextColor: '#1e293b',
-                primaryBorderColor: '#cbd5e1',
-                lineColor: '#94a3b8',
-                secondaryColor: '#f8fafc',
-                tertiaryColor: '#f1f5f9'
-            }
+        const LAYER_COLORS = {"UI":"#14b8a6","API":"#f59e0b","Action":"#fb923c","Service":"#818cf8","Core":"#a855f7","External":"#64748b"};
+        const layerBands   = [{"layer":"Core","y":60,"height":732,"color":"#a855f7","domains":[{"name":"shared","y":100},{"name":"core","y":200},{"name":"generators","y":436},{"name":"parsers","y":604},{"name":"utils","y":704}]},{"layer":"External","y":872,"height":196,"color":"#64748b","domains":[{"name":"shared","y":912}]}];
+        const canvasW      = 1260;
+        const totalHeight  = 1148;
+        const NODE_W       = 170;
+        const NODE_H       = 48;
+        const macroNodes   = [{"id":"domain__External__shared","label":"External","layer":"External","count":10,"x":552.4,"y":963.2},{"id":"domain__Core__shared","label":"Core","layer":"Core","count":2,"x":242,"y":124},{"id":"domain__Core__core","label":"core","layer":"Core","count":15,"x":571.8,"y":278.4},{"id":"domain__Core__generators","label":"generators","layer":"Core","count":8,"x":533,"y":477},{"id":"domain__Core__parsers","label":"parsers","layer":"Core","count":3,"x":339,"y":628},{"id":"domain__Core__utils","label":"utils","layer":"Core","count":4,"x":436,"y":728}];
+        const macroEdges   = [{"from":"domain__Core__shared","to":"domain__External__shared","weight":2},{"from":"domain__Core__shared","to":"domain__Core__core","weight":1},{"from":"domain__Core__core","to":"domain__External__shared","weight":15},{"from":"domain__Core__core","to":"domain__Core__generators","weight":3},{"from":"domain__Core__core","to":"domain__Core__parsers","weight":1},{"from":"domain__Core__core","to":"domain__Core__utils","weight":1},{"from":"domain__Core__generators","to":"domain__Core__core","weight":3},{"from":"domain__Core__shared","to":"domain__Core__generators","weight":4},{"from":"domain__Core__shared","to":"domain__Core__parsers","weight":2},{"from":"domain__Core__parsers","to":"domain__External__shared","weight":5},{"from":"domain__Core__parsers","to":"domain__Core__core","weight":1},{"from":"domain__Core__parsers","to":"domain__Core__utils","weight":1},{"from":"domain__Core__utils","to":"domain__External__shared","weight":2}];
+        
+        const COMPLEXITY_COLORS = {
+          low: '#22c55e',
+          medium: '#eab308',
+          high: '#f97316',
+          critical: '#ef4444'
+        };
+
+        const graphData = {"nodes":[{"data":{"id":"commander","label":"commander","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":145,"y":936}},{"data":{"id":"crypto","label":"crypto","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":339,"y":936}},{"data":{"id":"dbNames","label":"dbNames","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":533,"y":936}},{"data":{"id":"dbPatterns","label":"dbPatterns","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":727,"y":936}},{"data":{"id":"fs/promises","label":"fs/promises","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":6,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":921,"y":936}},{"data":{"id":"glob","label":"glob","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":1115,"y":936}},{"data":{"id":"path","label":"path","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":10,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":145,"y":1004}},{"data":{"id":"src/cli.ts","label":"Cli","layer":"Core","domain":"shared","sloc":36,"complexity":2,"severity":null,"isExternal":false,"fanIn":0,"fanOut":3,"complexityTier":"low","issueCount":0},"position":{"x":145,"y":124}},{"data":{"id":"src/core/ArchitectureClassifier.ts","label":"ArchitectureClassifier","layer":"Core","domain":"core","sloc":149,"complexity":37,"severity":null,"isExternal":false,"fanIn":3,"fanOut":2,"complexityTier":"high","issueCount":0},"position":{"x":145,"y":224}},{"data":{"id":"src/core/ArchitectureFilter.ts","label":"ArchitectureFilter","layer":"Core","domain":"core","sloc":378,"complexity":58,"severity":null,"isExternal":false,"fanIn":1,"fanOut":1,"complexityTier":"high","issueCount":0},"position":{"x":339,"y":224}},{"data":{"id":"src/core/ArchitecturePipeline.ts","label":"ArchitecturePipeline","layer":"Core","domain":"core","sloc":204,"complexity":19,"severity":null,"isExternal":false,"fanIn":2,"fanOut":12,"complexityTier":"medium","issueCount":0},"position":{"x":533,"y":224}},{"data":{"id":"src/core/ConfigurationLoader.ts","label":"ConfigurationLoader","layer":"Core","domain":"core","sloc":390,"complexity":60,"severity":null,"isExternal":false,"fanIn":1,"fanOut":2,"complexityTier":"high","issueCount":0},"position":{"x":727,"y":224}},{"data":{"id":"src/core/ConfigValidator.ts","label":"ConfigValidator","layer":"Core","domain":"core","sloc":46,"complexity":1,"severity":null,"isExternal":false,"fanIn":3,"fanOut":1,"complexityTier":"low","issueCount":0},"position":{"x":921,"y":224}},{"data":{"id":"src/core/DependencyGraph.ts","label":"DependencyGraph","layer":"Core","domain":"core","sloc":112,"complexity":10,"severity":null,"isExternal":false,"fanIn":4,"fanOut":1,"complexityTier":"low","issueCount":0},"position":{"x":1115,"y":224}},{"data":{"id":"src/core/DependencyGraphBuilder.ts","label":"DependencyGraphBuilder","layer":"Core","domain":"core","sloc":131,"complexity":17,"severity":null,"isExternal":false,"fanIn":2,"fanOut":3,"complexityTier":"medium","issueCount":0},"position":{"x":145,"y":292}},{"data":{"id":"src/core/FileDiscovery.ts","label":"FileDiscovery","layer":"Core","domain":"core","sloc":246,"complexity":56,"severity":null,"isExternal":false,"fanIn":2,"fanOut":4,"complexityTier":"high","issueCount":0},"position":{"x":339,"y":292}},{"data":{"id":"src/core/GraphTypes.ts","label":"GraphTypes","layer":"Core","domain":"core","sloc":117,"complexity":1,"severity":null,"isExternal":false,"fanIn":10,"fanOut":0,"complexityTier":"low","issueCount":0},"position":{"x":533,"y":292}},{"data":{"id":"src/core/index.ts","label":"Src / Core / Index","layer":"Core","domain":"core","sloc":35,"complexity":1,"severity":null,"isExternal":false,"fanIn":0,"fanOut":14,"complexityTier":"low","issueCount":0},"position":{"x":727,"y":292}},{"data":{"id":"src/core/MetadataGenerator.ts","label":"MetadataGenerator","layer":"Core","domain":"core","sloc":507,"complexity":47,"severity":null,"isExternal":false,"fanIn":1,"fanOut":4,"complexityTier":"high","issueCount":0},"position":{"x":921,"y":292}},{"data":{"id":"src/core/ModuleCache.ts","label":"ModuleCache","layer":"Core","domain":"core","sloc":204,"complexity":12,"severity":null,"isExternal":false,"fanIn":3,"fanOut":3,"complexityTier":"medium","issueCount":0},"position":{"x":1115,"y":292}},{"data":{"id":"src/core/Normalizer.ts","label":"Normalizer","layer":"Core","domain":"core","sloc":85,"complexity":12,"severity":null,"isExternal":false,"fanIn":2,"fanOut":2,"complexityTier":"medium","issueCount":0},"position":{"x":145,"y":360}},{"data":{"id":"src/core/OutputTypes.ts","label":"OutputTypes","layer":"Core","domain":"core","sloc":22,"complexity":8,"severity":null,"isExternal":false,"fanIn":1,"fanOut":1,"complexityTier":"low","issueCount":0},"position":{"x":339,"y":360}},{"data":{"id":"src/core/ParallelFileProcessor.ts","label":"ParallelFileProcessor","layer":"Core","domain":"core","sloc":89,"complexity":6,"severity":null,"isExternal":false,"fanIn":1,"fanOut":1,"complexityTier":"low","issueCount":0},"position":{"x":533,"y":360}},{"data":{"id":"src/generators/D3Renderer.ts","label":"D3Renderer","layer":"Core","domain":"generators","sloc":608,"complexity":49,"severity":null,"isExternal":false,"fanIn":1,"fanOut":1,"complexityTier":"high","issueCount":0},"position":{"x":145,"y":460}},{"data":{"id":"src/generators/DiagramGenerator.ts","label":"DiagramGenerator","layer":"Core","domain":"generators","sloc":57,"complexity":1,"severity":null,"isExternal":false,"fanIn":3,"fanOut":3,"complexityTier":"low","issueCount":0},"position":{"x":339,"y":460}},{"data":{"id":"src/generators/HTMLGenerator.ts","label":"HTMLGenerator","layer":"Core","domain":"generators","sloc":331,"complexity":2,"severity":null,"isExternal":false,"fanIn":3,"fanOut":2,"complexityTier":"low","issueCount":0},"position":{"x":533,"y":460}},{"data":{"id":"src/generators/index.ts","label":"Src / Generators / Index","layer":"Core","domain":"generators","sloc":11,"complexity":1,"severity":null,"isExternal":false,"fanIn":0,"fanOut":4,"complexityTier":"low","issueCount":0},"position":{"x":727,"y":460}},{"data":{"id":"src/generators/MermaidRenderer.ts","label":"MermaidRenderer","layer":"Core","domain":"generators","sloc":119,"complexity":34,"severity":null,"isExternal":false,"fanIn":2,"fanOut":2,"complexityTier":"high","issueCount":0},"position":{"x":921,"y":460}},{"data":{"id":"src/generators/SVGRenderer.ts","label":"SVGRenderer","layer":"Core","domain":"generators","sloc":119,"complexity":11,"severity":null,"isExternal":false,"fanIn":2,"fanOut":1,"complexityTier":"medium","issueCount":0},"position":{"x":1115,"y":460}},{"data":{"id":"src/generators/types.ts","label":"Types","layer":"Core","domain":"generators","sloc":54,"complexity":1,"severity":null,"isExternal":false,"fanIn":3,"fanOut":0,"complexityTier":"low","issueCount":0},"position":{"x":145,"y":528}},{"data":{"id":"src/generators/VisualMapper.ts","label":"VisualMapper","layer":"Core","domain":"generators","sloc":60,"complexity":13,"severity":null,"isExternal":false,"fanIn":4,"fanOut":1,"complexityTier":"medium","issueCount":0},"position":{"x":339,"y":528}},{"data":{"id":"src/index.ts","label":"Src / Index","layer":"Core","domain":"shared","sloc":34,"complexity":1,"severity":null,"isExternal":false,"fanIn":0,"fanOut":6,"complexityTier":"low","issueCount":0},"position":{"x":339,"y":124}},{"data":{"id":"src/parsers/ASTParser.ts","label":"ASTParser","layer":"Core","domain":"parsers","sloc":552,"complexity":76,"severity":null,"isExternal":false,"fanIn":3,"fanOut":7,"complexityTier":"critical","issueCount":0},"position":{"x":145,"y":628}},{"data":{"id":"src/parsers/index.ts","label":"Src / Parsers / Index","layer":"Core","domain":"parsers","sloc":21,"complexity":1,"severity":null,"isExternal":false,"fanIn":0,"fanOut":2,"complexityTier":"low","issueCount":0},"position":{"x":339,"y":628}},{"data":{"id":"src/parsers/MermaidParser.ts","label":"MermaidParser","layer":"Core","domain":"parsers","sloc":581,"complexity":91,"severity":null,"isExternal":false,"fanIn":2,"fanOut":0,"complexityTier":"critical","issueCount":0},"position":{"x":533,"y":628}},{"data":{"id":"src/utils/errors.ts","label":"Errors","layer":"Core","domain":"utils","sloc":208,"complexity":7,"severity":null,"isExternal":false,"fanIn":4,"fanOut":0,"complexityTier":"low","issueCount":0},"position":{"x":145,"y":728}},{"data":{"id":"src/utils/index.ts","label":"Src / Utils / Index","layer":"Core","domain":"utils","sloc":22,"complexity":1,"severity":null,"isExternal":false,"fanIn":0,"fanOut":3,"complexityTier":"low","issueCount":0},"position":{"x":339,"y":728}},{"data":{"id":"src/utils/logger.ts","label":"Logger","layer":"Core","domain":"utils","sloc":248,"complexity":17,"severity":null,"isExternal":false,"fanIn":1,"fanOut":0,"complexityTier":"medium","issueCount":0},"position":{"x":533,"y":728}},{"data":{"id":"src/utils/OutputWriter.ts","label":"OutputWriter","layer":"Core","domain":"utils","sloc":67,"complexity":5,"severity":null,"isExternal":false,"fanIn":1,"fanOut":3,"complexityTier":"low","issueCount":0},"position":{"x":727,"y":728}},{"data":{"id":"ts-morph","label":"ts-morph","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":339,"y":1004}},{"data":{"id":"typescript","label":"typescript","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":533,"y":1004}},{"data":{"id":"zod","label":"zod","layer":"External","domain":"shared","sloc":0,"complexity":0,"severity":null,"isExternal":true,"fanIn":1,"fanOut":0,"complexityTier":null,"issueCount":0},"position":{"x":727,"y":1004}}],"edges":[{"data":{"id":"src/cli.ts->commander:import","source":"src/cli.ts","target":"commander","type":"import","isTypeOnly":false}},{"data":{"id":"src/cli.ts->path:import","source":"src/cli.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/cli.ts->src/core/ArchitecturePipeline.ts:import","source":"src/cli.ts","target":"src/core/ArchitecturePipeline.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitectureClassifier.ts->src/core/ConfigValidator.ts:import","source":"src/core/ArchitectureClassifier.ts","target":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitectureClassifier.ts->src/core/GraphTypes.ts:import","source":"src/core/ArchitectureClassifier.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitectureFilter.ts->src/core/DependencyGraph.ts:import","source":"src/core/ArchitectureFilter.ts","target":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->fs/promises:import","source":"src/core/ArchitecturePipeline.ts","target":"fs/promises","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->path:import","source":"src/core/ArchitecturePipeline.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/core/ArchitectureClassifier.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/core/ConfigValidator.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/core/DependencyGraphBuilder.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/core/DependencyGraphBuilder.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/core/FileDiscovery.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/core/FileDiscovery.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/core/GraphTypes.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/core/Normalizer.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/core/Normalizer.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/generators/DiagramGenerator.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/generators/HTMLGenerator.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/generators/HTMLGenerator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/generators/SVGRenderer.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/generators/SVGRenderer.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ArchitecturePipeline.ts->src/parsers/ASTParser.ts:import","source":"src/core/ArchitecturePipeline.ts","target":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ConfigurationLoader.ts->fs/promises:import","source":"src/core/ConfigurationLoader.ts","target":"fs/promises","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ConfigurationLoader.ts->path:import","source":"src/core/ConfigurationLoader.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ConfigValidator.ts->zod:import","source":"src/core/ConfigValidator.ts","target":"zod","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/DependencyGraph.ts->src/core/GraphTypes.ts:import","source":"src/core/DependencyGraph.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/DependencyGraphBuilder.ts->path:import","source":"src/core/DependencyGraphBuilder.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/DependencyGraphBuilder.ts->src/core/DependencyGraph.ts:import","source":"src/core/DependencyGraphBuilder.ts","target":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/DependencyGraphBuilder.ts->src/core/GraphTypes.ts:import","source":"src/core/DependencyGraphBuilder.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/FileDiscovery.ts->fs/promises:import","source":"src/core/FileDiscovery.ts","target":"fs/promises","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/FileDiscovery.ts->glob:import","source":"src/core/FileDiscovery.ts","target":"glob","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/FileDiscovery.ts->path:import","source":"src/core/FileDiscovery.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/FileDiscovery.ts->src/utils/errors.ts:import","source":"src/core/FileDiscovery.ts","target":"src/utils/errors.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/ArchitectureClassifier.ts:import","source":"src/core/index.ts","target":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/ArchitectureFilter.ts:import","source":"src/core/index.ts","target":"src/core/ArchitectureFilter.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/ArchitecturePipeline.ts:import","source":"src/core/index.ts","target":"src/core/ArchitecturePipeline.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/ConfigurationLoader.ts:import","source":"src/core/index.ts","target":"src/core/ConfigurationLoader.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/ConfigValidator.ts:import","source":"src/core/index.ts","target":"src/core/ConfigValidator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/DependencyGraph.ts:import","source":"src/core/index.ts","target":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/DependencyGraphBuilder.ts:import","source":"src/core/index.ts","target":"src/core/DependencyGraphBuilder.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/FileDiscovery.ts:import","source":"src/core/index.ts","target":"src/core/FileDiscovery.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/GraphTypes.ts:import","source":"src/core/index.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/MetadataGenerator.ts:import","source":"src/core/index.ts","target":"src/core/MetadataGenerator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/ModuleCache.ts:import","source":"src/core/index.ts","target":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/Normalizer.ts:import","source":"src/core/index.ts","target":"src/core/Normalizer.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/OutputTypes.ts:import","source":"src/core/index.ts","target":"src/core/OutputTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/index.ts->src/core/ParallelFileProcessor.ts:import","source":"src/core/index.ts","target":"src/core/ParallelFileProcessor.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/MetadataGenerator.ts->fs/promises:import","source":"src/core/MetadataGenerator.ts","target":"fs/promises","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/MetadataGenerator.ts->path:import","source":"src/core/MetadataGenerator.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/MetadataGenerator.ts->src/core/ArchitectureClassifier.ts:import","source":"src/core/MetadataGenerator.ts","target":"src/core/ArchitectureClassifier.ts","type":"import","isTypeOnly":true}},{"data":{"id":"src/core/MetadataGenerator.ts->src/core/DependencyGraph.ts:import","source":"src/core/MetadataGenerator.ts","target":"src/core/DependencyGraph.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ModuleCache.ts->crypto:import","source":"src/core/ModuleCache.ts","target":"crypto","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ModuleCache.ts->fs/promises:import","source":"src/core/ModuleCache.ts","target":"fs/promises","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ModuleCache.ts->path:import","source":"src/core/ModuleCache.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/Normalizer.ts->path:import","source":"src/core/Normalizer.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/Normalizer.ts->src/core/GraphTypes.ts:import","source":"src/core/Normalizer.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/OutputTypes.ts->src/core/GraphTypes.ts:import","source":"src/core/OutputTypes.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/core/ParallelFileProcessor.ts->src/core/ModuleCache.ts:import","source":"src/core/ParallelFileProcessor.ts","target":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/D3Renderer.ts->src/generators/types.ts:import","source":"src/generators/D3Renderer.ts","target":"src/generators/types.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/DiagramGenerator.ts->src/core/GraphTypes.ts:import","source":"src/generators/DiagramGenerator.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/DiagramGenerator.ts->src/generators/MermaidRenderer.ts:import","source":"src/generators/DiagramGenerator.ts","target":"src/generators/MermaidRenderer.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/DiagramGenerator.ts->src/generators/VisualMapper.ts:import","source":"src/generators/DiagramGenerator.ts","target":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/HTMLGenerator.ts->src/generators/D3Renderer.ts:import","source":"src/generators/HTMLGenerator.ts","target":"src/generators/D3Renderer.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/HTMLGenerator.ts->src/generators/types.ts:import","source":"src/generators/HTMLGenerator.ts","target":"src/generators/types.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/index.ts->src/generators/DiagramGenerator.ts:import","source":"src/generators/index.ts","target":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/index.ts->src/generators/HTMLGenerator.ts:import","source":"src/generators/index.ts","target":"src/generators/HTMLGenerator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/index.ts->src/generators/SVGRenderer.ts:import","source":"src/generators/index.ts","target":"src/generators/SVGRenderer.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/index.ts->src/generators/VisualMapper.ts:import","source":"src/generators/index.ts","target":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/MermaidRenderer.ts->src/core/GraphTypes.ts:import","source":"src/generators/MermaidRenderer.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/MermaidRenderer.ts->src/generators/VisualMapper.ts:import","source":"src/generators/MermaidRenderer.ts","target":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/SVGRenderer.ts->src/generators/types.ts:import","source":"src/generators/SVGRenderer.ts","target":"src/generators/types.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/generators/VisualMapper.ts->src/core/GraphTypes.ts:import","source":"src/generators/VisualMapper.ts","target":"src/core/GraphTypes.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/index.ts->src/generators/DiagramGenerator.ts:import","source":"src/index.ts","target":"src/generators/DiagramGenerator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/index.ts->src/generators/HTMLGenerator.ts:import","source":"src/index.ts","target":"src/generators/HTMLGenerator.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/index.ts->src/generators/MermaidRenderer.ts:import","source":"src/index.ts","target":"src/generators/MermaidRenderer.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/index.ts->src/generators/VisualMapper.ts:import","source":"src/index.ts","target":"src/generators/VisualMapper.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/index.ts->src/parsers/ASTParser.ts:import","source":"src/index.ts","target":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/index.ts->src/parsers/MermaidParser.ts:import","source":"src/index.ts","target":"src/parsers/MermaidParser.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/parsers/ASTParser.ts->dbNames:external-call","source":"src/parsers/ASTParser.ts","target":"dbNames","type":"external-call","isTypeOnly":false}},{"data":{"id":"src/parsers/ASTParser.ts->dbPatterns:external-call","source":"src/parsers/ASTParser.ts","target":"dbPatterns","type":"external-call","isTypeOnly":false}},{"data":{"id":"src/parsers/ASTParser.ts->path:import","source":"src/parsers/ASTParser.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/parsers/ASTParser.ts->src/core/ModuleCache.ts:import","source":"src/parsers/ASTParser.ts","target":"src/core/ModuleCache.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/parsers/ASTParser.ts->src/utils/errors.ts:import","source":"src/parsers/ASTParser.ts","target":"src/utils/errors.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/parsers/ASTParser.ts->ts-morph:import","source":"src/parsers/ASTParser.ts","target":"ts-morph","type":"import","isTypeOnly":false}},{"data":{"id":"src/parsers/ASTParser.ts->typescript:import","source":"src/parsers/ASTParser.ts","target":"typescript","type":"import","isTypeOnly":false}},{"data":{"id":"src/parsers/index.ts->src/parsers/ASTParser.ts:import","source":"src/parsers/index.ts","target":"src/parsers/ASTParser.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/parsers/index.ts->src/parsers/MermaidParser.ts:import","source":"src/parsers/index.ts","target":"src/parsers/MermaidParser.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/utils/index.ts->src/utils/errors.ts:import","source":"src/utils/index.ts","target":"src/utils/errors.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/utils/index.ts->src/utils/logger.ts:import","source":"src/utils/index.ts","target":"src/utils/logger.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/utils/index.ts->src/utils/OutputWriter.ts:import","source":"src/utils/index.ts","target":"src/utils/OutputWriter.ts","type":"import","isTypeOnly":false}},{"data":{"id":"src/utils/OutputWriter.ts->fs/promises:import","source":"src/utils/OutputWriter.ts","target":"fs/promises","type":"import","isTypeOnly":false}},{"data":{"id":"src/utils/OutputWriter.ts->path:import","source":"src/utils/OutputWriter.ts","target":"path","type":"import","isTypeOnly":false}},{"data":{"id":"src/utils/OutputWriter.ts->src/utils/errors.ts:import","source":"src/utils/OutputWriter.ts","target":"src/utils/errors.ts","type":"import","isTypeOnly":false}}]};
+        window.graphData = graphData;
+
+        // ── Build position lookup ────────────────────────────────────────────
+        const posMap = {};
+        graphData.nodes.forEach(n => { posMap[n.data.id] = n.position; });
+
+        // ── D3 init ──────────────────────────────────────────────────────────
+        const container = document.getElementById('cy');
+        const svg = d3.select(container).append('svg')
+          .attr('width', '100%')
+          .attr('height', '100%');
+
+        // Arrowhead marker
+        svg.append('defs').append('marker')
+          .attr('id', 'arrowhead')
+          .attr('viewBox', '0 0 10 10')
+          .attr('refX', 9)
+          .attr('refY', 5)
+          .attr('markerWidth', 6)
+          .attr('markerHeight', 6)
+          .attr('orient', 'auto-start-reverse')
+          .append('path')
+            .attr('d', 'M2 1 L8 5 L2 9')
+            .attr('fill', 'rgba(148,163,184,0.5)');
+
+        // Zoom
+        const d3zoom = d3.zoom()
+          .scaleExtent([0.05, 3])
+          .on('zoom', (e) => g.attr('transform', e.transform));
+        svg.call(d3zoom);
+
+        const g = svg.append('g');
+
+        // ── Layer bands (SVG native) ─────────────────────────────────────────
+        const bandGroup = g.append('g').attr('class', 'bands');
+
+        // Band backgrounds
+        bandGroup.selectAll('rect.band')
+          .data(layerBands)
+          .join('rect')
+            .attr('class', 'band')
+            .attr('x', 0)
+            .attr('y', d => d.y)
+            .attr('width', canvasW)
+            .attr('height', d => d.height)
+            .attr('fill', d => d.color)
+            .attr('opacity', 0.1); // Using 0.1 for the '18' hex equivalent or similar softness
+
+        // Left accent bars
+        bandGroup.selectAll('rect.band-accent')
+          .data(layerBands)
+          .join('rect')
+            .attr('class', 'band-accent')
+            .attr('x', 0)
+            .attr('y', d => d.y)
+            .attr('width', 3)
+            .attr('height', d => d.height)
+            .attr('fill', d => d.color)
+            .attr('opacity', 0.7);
+
+        // Layer labels
+        bandGroup.selectAll('text.band-label')
+          .data(layerBands)
+          .join('text')
+            .attr('class', 'band-label')
+            .attr('x', 10)
+            .attr('y', d => d.y + 18)
+            .attr('fill', d => d.color + 'cc')
+            .text(d => d.layer.toUpperCase());
+
+        // Domain labels
+        layerBands.forEach(band => {
+          if (band.domains) {
+            bandGroup.selectAll(null)
+              .data(band.domains.filter(d => d.name !== 'shared'))
+              .join('text')
+                .attr('class', 'domain-label')
+                .attr('x', 12)
+                .attr('y', d => d.y - 6)
+                .attr('fill', band.color + '88')
+                .text(d => d.name);
+          }
         });
 
-        window.onNodeClick = (id) => {
-            if (currentView === 'high-level' && id.startsWith('n_dom_')) {
-                // ID is n_dom_LAYER_DOMAIN
-                const parts = id.split('_');
-                const layer = parts[2];
-                const domain = parts.slice(3).join('_');
-                drillDown(layer, domain);
-            }
-        };
+        // ── Edges ────────────────────────────────────────────────────────────
+        const edgeGroup = g.append('g').attr('class', 'edges');
 
-        function drillDown(layer, domain) {
-            currentLayer = layer;
-            currentDomain = domain;
-            currentView = 'drill-down';
-            updateUI();
-            render();
-        }
+        const edgeElements = edgeGroup.selectAll('line.edge')
+          .data(graphData.edges)
+          .join('line')
+            .attr('class', 'edge')
+            .attr('x1', d => posMap[d.data.source]?.x || 0)
+            .attr('y1', d => posMap[d.data.source]?.y || 0)
+            .attr('x2', d => posMap[d.data.target]?.x || 0)
+            .attr('y2', d => posMap[d.data.target]?.y || 0)
+            .attr('stroke', 'rgba(148,163,184,0.35)')
+            .attr('stroke-width', 1.5)
+            .attr('opacity', 0.6)
+            .attr('marker-end', 'url(#arrowhead)')
+            .attr('stroke-dasharray', d => d.data.isTypeOnly ? '6 4' : null);
 
-        window.resetView = () => {
-            currentView = 'high-level';
-            currentLayer = null;
-            currentDomain = null;
-            updateUI();
-            render();
-        };
+        // ── Nodes ────────────────────────────────────────────────────────────
+        const nodeGroup = g.append('g').attr('class', 'nodes');
 
-        window.changeView = (view) => {
-            currentView = view;
-            currentLayer = null;
-            currentDomain = null;
-            updateUI();
-            render();
-        };
-
-        function updateUI() {
-            const badge = document.getElementById('context-badge');
-            const backBtn = document.getElementById('back-btn');
-            const viewGroup = document.getElementById('view-group');
-            
-            if (currentView === 'drill-down') {
-                badge.style.display = 'block';
-                badge.innerText = currentLayer.toUpperCase() + ' > ' + currentDomain.toUpperCase();
-                backBtn.style.display = 'flex';
-                viewGroup.style.opacity = '0.4';
-                viewGroup.style.pointerEvents = 'none';
-            } else {
-                badge.style.display = 'none';
-                backBtn.style.display = 'none';
-                viewGroup.style.opacity = '1';
-                viewGroup.style.pointerEvents = 'all';
-            }
-
-            document.querySelectorAll('#view-group button').forEach(b => {
-                b.classList.remove('active');
-                if (b.id === 'btn-' + currentView) b.classList.add('active');
+        const nodeElements = nodeGroup.selectAll('g.node')
+          .data(graphData.nodes)
+          .join('g')
+            .attr('class', 'node')
+            .attr('transform', d => {
+              const h = NODE_H + Math.min(d.data.fanIn * 2, 20);
+              return 'translate(' + (d.position.x - NODE_W/2) + ',' + (d.position.y - h/2) + ')';
             });
-        }
 
-        window.setDirection = (dir) => {
-            currentDirection = dir;
-            document.querySelectorAll('#direction-group button').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + dir).classList.add('active');
-            render();
+        // Node rect
+        nodeElements.append('rect')
+          .attr('class', 'node-rect')
+          .attr('width', NODE_W)
+          .attr('height', d => NODE_H + Math.min(d.data.fanIn * 2, 20))
+          .attr('rx', 8)
+          .attr('fill', '#1e293b')
+          .attr('stroke', d => {
+            if (d.data.severity) {
+              if (d.data.severity === 'critical') return '#ef4444';
+              if (d.data.severity === 'high') return '#fb923c';
+              if (d.data.severity === 'medium') return '#fbbf24';
+            }
+            if (d.data.complexityTier) return COMPLEXITY_COLORS[d.data.complexityTier];
+            return LAYER_COLORS[d.data.layer] || '#334155';
+          })
+          .attr('stroke-width', d => {
+            if (d.data.severity === 'critical' || d.data.severity === 'high') return 3;
+            if (d.data.complexityTier === 'high' || d.data.complexityTier === 'critical') return 3;
+            return 2;
+          })
+          .attr('stroke-dasharray', d => d.data.layer === 'External' ? '6 4' : null);
+
+        // Node label
+        nodeElements.append('text')
+          .attr('class', 'node-label')
+          .attr('x', NODE_W / 2)
+          .attr('y', d => (NODE_H + Math.min(d.data.fanIn * 2, 20)) / 2)
+          .text(d => {
+            const label = d.data.label;
+            return label.length > 25 ? label.substring(0, 23) + '…' : label;
+          });
+
+        // Fan-in badge
+        nodeElements.filter(d => d.data.fanIn >= 4)
+          .append('text')
+          .attr('x', NODE_W - 8)
+          .attr('y', 14)
+          .attr('text-anchor', 'end')
+          .attr('fill', 'var(--accent)')
+          .attr('font-size', '9px')
+          .attr('font-weight', '800')
+          .attr('opacity', 0.8)
+          .text(d => '↓' + d.data.fanIn);
+
+        // ── Tooltip ──────────────────────────────────────────────────────────
+        const tooltip = document.getElementById('tooltip');
+
+        nodeElements
+          .on('mouseover', function(event, d) {
+            tooltip.innerHTML =
+              '<div style="font-weight:700;margin-bottom:.5rem;border-bottom:1px solid var(--border);padding-bottom:.25rem;">' + d.data.label + '</div>' +
+              '<div class="tooltip-row"><span class="tooltip-label">Path</span>' + d.data.id + '</div>' +
+              '<div class="tooltip-row"><span class="tooltip-label">Layer</span>' + d.data.layer + '</div>' +
+              '<div class="tooltip-row"><span class="tooltip-label">Domain</span>' + d.data.domain + '</div>' +
+              (d.data.sloc ? '<div class="tooltip-row"><span class="tooltip-label">SLOC</span>' + d.data.sloc + '</div>' : '') +
+              (d.data.complexity ? '<div class="tooltip-row"><span class="tooltip-label">Complexity</span>' + d.data.complexity + '</div>' : '');
+            tooltip.style.display = 'block';
+
+            // Focus: fade non-connected
+            const connectedIds = new Set([d.data.id]);
+            graphData.edges.forEach(e => {
+              if (e.data.source === d.data.id) connectedIds.add(e.data.target);
+              if (e.data.target === d.data.id) connectedIds.add(e.data.source);
+            });
+
+            nodeElements.attr('opacity', n => connectedIds.has(n.data.id) ? 1 : 0.08);
+            edgeElements.attr('opacity', e =>
+              e.data.source === d.data.id || e.data.target === d.data.id ? 1 : 0.05
+            ).attr('stroke', e =>
+              e.data.source === d.data.id || e.data.target === d.data.id ? '#38bdf8' : 'rgba(148,163,184,0.35)'
+            ).attr('stroke-width', e =>
+              e.data.source === d.data.id || e.data.target === d.data.id ? 2.5 : 1.5
+            );
+          })
+          .on('mousemove', function(event) {
+            tooltip.style.left = (event.clientX + 16) + 'px';
+            tooltip.style.top  = (event.clientY + 16) + 'px';
+          })
+          .on('mouseout', function() {
+            tooltip.style.display = 'none';
+            nodeElements.attr('opacity', 1);
+            edgeElements
+              .attr('opacity', 0.6)
+              .attr('stroke', 'rgba(148,163,184,0.35)')
+              .attr('stroke-width', 1.5);
+          })
+          .on('click', function(event, d) {
+            window.showDetails(d.data.id);
+          });
+
+        window.filterDomain = (domain) => {
+          if (!domain) {
+            nodeElements.attr('opacity', 1);
+            edgeElements.attr('opacity', 0.6);
+            return;
+          }
+          nodeElements.attr('opacity', d =>
+            d.data.domain === domain || d.data.layer === domain ? 1 : 0.08
+          );
+          edgeElements.attr('opacity', e => {
+            const src = graphData.nodes.find(n => n.data.id === e.data.source);
+            const tgt = graphData.nodes.find(n => n.data.id === e.data.target);
+            const srcMatch = src && (src.data.domain === domain || src.data.layer === domain);
+            const tgtMatch = tgt && (tgt.data.domain === domain || tgt.data.layer === domain);
+            return srcMatch || tgtMatch ? 0.6 : 0.05;
+          });
+        };
+        
+        // ── Search & Focus ───────────────────────────────────────────────────
+        window.searchNodes = (query) => {
+          if (!query || query.length < 2) {
+            nodeElements.attr('opacity', 1);
+            edgeElements.attr('opacity', 0.6);
+            return;
+          }
+          const q = query.toLowerCase();
+          let firstMatch = null;
+          
+          nodeElements.attr('opacity', d => {
+            const isMatch = d.data.label.toLowerCase().includes(q) || d.data.id.toLowerCase().includes(q);
+            if (isMatch && !firstMatch) firstMatch = d;
+            return isMatch ? 1 : 0.08;
+          });
+          
+          edgeElements.attr('opacity', 0.05);
+          
+          if (firstMatch) {
+            const cRect = container.getBoundingClientRect();
+            const tx = cRect.width / 2 - firstMatch.position.x;
+            const ty = cRect.height / 2 - firstMatch.position.y;
+            svg.transition().duration(500).call(
+              d3zoom.transform,
+              d3.zoomIdentity.translate(tx, ty).scale(1)
+            );
+          }
         };
 
-        async function render() {
-            const syntax = generateMermaidSyntax();
-            const container = document.getElementById('mermaid-graph');
-            container.removeAttribute('data-processed');
-            container.innerHTML = syntax;
-            try {
-                await mermaid.run({ nodes: [container] });
-            } catch (err) {
-                console.error('Rendering failed', err);
-            }
-            applyZoom();
+        // ── Reset zoom ───────────────────────────────────────────────────────
+        window.resetZoom = () => {
+          svg.transition().duration(400).call(
+            d3zoom.transform,
+            d3.zoomIdentity.translate(60, 60).scale(1)
+          );
+        };
+
+        // ── Hotspot Filter ──────────────────────────────────────────────────
+        window.toggleHotspots = (enabled) => {
+          if (!enabled) {
+            nodeElements.attr('opacity', 1);
+            edgeElements.attr('opacity', 0.6);
+            return;
+          }
+          nodeElements.attr('opacity', d => 
+            d.data.complexityTier === 'high' || d.data.complexityTier === 'critical' ? 1 : 0.08
+          );
+          edgeElements.attr('opacity', 0.05);
+        };
+
+        // ── Macro View Toggle ────────────────────────────────────────────────
+        window.isMacro = false;
+        window.toggleMacroView = () => {
+          window.isMacro = !window.isMacro;
+          const btn = document.getElementById('btn-macro');
+          if (window.isMacro) {
+            btn.innerText = 'Detailed View';
+            btn.classList.add('active');
+            nodeGroup.attr('display', 'none');
+            edgeGroup.attr('display', 'none');
+            renderMacro();
+          } else {
+            btn.innerText = 'Macro View';
+            btn.classList.remove('active');
+            nodeGroup.attr('display', null);
+            edgeGroup.attr('display', null);
+            g.selectAll('.macro-group').remove();
+          }
+        };
+
+        function renderMacro() {
+          const macroGroup = g.append('g').attr('class', 'macro-group');
+          
+          macroGroup.selectAll('line.macro-edge')
+            .data(macroEdges)
+            .join('line')
+              .attr('class', 'macro-edge')
+              .attr('x1', d => macroNodes.find(n => n.id === d.from).x)
+              .attr('y1', d => macroNodes.find(n => n.id === d.from).y)
+              .attr('x2', d => macroNodes.find(n => n.id === d.to).x)
+              .attr('y2', d => macroNodes.find(n => n.id === d.to).y)
+              .attr('stroke', 'rgba(148,163,184,0.4)')
+              .attr('stroke-width', d => Math.max(1, Math.log(d.weight + 1) * 2))
+              .attr('marker-end', 'url(#arrowhead)');
+
+          const mn = macroGroup.selectAll('g.macro-node')
+            .data(macroNodes)
+            .join('g')
+              .attr('class', 'macro-node')
+              .attr('transform', d => 'translate(' + (d.x - 80) + ',' + (d.y - 32) + ')');
+
+          mn.append('rect')
+            .attr('width', 160)
+            .attr('height', 64)
+            .attr('rx', 8)
+            .attr('fill', d => LAYER_COLORS[d.layer] + '22')
+            .attr('stroke', d => LAYER_COLORS[d.layer])
+            .attr('stroke-width', 2);
+
+          mn.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#f1f5f9')
+            .attr('font', '700 13px Outfit')
+            .attr('x', 80)
+            .attr('y', 28)
+            .text(d => d.label);
+
+          mn.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#94a3b8')
+            .attr('font', '400 11px Outfit')
+            .attr('opacity', 0.7)
+            .attr('x', 80)
+            .attr('y', 48)
+            .text(d => d.count + ' modules');
         }
 
-        function generateMermaidSyntax() {
-            let syntax = 'flowchart ' + currentDirection + '\n';
-            
-            if (currentView === 'high-level') {
-                const domainMap = new Map();
-                graph.nodes.forEach(n => {
-                    const layer = n.metadata.layer || 'Core';
-                    const domain = n.metadata.domain || 'shared';
-                    const key = layer + '::' + domain;
-                    if (!domainMap.has(key)) domainMap.set(key, { layer, domain, count: 0 });
-                    domainMap.get(key).count++;
-                });
+        // Fit on load
+        const cRect = container.getBoundingClientRect();
+        const scaleX = cRect.width / (canvasW + 120);
+        const scaleY = cRect.height / (totalHeight + 120);
+        const initScale = Math.min(scaleX, scaleY, 1);
+        const tx = (cRect.width - canvasW * initScale) / 2;
+        const ty = 20;
+        svg.call(d3zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(initScale));
 
-                const layers = [...new Set(graph.nodes.map(n => n.metadata.layer || 'Core'))];
-                layers.forEach(layer => {
-                    syntax += '  subgraph ' + safeId(layer) + ' ["' + cleanLabel(layer) + '"]\n';
-                    [...domainMap.values()].filter(d => d.layer === layer).forEach(d => {
-                        const id = getDomainId(d.layer, d.domain);
-                        syntax += '    ' + id + '["' + cleanLabel(d.domain) + ' <small>(' + d.count + ' files)</small>"]\n';
-                        syntax += '    click ' + id + ' call onNodeClick("' + id + '")\n';
-                    });
-                    syntax += '  end\n';
-                });
+        // Auto-macro for large projects
+        if (graphData.nodes.length > 50) {
+          window.toggleMacroView();
+        }
+      
 
-                const domainEdges = new Set();
-                graph.edges.forEach(e => {
-                    const fromNode = graph.nodes.find(n => n.id === e.from);
-                    const toNode = graph.nodes.find(n => n.id === e.to);
-                    if (fromNode && toNode) {
-                        const from = getDomainId(fromNode.metadata.layer || 'Core', fromNode.metadata.domain || 'shared');
-                        const to = getDomainId(toNode.metadata.layer || 'Core', toNode.metadata.domain || 'shared');
-                        if (from !== to) domainEdges.add(from + ' --> ' + to);
-                    }
-                });
-                domainEdges.forEach(e => syntax += '  ' + e + '\n');
+            // UI Logic
+            window.resetView = () => {
+                window.resetZoom();
+                closeDetails();
+            };
 
-            } else {
-                const nodes = currentView === 'drill-down' 
-                    ? graph.nodes.filter(n => 
-                        (n.metadata.layer || 'Core') === currentLayer && 
-                        (n.metadata.domain || 'shared') === currentDomain
-                      )
-                    : graph.nodes;
+            function showDetails(nodeId) {
+                if (!window.graphData) return;
+                const node = window.graphData.nodes.find(n => n.data.id === nodeId);
+                if (!node) return;
+
+                const panel = document.getElementById('details-panel');
+                const title = document.getElementById('details-title');
+                const content = document.getElementById('details-content');
                 
-                const nodeIds = new Set(nodes.map(n => n.id));
-
-                if (currentView === 'drill-down') {
-                    syntax += '  subgraph ' + safeId(currentLayer + '_' + currentDomain) + ' ["' + cleanLabel(currentLayer).toUpperCase() + ' > ' + cleanLabel(currentDomain).toUpperCase() + '"]\n';
-                }
+                panel.classList.add('open');
+                title.innerText = node.data.label || node.data.id.split('/').pop();
                 
-                nodes.forEach(n => {
-                    const label = n.id.split('/').pop();
-                    syntax += '    ' + safeId(n.id) + '["' + cleanLabel(label) + '"]\n';
-                });
-
-                if (currentView === 'drill-down') {
-                    syntax += '  end\n';
-                }
-
-                graph.edges.forEach(e => {
-                    if (nodeIds.has(e.from) && nodeIds.has(e.to)) {
-                        syntax += '  ' + safeId(e.from) + ' --> ' + safeId(e.to) + '\n';
-                    }
-                });
+                const metrics = { sloc: node.data.sloc, complexity: node.data.complexity };
+                
+                content.innerHTML = '<div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem; word-break: break-all; font-family: monospace; opacity: 0.7;">'
+                    + node.data.id + '</div>'
+                    + '<div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">'
+                    + '<span style="background: var(--bg-accent); color: var(--accent); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; border: 1px solid rgba(56, 189, 248, 0.2);">' + (node.data.layer || 'CORE') + '</span>'
+                    + '</div>'
+                    + '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">'
+                    + '<div class="metric-card"><div class="metric-value">' + (metrics.sloc || '-') + '</div><div class="metric-label">SLOC</div></div>'
+                    + '<div class="metric-card"><div class="metric-value">' + (metrics.complexity || '-') + '</div><div class="metric-label">Complexity</div></div>'
+                    + '</div>';
             }
-            
-            return syntax;
-        }
+            window.showDetails = showDetails;
 
-        function getDomainId(layer, domain) {
-            return safeId('dom_' + layer + '_' + domain);
-        }
-
-        function safeId(id) {
-            return 'n_' + id.replace(/[^a-zA-Z0-9]/g, '_');
-        }
-
-        function cleanLabel(label) {
-            if (!label) return 'unnamed';
-            return label.replace(/[^a-zA-Z0-9 \.\-_]/g, '').trim();
-        }
-
-        window.zoom = (delta) => { scale = Math.max(0.1, scale + delta); applyZoom(); };
-        window.resetZoom = () => { scale = 1; applyZoom(); };
-        function applyZoom() {
-            const svg = document.querySelector('.mermaid svg');
-            if (svg) {
-                svg.style.transform = 'scale(' + scale + ')';
-                svg.style.transformOrigin = 'top center';
-            }
-        }
-
-        render();
+            window.closeDetails = () => {
+                document.getElementById('details-panel').classList.remove('open');
+            };
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,2516 @@
+{
+  "nodes": [
+    {
+      "id": "node_0",
+      "metadata": {
+        "label": "CoreComponent_0",
+        "layer": "Core",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 851,
+          "complexity": 14
+        }
+      }
+    },
+    {
+      "id": "node_1",
+      "metadata": {
+        "label": "UIComponent_1",
+        "layer": "UI",
+        "domain": "api",
+        "metrics": {
+          "sloc": 481,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "node_2",
+      "metadata": {
+        "label": "ServiceComponent_2",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 768,
+          "complexity": 37
+        }
+      }
+    },
+    {
+      "id": "node_3",
+      "metadata": {
+        "label": "ServiceComponent_3",
+        "layer": "Service",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 696,
+          "complexity": 38
+        }
+      }
+    },
+    {
+      "id": "node_4",
+      "metadata": {
+        "label": "UtilsComponent_4",
+        "layer": "Utils",
+        "domain": "api",
+        "metrics": {
+          "sloc": 643,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "node_5",
+      "metadata": {
+        "label": "UtilsComponent_5",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 75,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "node_6",
+      "metadata": {
+        "label": "ServiceComponent_6",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 440,
+          "complexity": 36
+        }
+      }
+    },
+    {
+      "id": "node_7",
+      "metadata": {
+        "label": "UtilsComponent_7",
+        "layer": "Utils",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 938,
+          "complexity": 1
+        }
+      }
+    },
+    {
+      "id": "node_8",
+      "metadata": {
+        "label": "CoreComponent_8",
+        "layer": "Core",
+        "domain": "api",
+        "metrics": {
+          "sloc": 451,
+          "complexity": 39
+        }
+      }
+    },
+    {
+      "id": "node_9",
+      "metadata": {
+        "label": "ServiceComponent_9",
+        "layer": "Service",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 942,
+          "complexity": 34
+        }
+      }
+    },
+    {
+      "id": "node_10",
+      "metadata": {
+        "label": "ServiceComponent_10",
+        "layer": "Service",
+        "domain": "api",
+        "metrics": {
+          "sloc": 442,
+          "complexity": 45
+        }
+      }
+    },
+    {
+      "id": "node_11",
+      "metadata": {
+        "label": "ServiceComponent_11",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 259,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "node_12",
+      "metadata": {
+        "label": "UIComponent_12",
+        "layer": "UI",
+        "domain": "api",
+        "metrics": {
+          "sloc": 395,
+          "complexity": 28
+        }
+      }
+    },
+    {
+      "id": "node_13",
+      "metadata": {
+        "label": "ServiceComponent_13",
+        "layer": "Service",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 488,
+          "complexity": 48
+        }
+      }
+    },
+    {
+      "id": "node_14",
+      "metadata": {
+        "label": "ServiceComponent_14",
+        "layer": "Service",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 735,
+          "complexity": 24
+        }
+      }
+    },
+    {
+      "id": "node_15",
+      "metadata": {
+        "label": "UIComponent_15",
+        "layer": "UI",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 569,
+          "complexity": 42
+        }
+      }
+    },
+    {
+      "id": "node_16",
+      "metadata": {
+        "label": "ServiceComponent_16",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 119,
+          "complexity": 22
+        }
+      }
+    },
+    {
+      "id": "node_17",
+      "metadata": {
+        "label": "UIComponent_17",
+        "layer": "UI",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 507,
+          "complexity": 38
+        }
+      }
+    },
+    {
+      "id": "node_18",
+      "metadata": {
+        "label": "UIComponent_18",
+        "layer": "UI",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 481,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "node_19",
+      "metadata": {
+        "label": "UtilsComponent_19",
+        "layer": "Utils",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 107,
+          "complexity": 21
+        }
+      }
+    },
+    {
+      "id": "node_20",
+      "metadata": {
+        "label": "ServiceComponent_20",
+        "layer": "Service",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 544,
+          "complexity": 29
+        }
+      }
+    },
+    {
+      "id": "node_21",
+      "metadata": {
+        "label": "ServiceComponent_21",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 506,
+          "complexity": 18
+        }
+      }
+    },
+    {
+      "id": "node_22",
+      "metadata": {
+        "label": "UIComponent_22",
+        "layer": "UI",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 993,
+          "complexity": 36
+        }
+      }
+    },
+    {
+      "id": "node_23",
+      "metadata": {
+        "label": "UtilsComponent_23",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 518,
+          "complexity": 42
+        }
+      }
+    },
+    {
+      "id": "node_24",
+      "metadata": {
+        "label": "ServiceComponent_24",
+        "layer": "Service",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 59,
+          "complexity": 34
+        }
+      }
+    },
+    {
+      "id": "node_25",
+      "metadata": {
+        "label": "ExternalComponent_25",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 959,
+          "complexity": 44
+        }
+      }
+    },
+    {
+      "id": "node_26",
+      "metadata": {
+        "label": "CoreComponent_26",
+        "layer": "Core",
+        "domain": "api",
+        "metrics": {
+          "sloc": 370,
+          "complexity": 15
+        }
+      }
+    },
+    {
+      "id": "node_27",
+      "metadata": {
+        "label": "CoreComponent_27",
+        "layer": "Core",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 13,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "node_28",
+      "metadata": {
+        "label": "CoreComponent_28",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 880,
+          "complexity": 48
+        }
+      }
+    },
+    {
+      "id": "node_29",
+      "metadata": {
+        "label": "CoreComponent_29",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 738,
+          "complexity": 32
+        }
+      }
+    },
+    {
+      "id": "node_30",
+      "metadata": {
+        "label": "UtilsComponent_30",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 65,
+          "complexity": 47
+        }
+      }
+    },
+    {
+      "id": "node_31",
+      "metadata": {
+        "label": "ServiceComponent_31",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 648,
+          "complexity": 13
+        }
+      }
+    },
+    {
+      "id": "node_32",
+      "metadata": {
+        "label": "ServiceComponent_32",
+        "layer": "Service",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 489,
+          "complexity": 32
+        }
+      }
+    },
+    {
+      "id": "node_33",
+      "metadata": {
+        "label": "UtilsComponent_33",
+        "layer": "Utils",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 459,
+          "complexity": 31
+        }
+      }
+    },
+    {
+      "id": "node_34",
+      "metadata": {
+        "label": "ExternalComponent_34",
+        "layer": "External",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 796,
+          "complexity": 39
+        }
+      }
+    },
+    {
+      "id": "node_35",
+      "metadata": {
+        "label": "UtilsComponent_35",
+        "layer": "Utils",
+        "domain": "api",
+        "metrics": {
+          "sloc": 878,
+          "complexity": 27
+        }
+      }
+    },
+    {
+      "id": "node_36",
+      "metadata": {
+        "label": "ServiceComponent_36",
+        "layer": "Service",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 492,
+          "complexity": 42
+        }
+      }
+    },
+    {
+      "id": "node_37",
+      "metadata": {
+        "label": "ExternalComponent_37",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 502,
+          "complexity": 13
+        }
+      }
+    },
+    {
+      "id": "node_38",
+      "metadata": {
+        "label": "CoreComponent_38",
+        "layer": "Core",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 519,
+          "complexity": 20
+        }
+      }
+    },
+    {
+      "id": "node_39",
+      "metadata": {
+        "label": "CoreComponent_39",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 699,
+          "complexity": 49
+        }
+      }
+    },
+    {
+      "id": "node_40",
+      "metadata": {
+        "label": "ExternalComponent_40",
+        "layer": "External",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 348,
+          "complexity": 44
+        }
+      }
+    },
+    {
+      "id": "node_41",
+      "metadata": {
+        "label": "ServiceComponent_41",
+        "layer": "Service",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 955,
+          "complexity": 26
+        }
+      }
+    },
+    {
+      "id": "node_42",
+      "metadata": {
+        "label": "CoreComponent_42",
+        "layer": "Core",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 994,
+          "complexity": 25
+        }
+      }
+    },
+    {
+      "id": "node_43",
+      "metadata": {
+        "label": "ServiceComponent_43",
+        "layer": "Service",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 471,
+          "complexity": 37
+        }
+      }
+    },
+    {
+      "id": "node_44",
+      "metadata": {
+        "label": "ServiceComponent_44",
+        "layer": "Service",
+        "domain": "api",
+        "metrics": {
+          "sloc": 402,
+          "complexity": 25
+        }
+      }
+    },
+    {
+      "id": "node_45",
+      "metadata": {
+        "label": "UIComponent_45",
+        "layer": "UI",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 953,
+          "complexity": 48
+        }
+      }
+    },
+    {
+      "id": "node_46",
+      "metadata": {
+        "label": "UtilsComponent_46",
+        "layer": "Utils",
+        "domain": "api",
+        "metrics": {
+          "sloc": 529,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "node_47",
+      "metadata": {
+        "label": "ExternalComponent_47",
+        "layer": "External",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 508,
+          "complexity": 45
+        }
+      }
+    },
+    {
+      "id": "node_48",
+      "metadata": {
+        "label": "UtilsComponent_48",
+        "layer": "Utils",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 892,
+          "complexity": 36
+        }
+      }
+    },
+    {
+      "id": "node_49",
+      "metadata": {
+        "label": "UIComponent_49",
+        "layer": "UI",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 853,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "node_50",
+      "metadata": {
+        "label": "ServiceComponent_50",
+        "layer": "Service",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 207,
+          "complexity": 13
+        }
+      }
+    },
+    {
+      "id": "node_51",
+      "metadata": {
+        "label": "ExternalComponent_51",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 22,
+          "complexity": 32
+        }
+      }
+    },
+    {
+      "id": "node_52",
+      "metadata": {
+        "label": "ServiceComponent_52",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 536,
+          "complexity": 6
+        }
+      }
+    },
+    {
+      "id": "node_53",
+      "metadata": {
+        "label": "ExternalComponent_53",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 2,
+          "complexity": 4
+        }
+      }
+    },
+    {
+      "id": "node_54",
+      "metadata": {
+        "label": "ServiceComponent_54",
+        "layer": "Service",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 773,
+          "complexity": 33
+        }
+      }
+    },
+    {
+      "id": "node_55",
+      "metadata": {
+        "label": "ServiceComponent_55",
+        "layer": "Service",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 832,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "node_56",
+      "metadata": {
+        "label": "ExternalComponent_56",
+        "layer": "External",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 929,
+          "complexity": 45
+        }
+      }
+    },
+    {
+      "id": "node_57",
+      "metadata": {
+        "label": "CoreComponent_57",
+        "layer": "Core",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 781,
+          "complexity": 47
+        }
+      }
+    },
+    {
+      "id": "node_58",
+      "metadata": {
+        "label": "CoreComponent_58",
+        "layer": "Core",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 922,
+          "complexity": 14
+        }
+      }
+    },
+    {
+      "id": "node_59",
+      "metadata": {
+        "label": "UIComponent_59",
+        "layer": "UI",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 401,
+          "complexity": 34
+        }
+      }
+    },
+    {
+      "id": "node_60",
+      "metadata": {
+        "label": "ServiceComponent_60",
+        "layer": "Service",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 178,
+          "complexity": 38
+        }
+      }
+    },
+    {
+      "id": "node_61",
+      "metadata": {
+        "label": "CoreComponent_61",
+        "layer": "Core",
+        "domain": "api",
+        "metrics": {
+          "sloc": 207,
+          "complexity": 49
+        }
+      }
+    },
+    {
+      "id": "node_62",
+      "metadata": {
+        "label": "ServiceComponent_62",
+        "layer": "Service",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 867,
+          "complexity": 23
+        }
+      }
+    },
+    {
+      "id": "node_63",
+      "metadata": {
+        "label": "UtilsComponent_63",
+        "layer": "Utils",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 74,
+          "complexity": 38
+        }
+      }
+    },
+    {
+      "id": "node_64",
+      "metadata": {
+        "label": "UIComponent_64",
+        "layer": "UI",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 810,
+          "complexity": 17
+        }
+      }
+    },
+    {
+      "id": "node_65",
+      "metadata": {
+        "label": "CoreComponent_65",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 633,
+          "complexity": 43
+        }
+      }
+    },
+    {
+      "id": "node_66",
+      "metadata": {
+        "label": "ServiceComponent_66",
+        "layer": "Service",
+        "domain": "api",
+        "metrics": {
+          "sloc": 181,
+          "complexity": 43
+        }
+      }
+    },
+    {
+      "id": "node_67",
+      "metadata": {
+        "label": "CoreComponent_67",
+        "layer": "Core",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 454,
+          "complexity": 29
+        }
+      }
+    },
+    {
+      "id": "node_68",
+      "metadata": {
+        "label": "UIComponent_68",
+        "layer": "UI",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 301,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "node_69",
+      "metadata": {
+        "label": "CoreComponent_69",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 745,
+          "complexity": 43
+        }
+      }
+    },
+    {
+      "id": "node_70",
+      "metadata": {
+        "label": "CoreComponent_70",
+        "layer": "Core",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 853,
+          "complexity": 36
+        }
+      }
+    },
+    {
+      "id": "node_71",
+      "metadata": {
+        "label": "UIComponent_71",
+        "layer": "UI",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 750,
+          "complexity": 40
+        }
+      }
+    },
+    {
+      "id": "node_72",
+      "metadata": {
+        "label": "UIComponent_72",
+        "layer": "UI",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 232,
+          "complexity": 27
+        }
+      }
+    },
+    {
+      "id": "node_73",
+      "metadata": {
+        "label": "CoreComponent_73",
+        "layer": "Core",
+        "domain": "api",
+        "metrics": {
+          "sloc": 456,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "node_74",
+      "metadata": {
+        "label": "UIComponent_74",
+        "layer": "UI",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 364,
+          "complexity": 37
+        }
+      }
+    },
+    {
+      "id": "node_75",
+      "metadata": {
+        "label": "ServiceComponent_75",
+        "layer": "Service",
+        "domain": "api",
+        "metrics": {
+          "sloc": 491,
+          "complexity": 34
+        }
+      }
+    },
+    {
+      "id": "node_76",
+      "metadata": {
+        "label": "UtilsComponent_76",
+        "layer": "Utils",
+        "domain": "api",
+        "metrics": {
+          "sloc": 195,
+          "complexity": 30
+        }
+      }
+    },
+    {
+      "id": "node_77",
+      "metadata": {
+        "label": "UtilsComponent_77",
+        "layer": "Utils",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 33,
+          "complexity": 6
+        }
+      }
+    },
+    {
+      "id": "node_78",
+      "metadata": {
+        "label": "ExternalComponent_78",
+        "layer": "External",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 458,
+          "complexity": 44
+        }
+      }
+    },
+    {
+      "id": "node_79",
+      "metadata": {
+        "label": "ServiceComponent_79",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 606,
+          "complexity": 47
+        }
+      }
+    },
+    {
+      "id": "node_80",
+      "metadata": {
+        "label": "UIComponent_80",
+        "layer": "UI",
+        "domain": "api",
+        "metrics": {
+          "sloc": 164,
+          "complexity": 14
+        }
+      }
+    },
+    {
+      "id": "node_81",
+      "metadata": {
+        "label": "ExternalComponent_81",
+        "layer": "External",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 218,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "node_82",
+      "metadata": {
+        "label": "UtilsComponent_82",
+        "layer": "Utils",
+        "domain": "api",
+        "metrics": {
+          "sloc": 478,
+          "complexity": 8
+        }
+      }
+    },
+    {
+      "id": "node_83",
+      "metadata": {
+        "label": "UIComponent_83",
+        "layer": "UI",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 124,
+          "complexity": 19
+        }
+      }
+    },
+    {
+      "id": "node_84",
+      "metadata": {
+        "label": "ServiceComponent_84",
+        "layer": "Service",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 305,
+          "complexity": 21
+        }
+      }
+    },
+    {
+      "id": "node_85",
+      "metadata": {
+        "label": "ExternalComponent_85",
+        "layer": "External",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 783,
+          "complexity": 5
+        }
+      }
+    },
+    {
+      "id": "node_86",
+      "metadata": {
+        "label": "ServiceComponent_86",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 443,
+          "complexity": 49
+        }
+      }
+    },
+    {
+      "id": "node_87",
+      "metadata": {
+        "label": "ExternalComponent_87",
+        "layer": "External",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 303,
+          "complexity": 42
+        }
+      }
+    },
+    {
+      "id": "node_88",
+      "metadata": {
+        "label": "CoreComponent_88",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 875,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "node_89",
+      "metadata": {
+        "label": "UIComponent_89",
+        "layer": "UI",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 298,
+          "complexity": 25
+        }
+      }
+    },
+    {
+      "id": "node_90",
+      "metadata": {
+        "label": "ExternalComponent_90",
+        "layer": "External",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 396,
+          "complexity": 29
+        }
+      }
+    },
+    {
+      "id": "node_91",
+      "metadata": {
+        "label": "ServiceComponent_91",
+        "layer": "Service",
+        "domain": "api",
+        "metrics": {
+          "sloc": 410,
+          "complexity": 0
+        }
+      }
+    },
+    {
+      "id": "node_92",
+      "metadata": {
+        "label": "UtilsComponent_92",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 734,
+          "complexity": 11
+        }
+      }
+    },
+    {
+      "id": "node_93",
+      "metadata": {
+        "label": "CoreComponent_93",
+        "layer": "Core",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 185,
+          "complexity": 45
+        }
+      }
+    },
+    {
+      "id": "node_94",
+      "metadata": {
+        "label": "CoreComponent_94",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 733,
+          "complexity": 48
+        }
+      }
+    },
+    {
+      "id": "node_95",
+      "metadata": {
+        "label": "CoreComponent_95",
+        "layer": "Core",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 562,
+          "complexity": 35
+        }
+      }
+    },
+    {
+      "id": "node_96",
+      "metadata": {
+        "label": "ExternalComponent_96",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 15,
+          "complexity": 39
+        }
+      }
+    },
+    {
+      "id": "node_97",
+      "metadata": {
+        "label": "UtilsComponent_97",
+        "layer": "Utils",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 614,
+          "complexity": 23
+        }
+      }
+    },
+    {
+      "id": "node_98",
+      "metadata": {
+        "label": "ServiceComponent_98",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 940,
+          "complexity": 11
+        }
+      }
+    },
+    {
+      "id": "node_99",
+      "metadata": {
+        "label": "CoreComponent_99",
+        "layer": "Core",
+        "domain": "api",
+        "metrics": {
+          "sloc": 160,
+          "complexity": 34
+        }
+      }
+    },
+    {
+      "id": "node_hub",
+      "metadata": {
+        "label": "MainSystemHub",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 5000,
+          "complexity": 150
+        }
+      }
+    },
+    {
+      "id": "node_orphan",
+      "metadata": {
+        "label": "OrphanModule",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 10,
+          "complexity": 1
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_0_82_0",
+      "from": "node_0",
+      "to": "node_82"
+    },
+    {
+      "id": "edge_0_57_1",
+      "from": "node_0",
+      "to": "node_57"
+    },
+    {
+      "id": "edge_1_47_0",
+      "from": "node_1",
+      "to": "node_47"
+    },
+    {
+      "id": "edge_1_21_1",
+      "from": "node_1",
+      "to": "node_21"
+    },
+    {
+      "id": "edge_1_22_2",
+      "from": "node_1",
+      "to": "node_22"
+    },
+    {
+      "id": "edge_1_33_3",
+      "from": "node_1",
+      "to": "node_33"
+    },
+    {
+      "id": "edge_2_58_0",
+      "from": "node_2",
+      "to": "node_58"
+    },
+    {
+      "id": "edge_2_61_1",
+      "from": "node_2",
+      "to": "node_61"
+    },
+    {
+      "id": "edge_2_88_2",
+      "from": "node_2",
+      "to": "node_88"
+    },
+    {
+      "id": "edge_3_49_0",
+      "from": "node_3",
+      "to": "node_49"
+    },
+    {
+      "id": "edge_3_82_1",
+      "from": "node_3",
+      "to": "node_82"
+    },
+    {
+      "id": "edge_3_25_2",
+      "from": "node_3",
+      "to": "node_25"
+    },
+    {
+      "id": "edge_3_39_3",
+      "from": "node_3",
+      "to": "node_39"
+    },
+    {
+      "id": "edge_4_51_0",
+      "from": "node_4",
+      "to": "node_51"
+    },
+    {
+      "id": "edge_4_25_1",
+      "from": "node_4",
+      "to": "node_25"
+    },
+    {
+      "id": "edge_4_80_2",
+      "from": "node_4",
+      "to": "node_80"
+    },
+    {
+      "id": "edge_4_28_3",
+      "from": "node_4",
+      "to": "node_28"
+    },
+    {
+      "id": "edge_5_34_0",
+      "from": "node_5",
+      "to": "node_34"
+    },
+    {
+      "id": "edge_6_49_0",
+      "from": "node_6",
+      "to": "node_49"
+    },
+    {
+      "id": "edge_6_90_1",
+      "from": "node_6",
+      "to": "node_90"
+    },
+    {
+      "id": "edge_7_30_0",
+      "from": "node_7",
+      "to": "node_30"
+    },
+    {
+      "id": "edge_8_0_0",
+      "from": "node_8",
+      "to": "node_0"
+    },
+    {
+      "id": "edge_8_22_1",
+      "from": "node_8",
+      "to": "node_22"
+    },
+    {
+      "id": "edge_9_5_0",
+      "from": "node_9",
+      "to": "node_5"
+    },
+    {
+      "id": "edge_9_15_1",
+      "from": "node_9",
+      "to": "node_15"
+    },
+    {
+      "id": "edge_9_81_2",
+      "from": "node_9",
+      "to": "node_81"
+    },
+    {
+      "id": "edge_10_41_0",
+      "from": "node_10",
+      "to": "node_41"
+    },
+    {
+      "id": "edge_10_40_1",
+      "from": "node_10",
+      "to": "node_40"
+    },
+    {
+      "id": "edge_10_0_2",
+      "from": "node_10",
+      "to": "node_0"
+    },
+    {
+      "id": "edge_11_48_1",
+      "from": "node_11",
+      "to": "node_48"
+    },
+    {
+      "id": "edge_11_33_2",
+      "from": "node_11",
+      "to": "node_33"
+    },
+    {
+      "id": "edge_12_97_0",
+      "from": "node_12",
+      "to": "node_97"
+    },
+    {
+      "id": "edge_12_10_1",
+      "from": "node_12",
+      "to": "node_10"
+    },
+    {
+      "id": "edge_13_93_0",
+      "from": "node_13",
+      "to": "node_93"
+    },
+    {
+      "id": "edge_13_59_1",
+      "from": "node_13",
+      "to": "node_59"
+    },
+    {
+      "id": "edge_13_24_2",
+      "from": "node_13",
+      "to": "node_24"
+    },
+    {
+      "id": "edge_14_61_0",
+      "from": "node_14",
+      "to": "node_61"
+    },
+    {
+      "id": "edge_15_26_0",
+      "from": "node_15",
+      "to": "node_26"
+    },
+    {
+      "id": "edge_15_57_1",
+      "from": "node_15",
+      "to": "node_57"
+    },
+    {
+      "id": "edge_15_32_2",
+      "from": "node_15",
+      "to": "node_32"
+    },
+    {
+      "id": "edge_16_15_0",
+      "from": "node_16",
+      "to": "node_15"
+    },
+    {
+      "id": "edge_16_64_1",
+      "from": "node_16",
+      "to": "node_64"
+    },
+    {
+      "id": "edge_16_87_2",
+      "from": "node_16",
+      "to": "node_87"
+    },
+    {
+      "id": "edge_17_94_0",
+      "from": "node_17",
+      "to": "node_94"
+    },
+    {
+      "id": "edge_17_75_1",
+      "from": "node_17",
+      "to": "node_75"
+    },
+    {
+      "id": "edge_17_91_2",
+      "from": "node_17",
+      "to": "node_91"
+    },
+    {
+      "id": "edge_18_47_0",
+      "from": "node_18",
+      "to": "node_47"
+    },
+    {
+      "id": "edge_18_26_1",
+      "from": "node_18",
+      "to": "node_26"
+    },
+    {
+      "id": "edge_18_67_2",
+      "from": "node_18",
+      "to": "node_67"
+    },
+    {
+      "id": "edge_19_89_0",
+      "from": "node_19",
+      "to": "node_89"
+    },
+    {
+      "id": "edge_19_27_1",
+      "from": "node_19",
+      "to": "node_27"
+    },
+    {
+      "id": "edge_20_83_0",
+      "from": "node_20",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_20_44_1",
+      "from": "node_20",
+      "to": "node_44"
+    },
+    {
+      "id": "edge_20_74_2",
+      "from": "node_20",
+      "to": "node_74"
+    },
+    {
+      "id": "edge_20_22_3",
+      "from": "node_20",
+      "to": "node_22"
+    },
+    {
+      "id": "edge_21_52_0",
+      "from": "node_21",
+      "to": "node_52"
+    },
+    {
+      "id": "edge_21_93_1",
+      "from": "node_21",
+      "to": "node_93"
+    },
+    {
+      "id": "edge_21_54_2",
+      "from": "node_21",
+      "to": "node_54"
+    },
+    {
+      "id": "edge_21_25_3",
+      "from": "node_21",
+      "to": "node_25"
+    },
+    {
+      "id": "edge_22_13_0",
+      "from": "node_22",
+      "to": "node_13"
+    },
+    {
+      "id": "edge_22_62_1",
+      "from": "node_22",
+      "to": "node_62"
+    },
+    {
+      "id": "edge_22_45_2",
+      "from": "node_22",
+      "to": "node_45"
+    },
+    {
+      "id": "edge_23_68_0",
+      "from": "node_23",
+      "to": "node_68"
+    },
+    {
+      "id": "edge_23_59_1",
+      "from": "node_23",
+      "to": "node_59"
+    },
+    {
+      "id": "edge_24_8_0",
+      "from": "node_24",
+      "to": "node_8"
+    },
+    {
+      "id": "edge_25_22_0",
+      "from": "node_25",
+      "to": "node_22"
+    },
+    {
+      "id": "edge_26_73_0",
+      "from": "node_26",
+      "to": "node_73"
+    },
+    {
+      "id": "edge_26_67_1",
+      "from": "node_26",
+      "to": "node_67"
+    },
+    {
+      "id": "edge_27_59_0",
+      "from": "node_27",
+      "to": "node_59"
+    },
+    {
+      "id": "edge_27_1_1",
+      "from": "node_27",
+      "to": "node_1"
+    },
+    {
+      "id": "edge_28_49_0",
+      "from": "node_28",
+      "to": "node_49"
+    },
+    {
+      "id": "edge_28_35_1",
+      "from": "node_28",
+      "to": "node_35"
+    },
+    {
+      "id": "edge_28_6_2",
+      "from": "node_28",
+      "to": "node_6"
+    },
+    {
+      "id": "edge_29_40_0",
+      "from": "node_29",
+      "to": "node_40"
+    },
+    {
+      "id": "edge_29_92_1",
+      "from": "node_29",
+      "to": "node_92"
+    },
+    {
+      "id": "edge_29_12_2",
+      "from": "node_29",
+      "to": "node_12"
+    },
+    {
+      "id": "edge_30_50_0",
+      "from": "node_30",
+      "to": "node_50"
+    },
+    {
+      "id": "edge_30_54_1",
+      "from": "node_30",
+      "to": "node_54"
+    },
+    {
+      "id": "edge_31_17_0",
+      "from": "node_31",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_31_55_1",
+      "from": "node_31",
+      "to": "node_55"
+    },
+    {
+      "id": "edge_31_22_2",
+      "from": "node_31",
+      "to": "node_22"
+    },
+    {
+      "id": "edge_31_34_3",
+      "from": "node_31",
+      "to": "node_34"
+    },
+    {
+      "id": "edge_32_71_0",
+      "from": "node_32",
+      "to": "node_71"
+    },
+    {
+      "id": "edge_32_30_1",
+      "from": "node_32",
+      "to": "node_30"
+    },
+    {
+      "id": "edge_32_17_2",
+      "from": "node_32",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_32_94_3",
+      "from": "node_32",
+      "to": "node_94"
+    },
+    {
+      "id": "edge_33_31_0",
+      "from": "node_33",
+      "to": "node_31"
+    },
+    {
+      "id": "edge_34_86_0",
+      "from": "node_34",
+      "to": "node_86"
+    },
+    {
+      "id": "edge_34_28_1",
+      "from": "node_34",
+      "to": "node_28"
+    },
+    {
+      "id": "edge_34_72_2",
+      "from": "node_34",
+      "to": "node_72"
+    },
+    {
+      "id": "edge_35_51_0",
+      "from": "node_35",
+      "to": "node_51"
+    },
+    {
+      "id": "edge_35_85_1",
+      "from": "node_35",
+      "to": "node_85"
+    },
+    {
+      "id": "edge_35_74_2",
+      "from": "node_35",
+      "to": "node_74"
+    },
+    {
+      "id": "edge_36_68_0",
+      "from": "node_36",
+      "to": "node_68"
+    },
+    {
+      "id": "edge_36_8_1",
+      "from": "node_36",
+      "to": "node_8"
+    },
+    {
+      "id": "edge_37_48_0",
+      "from": "node_37",
+      "to": "node_48"
+    },
+    {
+      "id": "edge_37_50_1",
+      "from": "node_37",
+      "to": "node_50"
+    },
+    {
+      "id": "edge_38_29_0",
+      "from": "node_38",
+      "to": "node_29"
+    },
+    {
+      "id": "edge_38_53_1",
+      "from": "node_38",
+      "to": "node_53"
+    },
+    {
+      "id": "edge_39_25_0",
+      "from": "node_39",
+      "to": "node_25"
+    },
+    {
+      "id": "edge_39_93_1",
+      "from": "node_39",
+      "to": "node_93"
+    },
+    {
+      "id": "edge_39_65_2",
+      "from": "node_39",
+      "to": "node_65"
+    },
+    {
+      "id": "edge_39_80_3",
+      "from": "node_39",
+      "to": "node_80"
+    },
+    {
+      "id": "edge_40_7_0",
+      "from": "node_40",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_40_78_1",
+      "from": "node_40",
+      "to": "node_78"
+    },
+    {
+      "id": "edge_41_45_0",
+      "from": "node_41",
+      "to": "node_45"
+    },
+    {
+      "id": "edge_42_71_0",
+      "from": "node_42",
+      "to": "node_71"
+    },
+    {
+      "id": "edge_43_45_0",
+      "from": "node_43",
+      "to": "node_45"
+    },
+    {
+      "id": "edge_43_95_1",
+      "from": "node_43",
+      "to": "node_95"
+    },
+    {
+      "id": "edge_44_59_0",
+      "from": "node_44",
+      "to": "node_59"
+    },
+    {
+      "id": "edge_45_23_0",
+      "from": "node_45",
+      "to": "node_23"
+    },
+    {
+      "id": "edge_45_32_1",
+      "from": "node_45",
+      "to": "node_32"
+    },
+    {
+      "id": "edge_45_82_2",
+      "from": "node_45",
+      "to": "node_82"
+    },
+    {
+      "id": "edge_45_27_3",
+      "from": "node_45",
+      "to": "node_27"
+    },
+    {
+      "id": "edge_46_25_0",
+      "from": "node_46",
+      "to": "node_25"
+    },
+    {
+      "id": "edge_46_83_1",
+      "from": "node_46",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_46_57_2",
+      "from": "node_46",
+      "to": "node_57"
+    },
+    {
+      "id": "edge_46_11_3",
+      "from": "node_46",
+      "to": "node_11"
+    },
+    {
+      "id": "edge_47_28_0",
+      "from": "node_47",
+      "to": "node_28"
+    },
+    {
+      "id": "edge_47_69_1",
+      "from": "node_47",
+      "to": "node_69"
+    },
+    {
+      "id": "edge_48_90_0",
+      "from": "node_48",
+      "to": "node_90"
+    },
+    {
+      "id": "edge_48_83_1",
+      "from": "node_48",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_49_77_0",
+      "from": "node_49",
+      "to": "node_77"
+    },
+    {
+      "id": "edge_49_80_1",
+      "from": "node_49",
+      "to": "node_80"
+    },
+    {
+      "id": "edge_49_40_2",
+      "from": "node_49",
+      "to": "node_40"
+    },
+    {
+      "id": "edge_50_23_0",
+      "from": "node_50",
+      "to": "node_23"
+    },
+    {
+      "id": "edge_50_67_1",
+      "from": "node_50",
+      "to": "node_67"
+    },
+    {
+      "id": "edge_50_26_2",
+      "from": "node_50",
+      "to": "node_26"
+    },
+    {
+      "id": "edge_51_55_0",
+      "from": "node_51",
+      "to": "node_55"
+    },
+    {
+      "id": "edge_51_2_1",
+      "from": "node_51",
+      "to": "node_2"
+    },
+    {
+      "id": "edge_52_35_0",
+      "from": "node_52",
+      "to": "node_35"
+    },
+    {
+      "id": "edge_52_47_1",
+      "from": "node_52",
+      "to": "node_47"
+    },
+    {
+      "id": "edge_53_91_0",
+      "from": "node_53",
+      "to": "node_91"
+    },
+    {
+      "id": "edge_53_35_1",
+      "from": "node_53",
+      "to": "node_35"
+    },
+    {
+      "id": "edge_53_88_2",
+      "from": "node_53",
+      "to": "node_88"
+    },
+    {
+      "id": "edge_54_53_0",
+      "from": "node_54",
+      "to": "node_53"
+    },
+    {
+      "id": "edge_55_78_0",
+      "from": "node_55",
+      "to": "node_78"
+    },
+    {
+      "id": "edge_55_48_1",
+      "from": "node_55",
+      "to": "node_48"
+    },
+    {
+      "id": "edge_55_16_2",
+      "from": "node_55",
+      "to": "node_16"
+    },
+    {
+      "id": "edge_55_17_3",
+      "from": "node_55",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_56_34_0",
+      "from": "node_56",
+      "to": "node_34"
+    },
+    {
+      "id": "edge_56_96_1",
+      "from": "node_56",
+      "to": "node_96"
+    },
+    {
+      "id": "edge_57_40_0",
+      "from": "node_57",
+      "to": "node_40"
+    },
+    {
+      "id": "edge_58_27_0",
+      "from": "node_58",
+      "to": "node_27"
+    },
+    {
+      "id": "edge_58_34_1",
+      "from": "node_58",
+      "to": "node_34"
+    },
+    {
+      "id": "edge_59_38_0",
+      "from": "node_59",
+      "to": "node_38"
+    },
+    {
+      "id": "edge_59_39_1",
+      "from": "node_59",
+      "to": "node_39"
+    },
+    {
+      "id": "edge_59_48_2",
+      "from": "node_59",
+      "to": "node_48"
+    },
+    {
+      "id": "edge_60_14_0",
+      "from": "node_60",
+      "to": "node_14"
+    },
+    {
+      "id": "edge_60_95_1",
+      "from": "node_60",
+      "to": "node_95"
+    },
+    {
+      "id": "edge_60_22_2",
+      "from": "node_60",
+      "to": "node_22"
+    },
+    {
+      "id": "edge_60_57_3",
+      "from": "node_60",
+      "to": "node_57"
+    },
+    {
+      "id": "edge_61_69_0",
+      "from": "node_61",
+      "to": "node_69"
+    },
+    {
+      "id": "edge_61_49_1",
+      "from": "node_61",
+      "to": "node_49"
+    },
+    {
+      "id": "edge_62_95_0",
+      "from": "node_62",
+      "to": "node_95"
+    },
+    {
+      "id": "edge_63_64_0",
+      "from": "node_63",
+      "to": "node_64"
+    },
+    {
+      "id": "edge_63_6_1",
+      "from": "node_63",
+      "to": "node_6"
+    },
+    {
+      "id": "edge_64_89_0",
+      "from": "node_64",
+      "to": "node_89"
+    },
+    {
+      "id": "edge_65_98_0",
+      "from": "node_65",
+      "to": "node_98"
+    },
+    {
+      "id": "edge_65_83_1",
+      "from": "node_65",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_66_23_0",
+      "from": "node_66",
+      "to": "node_23"
+    },
+    {
+      "id": "edge_66_83_1",
+      "from": "node_66",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_66_69_2",
+      "from": "node_66",
+      "to": "node_69"
+    },
+    {
+      "id": "edge_66_46_3",
+      "from": "node_66",
+      "to": "node_46"
+    },
+    {
+      "id": "edge_67_13_0",
+      "from": "node_67",
+      "to": "node_13"
+    },
+    {
+      "id": "edge_67_24_1",
+      "from": "node_67",
+      "to": "node_24"
+    },
+    {
+      "id": "edge_67_40_2",
+      "from": "node_67",
+      "to": "node_40"
+    },
+    {
+      "id": "edge_68_94_0",
+      "from": "node_68",
+      "to": "node_94"
+    },
+    {
+      "id": "edge_69_98_0",
+      "from": "node_69",
+      "to": "node_98"
+    },
+    {
+      "id": "edge_70_73_0",
+      "from": "node_70",
+      "to": "node_73"
+    },
+    {
+      "id": "edge_70_81_1",
+      "from": "node_70",
+      "to": "node_81"
+    },
+    {
+      "id": "edge_70_26_2",
+      "from": "node_70",
+      "to": "node_26"
+    },
+    {
+      "id": "edge_70_79_3",
+      "from": "node_70",
+      "to": "node_79"
+    },
+    {
+      "id": "edge_71_59_0",
+      "from": "node_71",
+      "to": "node_59"
+    },
+    {
+      "id": "edge_71_55_1",
+      "from": "node_71",
+      "to": "node_55"
+    },
+    {
+      "id": "edge_71_74_2",
+      "from": "node_71",
+      "to": "node_74"
+    },
+    {
+      "id": "edge_72_86_0",
+      "from": "node_72",
+      "to": "node_86"
+    },
+    {
+      "id": "edge_73_31_0",
+      "from": "node_73",
+      "to": "node_31"
+    },
+    {
+      "id": "edge_74_43_0",
+      "from": "node_74",
+      "to": "node_43"
+    },
+    {
+      "id": "edge_74_41_1",
+      "from": "node_74",
+      "to": "node_41"
+    },
+    {
+      "id": "edge_75_35_0",
+      "from": "node_75",
+      "to": "node_35"
+    },
+    {
+      "id": "edge_75_39_1",
+      "from": "node_75",
+      "to": "node_39"
+    },
+    {
+      "id": "edge_75_68_2",
+      "from": "node_75",
+      "to": "node_68"
+    },
+    {
+      "id": "edge_76_71_0",
+      "from": "node_76",
+      "to": "node_71"
+    },
+    {
+      "id": "edge_76_92_1",
+      "from": "node_76",
+      "to": "node_92"
+    },
+    {
+      "id": "edge_77_90_0",
+      "from": "node_77",
+      "to": "node_90"
+    },
+    {
+      "id": "edge_78_70_0",
+      "from": "node_78",
+      "to": "node_70"
+    },
+    {
+      "id": "edge_79_3_0",
+      "from": "node_79",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_79_59_1",
+      "from": "node_79",
+      "to": "node_59"
+    },
+    {
+      "id": "edge_79_98_2",
+      "from": "node_79",
+      "to": "node_98"
+    },
+    {
+      "id": "edge_80_95_0",
+      "from": "node_80",
+      "to": "node_95"
+    },
+    {
+      "id": "edge_80_51_1",
+      "from": "node_80",
+      "to": "node_51"
+    },
+    {
+      "id": "edge_80_83_2",
+      "from": "node_80",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_81_61_0",
+      "from": "node_81",
+      "to": "node_61"
+    },
+    {
+      "id": "edge_82_27_0",
+      "from": "node_82",
+      "to": "node_27"
+    },
+    {
+      "id": "edge_82_14_1",
+      "from": "node_82",
+      "to": "node_14"
+    },
+    {
+      "id": "edge_82_68_2",
+      "from": "node_82",
+      "to": "node_68"
+    },
+    {
+      "id": "edge_82_23_3",
+      "from": "node_82",
+      "to": "node_23"
+    },
+    {
+      "id": "edge_83_70_0",
+      "from": "node_83",
+      "to": "node_70"
+    },
+    {
+      "id": "edge_84_19_0",
+      "from": "node_84",
+      "to": "node_19"
+    },
+    {
+      "id": "edge_84_53_1",
+      "from": "node_84",
+      "to": "node_53"
+    },
+    {
+      "id": "edge_84_45_2",
+      "from": "node_84",
+      "to": "node_45"
+    },
+    {
+      "id": "edge_85_24_0",
+      "from": "node_85",
+      "to": "node_24"
+    },
+    {
+      "id": "edge_86_34_0",
+      "from": "node_86",
+      "to": "node_34"
+    },
+    {
+      "id": "edge_86_4_1",
+      "from": "node_86",
+      "to": "node_4"
+    },
+    {
+      "id": "edge_86_5_2",
+      "from": "node_86",
+      "to": "node_5"
+    },
+    {
+      "id": "edge_87_83_0",
+      "from": "node_87",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_87_54_1",
+      "from": "node_87",
+      "to": "node_54"
+    },
+    {
+      "id": "edge_88_98_0",
+      "from": "node_88",
+      "to": "node_98"
+    },
+    {
+      "id": "edge_88_83_1",
+      "from": "node_88",
+      "to": "node_83"
+    },
+    {
+      "id": "edge_89_76_0",
+      "from": "node_89",
+      "to": "node_76"
+    },
+    {
+      "id": "edge_89_9_1",
+      "from": "node_89",
+      "to": "node_9"
+    },
+    {
+      "id": "edge_89_29_2",
+      "from": "node_89",
+      "to": "node_29"
+    },
+    {
+      "id": "edge_89_39_3",
+      "from": "node_89",
+      "to": "node_39"
+    },
+    {
+      "id": "edge_90_71_0",
+      "from": "node_90",
+      "to": "node_71"
+    },
+    {
+      "id": "edge_90_61_1",
+      "from": "node_90",
+      "to": "node_61"
+    },
+    {
+      "id": "edge_91_82_0",
+      "from": "node_91",
+      "to": "node_82"
+    },
+    {
+      "id": "edge_91_51_1",
+      "from": "node_91",
+      "to": "node_51"
+    },
+    {
+      "id": "edge_91_30_2",
+      "from": "node_91",
+      "to": "node_30"
+    },
+    {
+      "id": "edge_92_15_1",
+      "from": "node_92",
+      "to": "node_15"
+    },
+    {
+      "id": "edge_92_16_2",
+      "from": "node_92",
+      "to": "node_16"
+    },
+    {
+      "id": "edge_92_1_3",
+      "from": "node_92",
+      "to": "node_1"
+    },
+    {
+      "id": "edge_93_33_0",
+      "from": "node_93",
+      "to": "node_33"
+    },
+    {
+      "id": "edge_93_2_1",
+      "from": "node_93",
+      "to": "node_2"
+    },
+    {
+      "id": "edge_93_87_2",
+      "from": "node_93",
+      "to": "node_87"
+    },
+    {
+      "id": "edge_94_55_0",
+      "from": "node_94",
+      "to": "node_55"
+    },
+    {
+      "id": "edge_95_27_0",
+      "from": "node_95",
+      "to": "node_27"
+    },
+    {
+      "id": "edge_95_40_1",
+      "from": "node_95",
+      "to": "node_40"
+    },
+    {
+      "id": "edge_95_85_2",
+      "from": "node_95",
+      "to": "node_85"
+    },
+    {
+      "id": "edge_96_39_0",
+      "from": "node_96",
+      "to": "node_39"
+    },
+    {
+      "id": "edge_96_49_1",
+      "from": "node_96",
+      "to": "node_49"
+    },
+    {
+      "id": "edge_96_41_2",
+      "from": "node_96",
+      "to": "node_41"
+    },
+    {
+      "id": "edge_97_72_0",
+      "from": "node_97",
+      "to": "node_72"
+    },
+    {
+      "id": "edge_97_10_1",
+      "from": "node_97",
+      "to": "node_10"
+    },
+    {
+      "id": "edge_98_69_0",
+      "from": "node_98",
+      "to": "node_69"
+    },
+    {
+      "id": "edge_98_8_1",
+      "from": "node_98",
+      "to": "node_8"
+    },
+    {
+      "id": "edge_99_54_0",
+      "from": "node_99",
+      "to": "node_54"
+    },
+    {
+      "id": "edge_hub_0",
+      "from": "node_hub",
+      "to": "node_0"
+    },
+    {
+      "id": "edge_hub_1",
+      "from": "node_hub",
+      "to": "node_1"
+    },
+    {
+      "id": "edge_hub_2",
+      "from": "node_hub",
+      "to": "node_2"
+    },
+    {
+      "id": "edge_hub_3",
+      "from": "node_hub",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_hub_4",
+      "from": "node_hub",
+      "to": "node_4"
+    },
+    {
+      "id": "edge_hub_5",
+      "from": "node_hub",
+      "to": "node_5"
+    },
+    {
+      "id": "edge_hub_6",
+      "from": "node_hub",
+      "to": "node_6"
+    },
+    {
+      "id": "edge_hub_7",
+      "from": "node_hub",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_hub_8",
+      "from": "node_hub",
+      "to": "node_8"
+    },
+    {
+      "id": "edge_hub_9",
+      "from": "node_hub",
+      "to": "node_9"
+    },
+    {
+      "id": "edge_hub_10",
+      "from": "node_hub",
+      "to": "node_10"
+    },
+    {
+      "id": "edge_hub_11",
+      "from": "node_hub",
+      "to": "node_11"
+    },
+    {
+      "id": "edge_hub_12",
+      "from": "node_hub",
+      "to": "node_12"
+    },
+    {
+      "id": "edge_hub_13",
+      "from": "node_hub",
+      "to": "node_13"
+    },
+    {
+      "id": "edge_hub_14",
+      "from": "node_hub",
+      "to": "node_14"
+    },
+    {
+      "id": "edge_hub_15",
+      "from": "node_hub",
+      "to": "node_15"
+    },
+    {
+      "id": "edge_hub_16",
+      "from": "node_hub",
+      "to": "node_16"
+    },
+    {
+      "id": "edge_hub_17",
+      "from": "node_hub",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_hub_18",
+      "from": "node_hub",
+      "to": "node_18"
+    },
+    {
+      "id": "edge_hub_19",
+      "from": "node_hub",
+      "to": "node_19"
+    }
+  ],
+  "version": "mock-1.0"
+}

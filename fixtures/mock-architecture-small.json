@@ -1,0 +1,611 @@
+{
+  "nodes": [
+    {
+      "id": "node_0",
+      "metadata": {
+        "label": "ExternalComponent_0",
+        "layer": "External",
+        "domain": "api",
+        "metrics": {
+          "sloc": 242,
+          "complexity": 28
+        }
+      }
+    },
+    {
+      "id": "node_1",
+      "metadata": {
+        "label": "ExternalComponent_1",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 933,
+          "complexity": 35
+        }
+      }
+    },
+    {
+      "id": "node_2",
+      "metadata": {
+        "label": "ServiceComponent_2",
+        "layer": "Service",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 525,
+          "complexity": 43
+        }
+      }
+    },
+    {
+      "id": "node_3",
+      "metadata": {
+        "label": "CoreComponent_3",
+        "layer": "Core",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 116,
+          "complexity": 13
+        }
+      }
+    },
+    {
+      "id": "node_4",
+      "metadata": {
+        "label": "CoreComponent_4",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 260,
+          "complexity": 12
+        }
+      }
+    },
+    {
+      "id": "node_5",
+      "metadata": {
+        "label": "ServiceComponent_5",
+        "layer": "Service",
+        "domain": "api",
+        "metrics": {
+          "sloc": 238,
+          "complexity": 27
+        }
+      }
+    },
+    {
+      "id": "node_6",
+      "metadata": {
+        "label": "ExternalComponent_6",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 512,
+          "complexity": 32
+        }
+      }
+    },
+    {
+      "id": "node_7",
+      "metadata": {
+        "label": "ServiceComponent_7",
+        "layer": "Service",
+        "domain": "api",
+        "metrics": {
+          "sloc": 61,
+          "complexity": 19
+        }
+      }
+    },
+    {
+      "id": "node_8",
+      "metadata": {
+        "label": "UtilsComponent_8",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 615,
+          "complexity": 44
+        }
+      }
+    },
+    {
+      "id": "node_9",
+      "metadata": {
+        "label": "ExternalComponent_9",
+        "layer": "External",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 85,
+          "complexity": 37
+        }
+      }
+    },
+    {
+      "id": "node_10",
+      "metadata": {
+        "label": "UtilsComponent_10",
+        "layer": "Utils",
+        "domain": "billing",
+        "metrics": {
+          "sloc": 323,
+          "complexity": 22
+        }
+      }
+    },
+    {
+      "id": "node_11",
+      "metadata": {
+        "label": "UIComponent_11",
+        "layer": "UI",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 423,
+          "complexity": 32
+        }
+      }
+    },
+    {
+      "id": "node_12",
+      "metadata": {
+        "label": "CoreComponent_12",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 624,
+          "complexity": 2
+        }
+      }
+    },
+    {
+      "id": "node_13",
+      "metadata": {
+        "label": "ExternalComponent_13",
+        "layer": "External",
+        "domain": "api",
+        "metrics": {
+          "sloc": 505,
+          "complexity": 46
+        }
+      }
+    },
+    {
+      "id": "node_14",
+      "metadata": {
+        "label": "CoreComponent_14",
+        "layer": "Core",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 746,
+          "complexity": 49
+        }
+      }
+    },
+    {
+      "id": "node_15",
+      "metadata": {
+        "label": "UIComponent_15",
+        "layer": "UI",
+        "domain": "api",
+        "metrics": {
+          "sloc": 69,
+          "complexity": 46
+        }
+      }
+    },
+    {
+      "id": "node_16",
+      "metadata": {
+        "label": "UtilsComponent_16",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 577,
+          "complexity": 10
+        }
+      }
+    },
+    {
+      "id": "node_17",
+      "metadata": {
+        "label": "UtilsComponent_17",
+        "layer": "Utils",
+        "domain": "auth",
+        "metrics": {
+          "sloc": 935,
+          "complexity": 41
+        }
+      }
+    },
+    {
+      "id": "node_18",
+      "metadata": {
+        "label": "UIComponent_18",
+        "layer": "UI",
+        "domain": "api",
+        "metrics": {
+          "sloc": 250,
+          "complexity": 7
+        }
+      }
+    },
+    {
+      "id": "node_19",
+      "metadata": {
+        "label": "ServiceComponent_19",
+        "layer": "Service",
+        "domain": "inventory",
+        "metrics": {
+          "sloc": 174,
+          "complexity": 38
+        }
+      }
+    },
+    {
+      "id": "node_hub",
+      "metadata": {
+        "label": "MainSystemHub",
+        "layer": "Core",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 5000,
+          "complexity": 150
+        }
+      }
+    },
+    {
+      "id": "node_orphan",
+      "metadata": {
+        "label": "OrphanModule",
+        "layer": "Utils",
+        "domain": "shared",
+        "metrics": {
+          "sloc": 10,
+          "complexity": 1
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_0_2_0",
+      "from": "node_0",
+      "to": "node_2"
+    },
+    {
+      "id": "edge_0_17_1",
+      "from": "node_0",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_1_7_0",
+      "from": "node_1",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_1_9_1",
+      "from": "node_1",
+      "to": "node_9"
+    },
+    {
+      "id": "edge_1_4_2",
+      "from": "node_1",
+      "to": "node_4"
+    },
+    {
+      "id": "edge_2_8_0",
+      "from": "node_2",
+      "to": "node_8"
+    },
+    {
+      "id": "edge_2_13_1",
+      "from": "node_2",
+      "to": "node_13"
+    },
+    {
+      "id": "edge_3_2_0",
+      "from": "node_3",
+      "to": "node_2"
+    },
+    {
+      "id": "edge_4_10_0",
+      "from": "node_4",
+      "to": "node_10"
+    },
+    {
+      "id": "edge_4_1_1",
+      "from": "node_4",
+      "to": "node_1"
+    },
+    {
+      "id": "edge_4_2_2",
+      "from": "node_4",
+      "to": "node_2"
+    },
+    {
+      "id": "edge_5_19_0",
+      "from": "node_5",
+      "to": "node_19"
+    },
+    {
+      "id": "edge_6_3_0",
+      "from": "node_6",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_6_5_1",
+      "from": "node_6",
+      "to": "node_5"
+    },
+    {
+      "id": "edge_7_0_0",
+      "from": "node_7",
+      "to": "node_0"
+    },
+    {
+      "id": "edge_7_12_1",
+      "from": "node_7",
+      "to": "node_12"
+    },
+    {
+      "id": "edge_8_17_0",
+      "from": "node_8",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_8_15_1",
+      "from": "node_8",
+      "to": "node_15"
+    },
+    {
+      "id": "edge_8_3_2",
+      "from": "node_8",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_8_16_3",
+      "from": "node_8",
+      "to": "node_16"
+    },
+    {
+      "id": "edge_9_3_0",
+      "from": "node_9",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_9_17_1",
+      "from": "node_9",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_9_7_2",
+      "from": "node_9",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_9_7_3",
+      "from": "node_9",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_10_9_0",
+      "from": "node_10",
+      "to": "node_9"
+    },
+    {
+      "id": "edge_11_5_1",
+      "from": "node_11",
+      "to": "node_5"
+    },
+    {
+      "id": "edge_11_13_2",
+      "from": "node_11",
+      "to": "node_13"
+    },
+    {
+      "id": "edge_12_3_0",
+      "from": "node_12",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_12_0_1",
+      "from": "node_12",
+      "to": "node_0"
+    },
+    {
+      "id": "edge_13_16_0",
+      "from": "node_13",
+      "to": "node_16"
+    },
+    {
+      "id": "edge_13_12_1",
+      "from": "node_13",
+      "to": "node_12"
+    },
+    {
+      "id": "edge_14_6_0",
+      "from": "node_14",
+      "to": "node_6"
+    },
+    {
+      "id": "edge_14_13_1",
+      "from": "node_14",
+      "to": "node_13"
+    },
+    {
+      "id": "edge_14_15_2",
+      "from": "node_14",
+      "to": "node_15"
+    },
+    {
+      "id": "edge_15_0_0",
+      "from": "node_15",
+      "to": "node_0"
+    },
+    {
+      "id": "edge_15_7_1",
+      "from": "node_15",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_15_18_2",
+      "from": "node_15",
+      "to": "node_18"
+    },
+    {
+      "id": "edge_15_3_3",
+      "from": "node_15",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_16_10_0",
+      "from": "node_16",
+      "to": "node_10"
+    },
+    {
+      "id": "edge_16_11_1",
+      "from": "node_16",
+      "to": "node_11"
+    },
+    {
+      "id": "edge_17_7_0",
+      "from": "node_17",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_17_7_1",
+      "from": "node_17",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_17_11_2",
+      "from": "node_17",
+      "to": "node_11"
+    },
+    {
+      "id": "edge_18_16_0",
+      "from": "node_18",
+      "to": "node_16"
+    },
+    {
+      "id": "edge_18_1_1",
+      "from": "node_18",
+      "to": "node_1"
+    },
+    {
+      "id": "edge_19_14_0",
+      "from": "node_19",
+      "to": "node_14"
+    },
+    {
+      "id": "edge_19_7_1",
+      "from": "node_19",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_19_17_2",
+      "from": "node_19",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_hub_0",
+      "from": "node_hub",
+      "to": "node_0"
+    },
+    {
+      "id": "edge_hub_1",
+      "from": "node_hub",
+      "to": "node_1"
+    },
+    {
+      "id": "edge_hub_2",
+      "from": "node_hub",
+      "to": "node_2"
+    },
+    {
+      "id": "edge_hub_3",
+      "from": "node_hub",
+      "to": "node_3"
+    },
+    {
+      "id": "edge_hub_4",
+      "from": "node_hub",
+      "to": "node_4"
+    },
+    {
+      "id": "edge_hub_5",
+      "from": "node_hub",
+      "to": "node_5"
+    },
+    {
+      "id": "edge_hub_6",
+      "from": "node_hub",
+      "to": "node_6"
+    },
+    {
+      "id": "edge_hub_7",
+      "from": "node_hub",
+      "to": "node_7"
+    },
+    {
+      "id": "edge_hub_8",
+      "from": "node_hub",
+      "to": "node_8"
+    },
+    {
+      "id": "edge_hub_9",
+      "from": "node_hub",
+      "to": "node_9"
+    },
+    {
+      "id": "edge_hub_10",
+      "from": "node_hub",
+      "to": "node_10"
+    },
+    {
+      "id": "edge_hub_11",
+      "from": "node_hub",
+      "to": "node_11"
+    },
+    {
+      "id": "edge_hub_12",
+      "from": "node_hub",
+      "to": "node_12"
+    },
+    {
+      "id": "edge_hub_13",
+      "from": "node_hub",
+      "to": "node_13"
+    },
+    {
+      "id": "edge_hub_14",
+      "from": "node_hub",
+      "to": "node_14"
+    },
+    {
+      "id": "edge_hub_15",
+      "from": "node_hub",
+      "to": "node_15"
+    },
+    {
+      "id": "edge_hub_16",
+      "from": "node_hub",
+      "to": "node_16"
+    },
+    {
+      "id": "edge_hub_17",
+      "from": "node_hub",
+      "to": "node_17"
+    },
+    {
+      "id": "edge_hub_18",
+      "from": "node_hub",
+      "to": "node_18"
+    },
+    {
+      "id": "edge_hub_19",
+      "from": "node_hub",
+      "to": "node_19"
+    }
+  ],
+  "version": "mock-1.0"
+}
