@@ -61,21 +61,29 @@ export class Normalizer {
   private createLabel(normalizedId: string): string {
     const parts = normalizedId.split('/');
     const basename = parts[parts.length - 1];
-    const nameWithoutExt = basename.replace(/\.(ts|tsx|js|jsx)$/, '');
+    // Remove extension
+    const nameWithoutExt = basename.replace(/\.(ts|tsx|js|jsx|css|scss|md)$/, '');
     
     let label = nameWithoutExt;
 
-    // If generic name, use parent directory for context
-    const genericNames = ['index', 'page', 'route', 'layout', 'styles'];
+    // List of generic names that need context
+    const genericNames = [
+      'index', 'page', 'route', 'layout', 'styles', 'template', 
+      'loading', 'error', 'not-found', 'component', 'view', 'controller', 'service'
+    ];
+
     if (genericNames.includes(nameWithoutExt.toLowerCase()) && parts.length > 1) {
-      const parentDir = parts[parts.length - 2];
-      label = `${parentDir}/${nameWithoutExt}`;
+      // Take up to 2 context parts + the filename
+      const contextParts = parts.slice(Math.max(0, parts.length - 3), parts.length - 1);
+      label = [...contextParts, nameWithoutExt].join(' / ');
     }
     
-    // Convert kebab-case or snake_case to Space Case
+    // Convert kebab-case or snake_case to Space Case and Title Case
     return label
       .replace(/[-_]/g, ' ')
-      .replace(/\b\w/g, c => c.toUpperCase());
+      .replace(/\b\w/g, c => c.toUpperCase())
+      .replace(/\s+\/\s+/g, ' / ') // Ensure clean separators
+      .trim();
   }
 
   /**

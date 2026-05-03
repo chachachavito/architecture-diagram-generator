@@ -409,18 +409,23 @@ export class ArchitectureFilter {
   }
 
   private makeSemanticLabel(filePath: string): string {
-    const n     = filePath.replace(/\\/g, '/');
+    const n = filePath.replace(/\\/g, '/');
     const parts = n.split('/');
-    const file  = parts[parts.length - 1].replace(/\.(ts|tsx|js|jsx)$/, '');
+    const basename = parts[parts.length - 1];
+    const file = basename.replace(/\.(ts|tsx|js|jsx|css|scss|md)$/, '');
 
+    const genericNames = ['index', 'page', 'route', 'layout', 'styles', 'template', 'loading', 'error', 'not-found'];
     let label: string;
-    if (file === 'route')  label = this.toTitleCase(parts[parts.length - 2] ?? '') + ' API';
-    else if (file === 'page')   label = this.toTitleCase(parts[parts.length - 2] ?? '');
-    else if (file === 'layout') label = 'App Layout';
-    else if (file === 'index')  label = this.toTitleCase(parts[parts.length - 2] ?? '');
-    else                        label = this.toTitleCase(file);
 
-    return this.sanitizeLabel(label);
+    if (genericNames.includes(file.toLowerCase()) && parts.length > 1) {
+      // Take up to 2 context parts + filename
+      const contextParts = parts.slice(Math.max(0, parts.length - 3), parts.length - 1);
+      label = [...contextParts, file].join(' / ');
+    } else {
+      label = file;
+    }
+
+    return this.sanitizeLabel(this.toTitleCase(label));
   }
 
   private sanitizeLabel(label: string): string {

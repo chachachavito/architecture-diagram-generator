@@ -1,66 +1,91 @@
 # Architecture Diagram Generator (v0.4.16)
 
-![Diagram](https://raw.githubusercontent.com/chachachavito/architecture-diagram-generator/main/docs/diagram.png)
-*Automated architecture overview*
+Automated architecture visualization for TypeScript and Next.js projects. Scan your codebase, classify layers, and generate interactive dashboards.
 
-**Understand your TypeScript architecture in seconds.**
-Automated dependency analysis and architectural visualization for modern web projects.
+![Architecture Diagram](docs/diagram.png)
 
-## Overview
+> [!TIP]
+> **New in v0.4.16:** Interactive SVG output with semantic layering and dark mode support.
 
-Architecture Diagram Generator is a zero-config tool that transforms your codebase into high-fidelity architectural documentation. It performs deep semantic analysis using **ts-morph** to map connections, external integrations, and layers.
+## CLI + Programmatic API
+This package works as both a standalone CLI tool for quick documentation and a robust library for custom automation pipelines.
 
-## Key Features
-
-- **Automated Layer Classification**: Intelligently categorizes modules into UI, API, and Core layers based on project structure.
-- **Deep Semantic Analysis**: Detects real imports, dynamic calls, and external service integrations (fetch, axios, databases).
-- **Mermaid.js Integration**: Generates deterministic Mermaid syntax for Git documentation and READMEs.
-- **Zero Configuration**: Works out of the box for most Next.js and TypeScript projects.
-
-## Installation
-
-```bash
-npm install -g architecture-diagram-generator
-```
-
-## Usage
-
-Run the generator in your project root:
-
-```bash
-architecture-generator .
-```
-
-### Output Files
-
-- `architecture.md`: Static Mermaid diagram for GitHub/GitLab.
-- `architecture.json`: Raw dependency graph data for programmatic use.
-- `architecture.html`: Local interactive visualization.
+---
 
 ## Configuration
 
-Custom rules can be defined in an optional `architecture-config.json` file in your project root:
+Create an `architecture-config.json` in your project root to customize layer detection and filtering.
 
 ```json
 {
-  "rootDir": "./src",
-  "exclude": ["**/*.test.ts", "**/node_modules/**"],
   "layers": {
-    "UI": ["**/components/**"],
-    "API": ["**/api/**"],
-    "Core": ["**/services/**", "**/utils/**"]
-  }
+    "UI": ["src/components", "src/pages"],
+    "API": ["src/app/api", "src/pages/api"],
+    "Core": ["src/core", "src/logic"],
+    "External": ["node_modules"]
+  },
+  "exclude": ["**/*.test.ts", "**/dist/**"]
 }
 ```
 
-## Development
+---
 
+## Usage
+
+### CLI (via npx)
+Generate all formats (JSON, MD, HTML, SVG) in one command:
 ```bash
-npm install
-npm run build
-npm run diagram # Test in current directory
+npx architecture-generator . -o architecture.json
 ```
 
-## License
+### Library
+```typescript
+import { ArchitecturePipeline } from 'architecture-diagram-generator';
 
+const pipeline = new ArchitecturePipeline({
+  version: '0.4.16',
+  rootDir: process.cwd(),
+  outputBase: 'architecture.json'
+});
+
+const result = await pipeline.runFull('.');
+console.log('Graph generated:', result.graph.nodes.length, 'nodes');
+```
+
+---
+
+## What it detects
+
+The generator uses static analysis (AST) to detect complex patterns:
+
+- **External Services**: Identifies usage of `axios`, `fetch`, `prisma`, `stripe`, etc.
+- **Database Calls**: Detects repository patterns and direct DB access.
+- **Type-only Imports**: Differentiates between runtime dependencies and type-only imports (rendered as dashed lines).
+- **Layer Violations**: Identifies when a Core module imports from the UI layer.
+
+---
+
+## Generated Output Example
+
+### architecture.md (Mermaid)
+```mermaid
+graph TD
+  subgraph UI
+    src/components/Header.tsx
+  end
+  subgraph Core
+    src/core/Pipeline.ts
+  end
+  src/components/Header.tsx --> src/core/Pipeline.ts
+```
+
+### architecture.svg
+Interactive, standalone SVG with:
+- **Bottom-up layering**: Semantic vertical organization.
+- **Click-to-Source**: Nodes link directly to your local files.
+- **Dark Mode**: Automatic theme switching via CSS variables.
+
+---
+
+## License
 MIT

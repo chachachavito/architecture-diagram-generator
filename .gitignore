@@ -7,3 +7,10 @@ coverage/
 .env
 .env.*
 !.env.example
+
+# Generated architecture outputs
+architecture.json
+architecture.md
+architecture.html
+architecture.svg
+architecture.analysis.json

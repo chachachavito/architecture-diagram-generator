@@ -437,8 +437,9 @@ export class ASTParser {
           const lowerText = text.toLowerCase();
           if (dbNames.some(name => lowerText.includes(name))) {
             const target = text.split('.')[0];
-            // Safety: Ensure target is not HTML and not too long
-            if (target && !target.includes('<') && target.length < 100) {
+            // Safety: Ensure target is not 'this', not HTML and not too long
+            const reservedKeywords = ['this', 'self', 'super', 'global', 'window'];
+            if (target && !reservedKeywords.includes(target) && !target.includes('<') && target.length < 100) {
               calls.push({ type: 'database', target, location: { line, column } });
             }
           }

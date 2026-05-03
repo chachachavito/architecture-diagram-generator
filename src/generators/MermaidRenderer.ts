@@ -34,10 +34,11 @@ export class MermaidRenderer {
         }
         
         for (const node of nodes) {
-          const token = visualTokens.get(node.id);
-          const label = this.escapeLabel(token?.label || node.id);
-          const icon = token?.icon ? `${token.icon} ` : '';
-          output += `      ${this.safeId(node.id)}["${icon}${label}"]\n`;
+          const token = visualTokens.get(node.id)!;
+          const label = this.escapeLabel(token.label);
+          const icon = token.icon ? `${token.icon} ` : '';
+          const shape = this.getMermaidShape(token.shape, `${icon}${label}`);
+          output += `      ${this.safeId(node.id)}${shape}\n`;
         }
 
         if (hasDomain) {
@@ -54,12 +55,22 @@ export class MermaidRenderer {
 
     // Apply Styles
     for (const token of visualTokens.values()) {
-      if (token.severityColor) {
-        output += `  style ${this.safeId(token.nodeId)} stroke:${token.severityColor},stroke-width:4px\n`;
-      }
+      const color = token.severityColor || token.color;
+      const width = token.severityColor ? '4px' : '1px';
+      output += `  style ${this.safeId(token.nodeId)} fill:${token.color}22,stroke:${color},stroke-width:${width}\n`;
     }
 
     return output;
+  }
+
+  private getMermaidShape(shape: VisualToken['shape'], label: string): string {
+    switch (shape) {
+      case 'hexagon': return `{{ "${label}" }}`;
+      case 'rounded': return `([ "${label}" ])`;
+      case 'cylinder': return `[( "${label}" )]`;
+      case 'parallelogram': return `[/ "${label}" /]`;
+      default: return `["${label}"]`;
+    }
   }
 
   private renderSimplified(snapshot: GraphSnapshot): string {
