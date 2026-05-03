@@ -1,31 +1,50 @@
+import { GraphData, AnalysisReport } from './types';
+import { D3Renderer } from './D3Renderer';
+
 /**
  * HTMLGenerator creates a self-contained interactive dashboard.
  */
 export class HTMLGenerator {
+  private renderer = new D3Renderer();
+
   /**
    * Generates a full HTML document with embedded graph data and client-side renderer.
    */
-  generate(graph: unknown, projectName: string = 'Architecture Diagram'): string {
+  generate(graph: any, projectName: string = 'Architecture Diagram', report?: AnalysisReport): string {
+    const graphData = graph as GraphData;
+    const rendered = this.renderer.render(graphData, report);
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${projectName} - Architecture Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
     <style>
         :root {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --accent-color: #2563eb;
-            --accent-soft: #dbeafe;
-            --border-color: #e2e8f0;
+            --bg-main: #020617;
+            --bg-card: rgba(15, 23, 42, 0.8);
+            --bg-accent: rgba(56, 189, 248, 0.15);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #7dd3fc;
+            --accent-glow: rgba(56, 189, 248, 0.5);
+            --border: rgba(255, 255, 255, 0.08);
+            --glass: blur(16px) saturate(200%);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
         }
+
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(129, 140, 248, 0.05) 0px, transparent 50%);
             color: var(--text-primary);
             margin: 0;
             display: flex;
@@ -33,361 +52,318 @@ export class HTMLGenerator {
             height: 100vh;
             overflow: hidden;
         }
+
         header {
-            background: var(--card-bg);
-            padding: 0.75rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            -webkit-backdrop-filter: var(--glass);
+            padding: 0.85rem 2rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
-        .title-area {
+
+        .logo-area {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px var(--accent-glow);
+            color: white;
+        }
+
         h1 {
             margin: 0;
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .project-label {
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .context-badge {
-            background: var(--accent-color);
-            color: white;
-            padding: 0.2rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: none;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        .controls {
+
+        .main-container {
             display: flex;
-            gap: 0.75rem;
-            align-items: center;
+            flex: 1;
+            overflow: hidden;
         }
-        .group {
-            display: flex;
-            background: #f8fafc;
-            padding: 0.2rem;
-            border-radius: 8px;
-            gap: 0.2rem;
-            border: 1px solid var(--border-color);
-        }
-        button {
-            background: transparent;
-            border: none;
-            padding: 0.4rem 0.9rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            transition: all 0.15s ease;
-        }
-        button.active {
-            background: white;
-            color: var(--accent-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        button:hover:not(.active) {
-            color: var(--text-primary);
-            background: #f1f5f9;
-        }
-        .action-btn {
-            background: white;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        .action-btn:hover {
-            background: #f8fafc;
-        }
+
         #diagram-container {
             flex: 1;
-            overflow: auto;
-            padding: 3rem;
-            background: white;
-            background-image: 
-                linear-gradient(var(--bg-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--bg-color) 1px, transparent 1px);
-            background-size: 40px 40px;
+            position: relative;
+            background: var(--bg-main);
+            overflow: hidden;
         }
-        .mermaid {
+
+        .legend {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            z-index: 100;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-width: min-content;
+            flex-direction: column;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-lg);
         }
-        .mermaid svg {
-            max-width: none !important;
-            height: auto !important;
-            cursor: crosshair;
-            transition: transform 0.1s ease-out;
-        }
-        .back-btn {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            display: none;
+
+        .legend-item {
+            display: flex;
             align-items: center;
-            gap: 0.3rem;
-            background: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
+            gap: 0.75rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            color: var(--text-secondary);
         }
-        .back-btn:hover {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
         }
+
+        .toolbar {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+        }
+
+        .view-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.4rem 0.75rem;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-select:hover {
+            border-color: var(--accent);
+        }
+
+        .details-panel {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 300px;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 60;
+        }
+
+        .details-panel.open {
+            transform: translateX(0);
+        }
+
+        .btn {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn.active {
+            color: var(--accent);
+            background: var(--bg-accent);
+        }
+
+        .metric-card {
+            background: rgba(0,0,0,0.2);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        ${rendered.css}
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
     </style>
 </head>
 <body>
     <header>
-        <div class="title-area">
-            <div onclick="resetView()" style="cursor:pointer">
-                <span class="project-label">Project</span>
+        <div class="logo-area" onclick="resetView()" style="cursor:pointer">
+            <div class="logo-icon">A</div>
+            <div>
+                <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em;">Architect Dashboard</div>
                 <h1>${projectName}</h1>
             </div>
-            <div id="context-badge" class="context-badge"></div>
-            <div id="back-btn" class="back-btn" onclick="resetView()">
-                <span>←</span> Exit Domain
-            </div>
         </div>
-        <div class="controls">
-            <div class="group" id="view-group">
-                <button onclick="changeView('high-level')" id="btn-high-level" class="active">High-Level</button>
-                <button onclick="changeView('detailed')" id="btn-detailed">Detailed</button>
-            </div>
-            <div class="group" id="direction-group">
-                <button onclick="setDirection('TD')" id="btn-TD">Vertical</button>
-                <button onclick="setDirection('LR')" id="btn-LR" class="active">Horizontal</button>
-            </div>
-            <button class="action-btn" onclick="zoom(0.15)">Zoom +</button>
-            <button class="action-btn" onclick="zoom(-0.15)">Zoom -</button>
-            <button class="action-btn" onclick="resetZoom()">Reset</button>
+        <div class="stats-area" style="display: flex; gap: 2rem; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500;">
+            <div id="stat-modules"><strong>${graphData.nodes.filter(n => (n.metadata as any).type !== 'external').length}</strong> modules</div>
+            <div id="stat-deps"><strong>${graphData.nodes.filter(n => (n.metadata as any).type === 'external').length}</strong> dependencies</div>
+            <div id="stat-date">${new Date().toLocaleDateString()}</div>
         </div>
     </header>
-    <div id="diagram-container">
-        <div class="mermaid" id="mermaid-graph"></div>
+
+    <div class="main-container">
+        <main id="diagram-container">
+            ${rendered.html}
+            <div class="legend">
+                <div class="legend-item"><div class="legend-color" style="background: #14b8a6;"></div> UI</div>
+                <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div> API</div>
+                <div class="legend-item"><div class="legend-color" style="background: #fb923c;"></div> Action</div>
+                <div class="legend-item"><div class="legend-color" style="background: #818cf8;"></div> Service</div>
+                <div class="legend-item"><div class="legend-color" style="background: #a855f7;"></div> Core</div>
+                <div class="legend-item"><div class="legend-color" style="background: #64748b;"></div> External</div>
+
+                <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                    <div style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700;">Complexity</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> Low</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> Medium</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div> High</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> Critical</div>
+                </div>
+            </div>
+            <div id="details-panel" class="details-panel">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <h2 id="details-title" style="margin: 0; font-size: 1.1rem; color: var(--accent);">Node Details</h2>
+                    <button onclick="closeDetails()" style="background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;">&times;</button>
+                </div>
+                <div id="details-content">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Select a node to view its architectural properties.</p>
+                </div>
+            </div>
+            <div class="toolbar">
+                <div style="display: flex; align-items: center; background: rgba(0,0,0,0.2); padding: 0.25rem 0.75rem; border-radius: 12px; border: 1px solid var(--border); width: 200px;">
+                    <span style="font-size: 0.8rem; opacity: 0.5; margin-right: 0.5rem;">🔍</span>
+                    <input type="text" id="node-search" placeholder="Search module..." 
+                        style="background: transparent; border: none; color: #fff; font-size: 0.75rem; outline: none; width: 100%;"
+                        oninput="window.searchNodes(this.value)">
+                </div>
+                <div style="width: 1px; height: 24px; background: var(--border); margin: 0 0.25rem;"></div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-right: 0.5rem;">
+                    <span style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Domain</span>
+                    <select class="view-select" onchange="window.filterDomain(this.value)">
+                        <option value="">All Domains</option>
+                        ${Array.from(new Set(graphData.nodes.map(n => n.metadata.domain || 'shared'))).sort().map(d => `<option value="${d}">${d}</option>`).join('')}
+                    </select>
+                </div>
+                <div style="width: 1px; height: 24px; background: var(--border); margin: 0 0.25rem;"></div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn" onclick="window.resetZoom()">Reset View</button>
+                    <button class="btn" id="btn-macro" onclick="window.toggleMacroView()">Macro View</button>
+                    <div style="width: 1px; height: 16px; background: var(--border); margin: 0 0.25rem;"></div>
+                    <label style="font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                        <input type="checkbox" onchange="window.toggleHotspots(this.checked)" style="accent-color: var(--accent);">
+                        Hotspots only
+                    </label>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        
-        const graph = ${JSON.stringify(graph)};
-        let currentView = 'high-level'; 
-        let currentDirection = 'LR';
-        let currentLayer = null;
-        let currentDomain = null;
-        let scale = 1;
+    <script>
+        window.addEventListener('load', () => {
+            ${rendered.script}
 
-        mermaid.initialize({ 
-            startOnLoad: false,
-            theme: 'base',
-            securityLevel: 'loose',
-            flowchart: { 
-                useMaxWidth: false, 
-                htmlLabels: true, 
-                curve: 'basis',
-                rankspacing: 80,
-                nodespacing: 50
-            },
-            themeVariables: {
-                primaryColor: '#ffffff',
-                primaryTextColor: '#1e293b',
-                primaryBorderColor: '#cbd5e1',
-                lineColor: '#94a3b8',
-                secondaryColor: '#f8fafc',
-                tertiaryColor: '#f1f5f9'
+            // UI Logic
+            window.resetView = () => {
+                window.resetZoom();
+                closeDetails();
+            };
+
+            function showDetails(nodeId) {
+                if (!window.graphData) return;
+                const node = window.graphData.nodes.find(n => n.data.id === nodeId);
+                if (!node) return;
+
+                const panel = document.getElementById('details-panel');
+                const title = document.getElementById('details-title');
+                const content = document.getElementById('details-content');
+                
+                panel.classList.add('open');
+                title.innerText = node.data.label || node.data.id.split('/').pop();
+                
+                const metrics = { sloc: node.data.sloc, complexity: node.data.complexity };
+                
+                content.innerHTML = '<div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem; word-break: break-all; font-family: monospace; opacity: 0.7;">'
+                    + node.data.id + '</div>'
+                    + '<div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">'
+                    + '<span style="background: var(--bg-accent); color: var(--accent); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; border: 1px solid rgba(56, 189, 248, 0.2);">' + (node.data.layer || 'CORE') + '</span>'
+                    + '</div>'
+                    + '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">'
+                    + '<div class="metric-card"><div class="metric-value">' + (metrics.sloc || '-') + '</div><div class="metric-label">SLOC</div></div>'
+                    + '<div class="metric-card"><div class="metric-value">' + (metrics.complexity || '-') + '</div><div class="metric-label">Complexity</div></div>'
+                    + '</div>';
             }
+            window.showDetails = showDetails;
+
+            window.closeDetails = () => {
+                document.getElementById('details-panel').classList.remove('open');
+            };
         });
-
-        window.onNodeClick = (id) => {
-            if (currentView === 'high-level' && id.startsWith('n_dom_')) {
-                // ID is n_dom_LAYER_DOMAIN
-                const parts = id.split('_');
-                const layer = parts[2];
-                const domain = parts.slice(3).join('_');
-                drillDown(layer, domain);
-            }
-        };
-
-        function drillDown(layer, domain) {
-            currentLayer = layer;
-            currentDomain = domain;
-            currentView = 'drill-down';
-            updateUI();
-            render();
-        }
-
-        window.resetView = () => {
-            currentView = 'high-level';
-            currentLayer = null;
-            currentDomain = null;
-            updateUI();
-            render();
-        };
-
-        window.changeView = (view) => {
-            currentView = view;
-            currentLayer = null;
-            currentDomain = null;
-            updateUI();
-            render();
-        };
-
-        function updateUI() {
-            const badge = document.getElementById('context-badge');
-            const backBtn = document.getElementById('back-btn');
-            const viewGroup = document.getElementById('view-group');
-            
-            if (currentView === 'drill-down') {
-                badge.style.display = 'block';
-                badge.innerText = currentLayer.toUpperCase() + ' > ' + currentDomain.toUpperCase();
-                backBtn.style.display = 'flex';
-                viewGroup.style.opacity = '0.4';
-                viewGroup.style.pointerEvents = 'none';
-            } else {
-                badge.style.display = 'none';
-                backBtn.style.display = 'none';
-                viewGroup.style.opacity = '1';
-                viewGroup.style.pointerEvents = 'all';
-            }
-
-            document.querySelectorAll('#view-group button').forEach(b => {
-                b.classList.remove('active');
-                if (b.id === 'btn-' + currentView) b.classList.add('active');
-            });
-        }
-
-        window.setDirection = (dir) => {
-            currentDirection = dir;
-            document.querySelectorAll('#direction-group button').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + dir).classList.add('active');
-            render();
-        };
-
-        async function render() {
-            const syntax = generateMermaidSyntax();
-            const container = document.getElementById('mermaid-graph');
-            container.removeAttribute('data-processed');
-            container.innerHTML = syntax;
-            try {
-                await mermaid.run({ nodes: [container] });
-            } catch (err) {
-                console.error('Rendering failed', err);
-            }
-            applyZoom();
-        }
-
-        function generateMermaidSyntax() {
-            let syntax = 'flowchart ' + currentDirection + '\\n';
-            
-            if (currentView === 'high-level') {
-                const domainMap = new Map();
-                graph.nodes.forEach(n => {
-                    const layer = n.metadata.layer || 'Core';
-                    const domain = n.metadata.domain || 'shared';
-                    const key = layer + '::' + domain;
-                    if (!domainMap.has(key)) domainMap.set(key, { layer, domain, count: 0 });
-                    domainMap.get(key).count++;
-                });
-
-                const layers = [...new Set(graph.nodes.map(n => n.metadata.layer || 'Core'))];
-                layers.forEach(layer => {
-                    syntax += '  subgraph ' + safeId(layer) + ' ["' + cleanLabel(layer) + '"]\\n';
-                    [...domainMap.values()].filter(d => d.layer === layer).forEach(d => {
-                        const id = getDomainId(d.layer, d.domain);
-                        syntax += '    ' + id + '["' + cleanLabel(d.domain) + ' <small>(' + d.count + ' files)</small>"]\\n';
-                        syntax += '    click ' + id + ' call onNodeClick("' + id + '")\\n';
-                    });
-                    syntax += '  end\\n';
-                });
-
-                const domainEdges = new Set();
-                graph.edges.forEach(e => {
-                    const fromNode = graph.nodes.find(n => n.id === e.from);
-                    const toNode = graph.nodes.find(n => n.id === e.to);
-                    if (fromNode && toNode) {
-                        const from = getDomainId(fromNode.metadata.layer || 'Core', fromNode.metadata.domain || 'shared');
-                        const to = getDomainId(toNode.metadata.layer || 'Core', toNode.metadata.domain || 'shared');
-                        if (from !== to) domainEdges.add(from + ' --> ' + to);
-                    }
-                });
-                domainEdges.forEach(e => syntax += '  ' + e + '\\n');
-
-            } else {
-                const nodes = currentView === 'drill-down' 
-                    ? graph.nodes.filter(n => 
-                        (n.metadata.layer || 'Core') === currentLayer && 
-                        (n.metadata.domain || 'shared') === currentDomain
-                      )
-                    : graph.nodes;
-                
-                const nodeIds = new Set(nodes.map(n => n.id));
-
-                if (currentView === 'drill-down') {
-                    syntax += '  subgraph ' + safeId(currentLayer + '_' + currentDomain) + ' ["' + cleanLabel(currentLayer).toUpperCase() + ' > ' + cleanLabel(currentDomain).toUpperCase() + '"]\\n';
-                }
-                
-                nodes.forEach(n => {
-                    const label = n.id.split('/').pop();
-                    syntax += '    ' + safeId(n.id) + '["' + cleanLabel(label) + '"]\\n';
-                });
-
-                if (currentView === 'drill-down') {
-                    syntax += '  end\\n';
-                }
-
-                graph.edges.forEach(e => {
-                    if (nodeIds.has(e.from) && nodeIds.has(e.to)) {
-                        syntax += '  ' + safeId(e.from) + ' --> ' + safeId(e.to) + '\\n';
-                    }
-                });
-            }
-            
-            return syntax;
-        }
-
-        function getDomainId(layer, domain) {
-            return safeId('dom_' + layer + '_' + domain);
-        }
-
-        function safeId(id) {
-            return 'n_' + id.replace(/[^a-zA-Z0-9]/g, '_');
-        }
-
-        function cleanLabel(label) {
-            if (!label) return 'unnamed';
-            return label.replace(/[^a-zA-Z0-9 \\.\\-_]/g, '').trim();
-        }
-
-        window.zoom = (delta) => { scale = Math.max(0.1, scale + delta); applyZoom(); };
-        window.resetZoom = () => { scale = 1; applyZoom(); };
-        function applyZoom() {
-            const svg = document.querySelector('.mermaid svg');
-            if (svg) {
-                svg.style.transform = 'scale(' + scale + ')';
-                svg.style.transformOrigin = 'top center';
-            }
-        }
-
-        render();
     </script>
 </body>
-</html>`.trim();
+</html>`;
   }
 }
