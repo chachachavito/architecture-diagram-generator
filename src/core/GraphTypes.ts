@@ -94,6 +94,9 @@ export interface Issue {
   severity: IssueSeverity;
   message: string;
   confidence: number; // 0 to 1
+  suggestion?: string;
+  why?: string;
+  metadata?: Record<string, any>;
 }
 
 /**

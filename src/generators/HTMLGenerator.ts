@@ -66,6 +66,21 @@ export class HTMLGenerator {
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
+        .score-badge {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+        }
+        .score-label { font-size: 0.5rem; text-transform: uppercase; opacity: 0.8; margin-bottom: 0.2rem; }
+
         .logo-area {
             display: flex;
             align-items: center;
@@ -94,6 +109,85 @@ export class HTMLGenerator {
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .issues-panel {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            width: 320px;
+            bottom: 6rem;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(-400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .issues-panel.open {
+            transform: translateX(0);
+        }
+
+        .issues-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .issues-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .issue-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .issue-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+        }
+
+        .issue-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .issue-critical { background: #ef4444; color: white; }
+        .issue-high { background: #f97316; color: white; }
+        .issue-medium { background: #eab308; color: black; }
+        .issue-low { background: #3b82f6; color: white; }
+
+        .issue-message {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .issue-suggestion {
+            font-size: 0.7rem;
+            color: var(--accent);
+            font-style: italic;
         }
 
         .main-container {
@@ -258,10 +352,18 @@ export class HTMLGenerator {
                 <h1>${projectName}</h1>
             </div>
         </div>
-        <div class="stats-area" style="display: flex; gap: 2rem; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500;">
-            <div id="stat-modules"><strong>${graphData.nodes.filter(n => (n.metadata as any).type !== 'external').length}</strong> modules</div>
-            <div id="stat-deps"><strong>${graphData.nodes.filter(n => (n.metadata as any).type === 'external').length}</strong> dependencies</div>
-            <div id="stat-date">${new Date().toLocaleDateString()}</div>
+        <div class="stats-area" style="display: flex; align-items: center; gap: 2rem;">
+            <div style="display: flex; gap: 1.5rem; color: var(--text-secondary); font-size: 0.8rem; font-weight: 500;">
+                <div id="stat-modules"><strong>${graphData.nodes.filter(n => (n.metadata as any).type !== 'external').length}</strong> modules</div>
+                <div id="stat-deps"><strong>${graphData.nodes.filter(n => (n.metadata as any).type === 'external').length}</strong> dependencies</div>
+            </div>
+            ${report ? `
+            <div style="width: 1px; height: 24px; background: var(--border);"></div>
+            <div class="score-badge" title="Architecture Health Score">
+                <span class="score-label">Health Score</span>
+                ${Math.round(report.score)}
+            </div>
+            ` : ''}
         </div>
     </header>
 
@@ -282,6 +384,22 @@ export class HTMLGenerator {
                     <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> Medium</div>
                     <div class="legend-item"><div class="legend-color" style="background: #f97316;"></div> High</div>
                     <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> Critical</div>
+                </div>
+            </div>
+
+            <div id="issues-panel" class="issues-panel">
+                <div class="issues-header">
+                    <h2 style="margin: 0; font-size: 1.1rem;">Issues Explorer</h2>
+                    <button onclick="toggleIssues()" style="background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;">&times;</button>
+                </div>
+                <div class="issues-list" id="issues-list">
+                    ${report?.issues.map(issue => `
+                        <div class="issue-item" onclick="focusNode('${issue.nodeId}')">
+                            <span class="issue-badge issue-${issue.severity}">${issue.severity}</span>
+                            <div class="issue-message">${issue.message}</div>
+                            ${issue.suggestion ? `<div class="issue-suggestion">💡 ${issue.suggestion}</div>` : ''}
+                        </div>
+                    `).join('') || '<p style="color: var(--text-secondary); font-size: 0.8rem;">No issues detected.</p>'}
                 </div>
             </div>
             <div id="details-panel" class="details-panel">
@@ -310,6 +428,8 @@ export class HTMLGenerator {
                 </div>
                 <div style="width: 1px; height: 24px; background: var(--border); margin: 0 0.25rem;"></div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button class="btn" id="btn-issues" onclick="toggleIssues()">Issues (${report?.issues.length || 0})</button>
+                    <div style="width: 1px; height: 16px; background: var(--border); margin: 0 0.25rem;"></div>
                     <button class="btn" onclick="window.resetZoom()">Reset View</button>
                     <button class="btn" id="btn-macro" onclick="window.toggleMacroView()">Macro View</button>
                     <div style="width: 1px; height: 16px; background: var(--border); margin: 0 0.25rem;"></div>
@@ -361,6 +481,22 @@ export class HTMLGenerator {
             window.closeDetails = () => {
                 document.getElementById('details-panel').classList.remove('open');
             };
+
+            window.toggleIssues = () => {
+                const panel = document.getElementById('issues-panel');
+                const btn = document.getElementById('btn-issues');
+                panel.classList.toggle('open');
+                btn.classList.toggle('active');
+            };
+
+            window.focusNode = (nodeId) => {
+                window.highlightNode(nodeId);
+                window.showDetails(nodeId);
+            };
+
+            if (${!!report && report.issues.length > 0}) {
+                setTimeout(() => window.toggleIssues(), 1000);
+            }
         });
     </script>
 </body>

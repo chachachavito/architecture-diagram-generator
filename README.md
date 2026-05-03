@@ -1,91 +1,217 @@
-# Architecture Diagram Generator (v0.4.16)
+# 🧠 Architecture Analysis Platform (v0.5.0)
 
-Automated architecture visualization for TypeScript and Next.js projects. Scan your codebase, classify layers, and generate interactive dashboards.
+> Stop guessing your architecture. Start measuring it.
 
-![Architecture Diagram](docs/diagram.png)
-
-> [!TIP]
-> **New in v0.4.16:** Interactive SVG output with semantic layering and dark mode support.
-
-## CLI + Programmatic API
-This package works as both a standalone CLI tool for quick documentation and a robust library for custom automation pipelines.
+Transform your codebase into actionable architectural insights with scoring, rules, CI enforcement, and interactive visualization.
 
 ---
 
-## Configuration
+## 🚀 What is this?
 
-Create an `architecture-config.json` in your project root to customize layer detection and filtering.
+This tool analyzes your codebase using static analysis and generates:
+
+- 📊 **Architecture Score (0–100)**
+- ⚠️ **Actionable Issues** (with explanations & fixes)
+- 🔁 **History & Diff** (track evolution over time)
+- 🧪 **CI/CD Enforcement** (prevent regressions)
+- 🧭 **Interactive Dashboard** (visual + diagnostic)
+
+---
+
+## ⚡ Quick Start (30 seconds)
+
+```bash
+npx architecture-generator .
+```
+
+---
+
+## 🧪 Analyze your architecture
+
+```bash
+architecture-generator analyze .
+```
+
+Example output:
+
+```txt
+Architecture Score: 85/100
+
+⚠️ Issues (5):
+
+[MEDIUM] High fan-out in src/core/ArchitecturePipeline.ts
+→ 14 dependencies (limit: 10)
+→ Suggestion: Split responsibilities or extract services
+
+📊 Summary:
+- Circular dependencies: 0 ✅
+- Layer violations: 0 ✅
+- Avg fan-out: 8.2
+```
+
+---
+
+## 🛡️ Use in CI/CD (prevent bad architecture)
+
+```bash
+architecture-generator check . -t 80 --fail-on high
+```
+
+- Fails build if architecture score drops
+- Blocks critical violations
+- Keeps your architecture healthy over time
+
+---
+
+## 🔍 Track architecture evolution
+
+```bash
+architecture-generator diff .
+```
+
+Example:
+
+```txt
+Score: 82 → 85 (+3)
+
++2 new issues
+-4 resolved issues
+
+Trend: improving 📈
+```
+
+---
+
+## ⚙️ Configuration
+
+Create `architecture-analyzer.json`:
 
 ```json
 {
-  "layers": {
-    "UI": ["src/components", "src/pages"],
-    "API": ["src/app/api", "src/pages/api"],
-    "Core": ["src/core", "src/logic"],
-    "External": ["node_modules"]
-  },
-  "exclude": ["**/*.test.ts", "**/dist/**"]
+  "preset": "balanced",
+  "rules": {
+    "fan-out": { "threshold": 12 },
+    "fan-in": { "threshold": 20 },
+    "layer-violation": "error"
+  }
 }
 ```
 
+### Presets
+
+- `strict` → zero tolerance (recommended for mature systems)
+- `balanced` → default
+- `relaxed` → good for legacy codebases
+
 ---
 
-## Usage
+## 🧠 What it detects
 
-### CLI (via npx)
-Generate all formats (JSON, MD, HTML, SVG) in one command:
+- ❌ Circular dependencies  
+- ❌ Layer violations  
+- ⚠️ High coupling (fan-in / fan-out)  
+- ⚠️ God modules  
+- 📦 External service usage  
+- 🧬 Type vs runtime dependencies  
+
+---
+
+## 📊 Interactive Dashboard
+
+Generate a full visual report:
+
 ```bash
-npx architecture-generator . -o architecture.json
+architecture-generator . -o architecture.json
 ```
 
-### Library
-```typescript
+Includes:
+
+- Architecture graph (SVG)
+- Issues explorer panel
+- Click-to-inspect modules
+- Suggestions & explanations
+
+---
+
+## 🧩 Example Use Cases
+
+- 🧪 Audit legacy codebases  
+- 🛡️ Prevent architectural regressions in CI  
+- 📈 Track architecture health over time  
+- 🧠 Understand complex systems faster  
+- 👥 Align teams on architecture decisions  
+
+---
+
+## 🔌 Programmatic API
+
+```ts
 import { ArchitecturePipeline } from 'architecture-diagram-generator';
 
 const pipeline = new ArchitecturePipeline({
-  version: '0.4.16',
-  rootDir: process.cwd(),
-  outputBase: 'architecture.json'
+  rootDir: process.cwd()
 });
 
 const result = await pipeline.runFull('.');
-console.log('Graph generated:', result.graph.nodes.length, 'nodes');
+
+console.log(result.analysis.score);
 ```
 
 ---
 
-## What it detects
+## 🛠️ Workflow Integration
 
-The generator uses static analysis (AST) to detect complex patterns:
+### Pre-commit (Husky)
 
-- **External Services**: Identifies usage of `axios`, `fetch`, `prisma`, `stripe`, etc.
-- **Database Calls**: Detects repository patterns and direct DB access.
-- **Type-only Imports**: Differentiates between runtime dependencies and type-only imports (rendered as dashed lines).
-- **Layer Violations**: Identifies when a Core module imports from the UI layer.
-
----
-
-## Generated Output Example
-
-### architecture.md (Mermaid)
-```mermaid
-graph TD
-  subgraph UI
-    src/components/Header.tsx
-  end
-  subgraph Core
-    src/core/Pipeline.ts
-  end
-  src/components/Header.tsx --> src/core/Pipeline.ts
+```bash
+architecture-generator check . -t 70
 ```
 
-### architecture.svg
-Interactive, standalone SVG with:
-- **Bottom-up layering**: Semantic vertical organization.
-- **Click-to-Source**: Nodes link directly to your local files.
-- **Dark Mode**: Automatic theme switching via CSS variables.
+---
+
+## 📈 Why this matters
+
+Architecture degrades silently over time.
+
+This tool makes it:
+
+- **visible**
+- **measurable**
+- **enforceable**
 
 ---
 
-## License
+## 🧪 Real-world workflow
+
+1. Run analysis  
+2. Fix top issues  
+3. Commit with CI check  
+4. Track improvements over time  
+
+---
+
+## 💬 Feedback
+
+This project is evolving fast.
+
+If you:
+- find false positives  
+- want new rules  
+- use it in production  
+
+👉 open an issue or share your report
+
+---
+
+## 📦 Roadmap
+
+- [ ] PR comment bot  
+- [ ] Team dashboard (hosted)  
+- [ ] Advanced rule engine  
+- [ ] Monorepo insights  
+
+---
+
+## 📄 License
+
 MIT

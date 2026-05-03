@@ -1,3 +1,9 @@
+import { 
+  Issue, 
+  IssueSeverity, 
+  AnalysisReport as CoreAnalysisReport 
+} from '../core/GraphTypes';
+
 export interface GraphMetadata {
   type?: string;
   label?: string;
@@ -6,7 +12,9 @@ export interface GraphMetadata {
   metrics?: {
     sloc?: number;
     complexity?: number;
+    [key: string]: any;
   };
+  [key: string]: any;
 }
 
 export interface GraphNode {
@@ -35,27 +43,7 @@ export interface IGraphRenderer {
   };
 }
 
-// ── Analysis Report (mirrors architecture-analyzer output) ──────────────────
-export type IssueSeverity = 'low' | 'medium' | 'high' | 'critical';
+// ── Analysis Report (mirrors core output) ──────────────────────────────────
+export { Issue, IssueSeverity };
 
-export interface Issue {
-  ruleId: string;
-  type: string;
-  category: string;
-  nodeId: string;
-  severity: IssueSeverity;
-  message: string;
-  confidence: number;
-  suggestions?: string[];
-}
-
-export interface AnalysisReport {
-  issues: Issue[];
-  score: number;
-  summary: {
-    totalIssues: number;
-    criticalIssues: number;
-    layerViolations: number;
-    cycles: number;
-  };
-}
+export type AnalysisReport = CoreAnalysisReport;

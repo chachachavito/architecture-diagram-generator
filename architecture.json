@@ -1,6 +1,6 @@
 {
-  "version": "0.4.16",
-  "generatedAt": "2026-05-03T04:06:49.903Z",
+  "version": "0.5.0",
+  "generatedAt": "2026-05-03T04:48:18.652Z",
   "graph": {
     "nodes": [
       {
@@ -95,6 +95,254 @@
         "externalCalls": []
       },
       {
+        "id": "program\n    ",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "program\n    ",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "program\n    ",
+        "externalCalls": []
+      },
+      {
+        "id": "reportedCycles",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "reportedCycles",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "reportedCycles",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 67,
+            "complexity": 3
+          },
+          "label": "ArchitectureAnalyzer",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 10,
+            "complexity": 1
+          },
+          "label": "Src / Analyzer / Index",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/MetricsCalculator.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 50,
+            "complexity": 14
+          },
+          "label": "MetricsCalculator",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/RuleEngine.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 27,
+            "complexity": 3
+          },
+          "label": "RuleEngine",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/rules/CircularDependencyRule.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [
+            {
+              "name": "AnalysisRule",
+              "type": "implements"
+            }
+          ],
+          "decorators": [],
+          "metrics": {
+            "sloc": 66,
+            "complexity": 13
+          },
+          "label": "CircularDependencyRule",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": [
+          {
+            "type": "database",
+            "target": "reportedCycles",
+            "location": {
+              "line": 44,
+              "column": 16
+            }
+          },
+          {
+            "type": "database",
+            "target": "reportedCycles",
+            "location": {
+              "line": 45,
+              "column": 13
+            }
+          }
+        ]
+      },
+      {
+        "id": "src/analyzer/rules/FanInRule.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [
+            {
+              "name": "AnalysisRule",
+              "type": "implements"
+            }
+          ],
+          "decorators": [],
+          "metrics": {
+            "sloc": 42,
+            "complexity": 7
+          },
+          "label": "FanInRule",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/rules/FanOutRule.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [
+            {
+              "name": "AnalysisRule",
+              "type": "implements"
+            }
+          ],
+          "decorators": [],
+          "metrics": {
+            "sloc": 41,
+            "complexity": 7
+          },
+          "label": "FanOutRule",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/rules/GodModuleRule.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [
+            {
+              "name": "AnalysisRule",
+              "type": "implements"
+            }
+          ],
+          "decorators": [],
+          "metrics": {
+            "sloc": 47,
+            "complexity": 11
+          },
+          "label": "GodModuleRule",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/rules/LayerViolationRule.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [
+            {
+              "name": "AnalysisRule",
+              "type": "implements"
+            }
+          ],
+          "decorators": [],
+          "metrics": {
+            "sloc": 46,
+            "complexity": 13
+          },
+          "label": "LayerViolationRule",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/types.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 44,
+            "complexity": 1
+          },
+          "label": "Types",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
         "id": "src/cli.ts",
         "metadata": {
           "type": "module",
@@ -102,15 +350,48 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 36,
-            "complexity": 2
+            "sloc": 192,
+            "complexity": 27
           },
           "label": "Cli",
           "layer": "Core",
           "domain": "shared"
         },
         "type": "module",
-        "externalCalls": []
+        "externalCalls": [
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 52,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 52,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 52,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 52,
+              "column": 3
+            }
+          }
+        ]
       },
       {
         "id": "src/core/ArchitectureClassifier.ts",
@@ -156,8 +437,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 204,
-            "complexity": 19
+            "sloc": 223,
+            "complexity": 21
           },
           "label": "ArchitecturePipeline",
           "layer": "Core",
@@ -264,7 +545,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 117,
+            "sloc": 120,
             "complexity": 1
           },
           "label": "GraphTypes",
@@ -395,7 +676,7 @@
           ],
           "decorators": [],
           "metrics": {
-            "sloc": 608,
+            "sloc": 657,
             "complexity": 49
           },
           "label": "D3Renderer",
@@ -431,8 +712,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 331,
-            "complexity": 2
+            "sloc": 353,
+            "complexity": 3
           },
           "label": "HTMLGenerator",
           "layer": "Core",
@@ -800,6 +1081,243 @@
     ],
     "edges": [
       {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/MetricsCalculator.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/MetricsCalculator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/RuleEngine.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/RuleEngine.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/rules/CircularDependencyRule.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/rules/CircularDependencyRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/rules/FanInRule.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/rules/FanInRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/rules/FanOutRule.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/rules/FanOutRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/rules/GodModuleRule.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/rules/GodModuleRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/rules/LayerViolationRule.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/rules/LayerViolationRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/ArchitectureAnalyzer.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/ArchitectureAnalyzer.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/MetricsCalculator.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/MetricsCalculator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/RuleEngine.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/RuleEngine.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/rules/CircularDependencyRule.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/rules/CircularDependencyRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/rules/FanInRule.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/rules/FanInRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/rules/FanOutRule.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/rules/FanOutRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/rules/GodModuleRule.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/rules/GodModuleRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/rules/LayerViolationRule.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/rules/LayerViolationRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": true
+      },
+      {
+        "id": "src/analyzer/MetricsCalculator.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/MetricsCalculator.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/MetricsCalculator.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/MetricsCalculator.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/RuleEngine.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/RuleEngine.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/RuleEngine.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/RuleEngine.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/CircularDependencyRule.ts->reportedCycles:external-call",
+        "from": "src/analyzer/rules/CircularDependencyRule.ts",
+        "to": "reportedCycles",
+        "type": "external-call"
+      },
+      {
+        "id": "src/analyzer/rules/CircularDependencyRule.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/rules/CircularDependencyRule.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/CircularDependencyRule.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/rules/CircularDependencyRule.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/FanInRule.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/rules/FanInRule.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/FanInRule.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/rules/FanInRule.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/FanOutRule.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/rules/FanOutRule.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/FanOutRule.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/rules/FanOutRule.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/GodModuleRule.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/rules/GodModuleRule.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/GodModuleRule.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/rules/GodModuleRule.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/LayerViolationRule.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/rules/LayerViolationRule.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/rules/LayerViolationRule.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/rules/LayerViolationRule.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/types.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/types.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
         "id": "src/cli.ts->commander:import",
         "from": "src/cli.ts",
         "to": "commander",
@@ -810,6 +1328,12 @@
         "from": "src/cli.ts",
         "to": "path",
         "type": "import"
+      },
+      {
+        "id": "src/cli.ts->program\n    :external-call",
+        "from": "src/cli.ts",
+        "to": "program\n    ",
+        "type": "external-call"
       },
       {
         "id": "src/cli.ts->src/core/ArchitecturePipeline.ts:import",
@@ -850,6 +1374,20 @@
         "from": "src/core/ArchitecturePipeline.ts",
         "to": "path",
         "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/analyzer/ArchitectureAnalyzer.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/analyzer/ArchitectureAnalyzer.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/analyzer/types.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": true
       },
       {
         "id": "src/core/ArchitecturePipeline.ts->src/core/ArchitectureClassifier.ts:import",
@@ -1399,6 +1937,112 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.4.16"
+    "version": "0.5.0"
+  },
+  "analysis": {
+    "score": 85,
+    "issues": [
+      {
+        "ruleId": "high-fan-out",
+        "type": "high-fan-out",
+        "category": "coupling",
+        "nodeId": "src/analyzer/ArchitectureAnalyzer.ts",
+        "severity": "medium",
+        "message": "ArchitectureAnalyzer has 9 outgoing dependencies (threshold: 8)",
+        "confidence": 0.85,
+        "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
+        "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
+        "metadata": {
+          "value": 9,
+          "threshold": 8
+        }
+      },
+      {
+        "ruleId": "high-fan-out",
+        "type": "high-fan-out",
+        "category": "coupling",
+        "nodeId": "src/analyzer/index.ts",
+        "severity": "medium",
+        "message": "Src / Analyzer / Index has 9 outgoing dependencies (threshold: 8)",
+        "confidence": 0.85,
+        "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
+        "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
+        "metadata": {
+          "value": 9,
+          "threshold": 8
+        }
+      },
+      {
+        "ruleId": "high-fan-out",
+        "type": "high-fan-out",
+        "category": "coupling",
+        "nodeId": "src/core/ArchitecturePipeline.ts",
+        "severity": "medium",
+        "message": "ArchitecturePipeline has 14 outgoing dependencies (threshold: 8)",
+        "confidence": 0.85,
+        "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
+        "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
+        "metadata": {
+          "value": 14,
+          "threshold": 8
+        }
+      },
+      {
+        "ruleId": "high-fan-out",
+        "type": "high-fan-out",
+        "category": "coupling",
+        "nodeId": "src/core/index.ts",
+        "severity": "medium",
+        "message": "Src / Core / Index has 14 outgoing dependencies (threshold: 8)",
+        "confidence": 0.85,
+        "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
+        "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
+        "metadata": {
+          "value": 14,
+          "threshold": 8
+        }
+      },
+      {
+        "ruleId": "high-fan-in",
+        "type": "high-fan-in",
+        "category": "coupling",
+        "nodeId": "src/core/GraphTypes.ts",
+        "severity": "medium",
+        "message": "GraphTypes has 19 incoming dependencies (threshold: 10)",
+        "confidence": 0.85,
+        "suggestion": "Check if this module is becoming too central. Consider decoupling or introducing an abstraction layer.",
+        "why": "High fan-in makes this module a bottleneck. Changes here will have a high impact across the system.",
+        "metadata": {
+          "value": 19,
+          "threshold": 10
+        }
+      }
+    ],
+    "metrics": {
+      "totalNodes": 42,
+      "totalEdges": 126,
+      "avgFanIn": 3,
+      "avgFanOut": 3,
+      "maxFanIn": {
+        "nodeId": "src/core/GraphTypes.ts",
+        "value": 19
+      },
+      "maxFanOut": {
+        "nodeId": "src/core/ArchitecturePipeline.ts",
+        "value": 14
+      },
+      "circularDependencies": 0,
+      "layerViolations": 0,
+      "layerDistribution": {
+        "Core": 42
+      }
+    },
+    "summary": {
+      "totalIssues": 5,
+      "criticalIssues": 0,
+      "highIssues": 0,
+      "layerViolations": 0,
+      "cycles": 0
+    }
   }
 }

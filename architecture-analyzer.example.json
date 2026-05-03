@@ -1,0 +1,43 @@
+{
+  "rules": {
+    "layer-violation": {
+      "enabled": true,
+      "severity": "high"
+    },
+    "circular-dependency": {
+      "enabled": true,
+      "severity": "critical"
+    },
+    "high-fan-out": {
+      "enabled": true,
+      "severity": "medium",
+      "thresholds": {
+        "maxFanOut": 8
+      }
+    },
+    "high-fan-in": {
+      "enabled": true,
+      "severity": "medium",
+      "thresholds": {
+        "maxFanIn": 10
+      }
+    },
+    "god-module": {
+      "enabled": true,
+      "severity": "high"
+    }
+  },
+  "scoring": {
+    "weights": {
+      "critical": 15,
+      "high": 8,
+      "medium": 3,
+      "low": 1
+    }
+  },
+  "history": {
+    "enabled": true,
+    "maxEntries": 30,
+    "directory": ".architecture/history"
+  }
+}

@@ -291,6 +291,7 @@ export class D3Renderer implements IGraphRenderer {
         .issue-item.high     { background: rgba(251,146,60,0.15);  border-left: 3px solid #fb923c; }
         .issue-item.medium   { background: rgba(251,191,36,0.15);  border-left: 3px solid #fbbf24; }
         .issue-item.low      { background: rgba(148,163,184,0.1);  border-left: 3px solid #94a3b8; }
+        .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; color: white; }
       `,
       html: `<div id="cy"></div><div id="tooltip" class="node-tooltip"></div>`,
       script: `
@@ -368,7 +369,7 @@ export class D3Renderer implements IGraphRenderer {
             .attr('width', canvasW)
             .attr('height', d => d.height)
             .attr('fill', d => d.color)
-            .attr('opacity', 0.1); // Using 0.1 for the '18' hex equivalent or similar softness
+            .attr('opacity', 0.1);
 
         // Left accent bars
         bandGroup.selectAll('rect.band-accent')
@@ -494,7 +495,6 @@ export class D3Renderer implements IGraphRenderer {
               (d.data.complexity ? '<div class="tooltip-row"><span class="tooltip-label">Complexity</span>' + d.data.complexity + '</div>' : '');
             tooltip.style.display = 'block';
 
-            // Focus: fade non-connected
             const connectedIds = new Set([d.data.id]);
             graphData.edges.forEach(e => {
               if (e.data.source === d.data.id) connectedIds.add(e.data.target);
@@ -517,10 +517,7 @@ export class D3Renderer implements IGraphRenderer {
           .on('mouseout', function() {
             tooltip.style.display = 'none';
             nodeElements.attr('opacity', 1);
-            edgeElements
-              .attr('opacity', 0.6)
-              .attr('stroke', 'rgba(148,163,184,0.35)')
-              .attr('stroke-width', 1.5);
+            edgeElements.attr('opacity', 0.6).attr('stroke', 'rgba(148,163,184,0.35)').attr('stroke-width', 1.5);
           })
           .on('click', function(event, d) {
             window.showDetails(d.data.id);
@@ -544,7 +541,6 @@ export class D3Renderer implements IGraphRenderer {
           });
         };
         
-        // ── Search & Focus ───────────────────────────────────────────────────
         window.searchNodes = (query) => {
           if (!query || query.length < 2) {
             nodeElements.attr('opacity', 1);
@@ -553,35 +549,24 @@ export class D3Renderer implements IGraphRenderer {
           }
           const q = query.toLowerCase();
           let firstMatch = null;
-          
           nodeElements.attr('opacity', d => {
             const isMatch = d.data.label.toLowerCase().includes(q) || d.data.id.toLowerCase().includes(q);
             if (isMatch && !firstMatch) firstMatch = d;
             return isMatch ? 1 : 0.08;
           });
-          
           edgeElements.attr('opacity', 0.05);
-          
           if (firstMatch) {
             const cRect = container.getBoundingClientRect();
             const tx = cRect.width / 2 - firstMatch.position.x;
             const ty = cRect.height / 2 - firstMatch.position.y;
-            svg.transition().duration(500).call(
-              d3zoom.transform,
-              d3.zoomIdentity.translate(tx, ty).scale(1)
-            );
+            svg.transition().duration(500).call(d3zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(1));
           }
         };
 
-        // ── Reset zoom ───────────────────────────────────────────────────────
         window.resetZoom = () => {
-          svg.transition().duration(400).call(
-            d3zoom.transform,
-            d3.zoomIdentity.translate(60, 60).scale(1)
-          );
+          svg.transition().duration(400).call(d3zoom.transform, d3.zoomIdentity.translate(60, 60).scale(1));
         };
 
-        // ── Hotspot Filter ──────────────────────────────────────────────────
         window.toggleHotspots = (enabled) => {
           if (!enabled) {
             nodeElements.attr('opacity', 1);
@@ -592,6 +577,91 @@ export class D3Renderer implements IGraphRenderer {
             d.data.complexityTier === 'high' || d.data.complexityTier === 'critical' ? 1 : 0.08
           );
           edgeElements.attr('opacity', 0.05);
+        };
+
+        window.highlightNode = (nodeId) => {
+          const d = graphData.nodes.find(n => n.data.id === nodeId);
+          if (!d) return;
+
+          // Highlight node and dim others
+          nodeElements.attr('opacity', n => n.data.id === nodeId ? 1 : 0.1);
+          edgeElements.attr('opacity', e => e.data.source === nodeId || e.data.target === nodeId ? 1 : 0.05);
+
+          // Focus camera
+          const cRect = container.getBoundingClientRect();
+          const tx = cRect.width / 2 - d.position.x;
+          const ty = cRect.height / 2 - d.position.y;
+          svg.transition().duration(500).call(d3zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(1));
+        };
+
+        // ── Details Panel ───────────────────────────────────────────────────
+        window.showDetails = (nodeId) => {
+          const d = graphData.nodes.find(n => n.data.id === nodeId);
+          if (!d) return;
+
+          const panel = document.getElementById('details-panel');
+          const content = document.getElementById('details-content');
+          const title = document.getElementById('details-title');
+          
+          panel.classList.add('open');
+          title.innerText = d.data.label;
+          
+          let html = \`
+            <div style="margin-bottom: 1.5rem;">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                <span class="badge" style="background: \${LAYER_COLORS[d.data.layer] || '#64748b'}">\${d.data.layer}</span>
+                <span class="badge" style="background: rgba(148,163,184,0.1); color: var(--text-secondary); border: 1px solid var(--border);">\${d.data.domain}</span>
+                \${d.data.complexityTier ? \`<span class="badge" style="background: \${COMPLEXITY_COLORS[d.data.complexityTier]}22; color: \${COMPLEXITY_COLORS[d.data.complexityTier]}; border: 1px solid \${COMPLEXITY_COLORS[d.data.complexityTier]}44;">\${d.data.complexityTier.toUpperCase()}</span>\` : ''}
+              </div>
+              <div style="font-size: 0.7rem; color: var(--text-secondary); word-break: break-all; opacity: 0.6;">\${d.data.id}</div>
+            </div>
+            
+            <div class="stat-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+              <div class="stat-card" style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+                <div class="stat-val" style="font-size: 1.1rem; font-weight: 700; color: #fff;">\${d.data.fanIn}</div>
+                <div class="stat-lab" style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Fan-in</div>
+              </div>
+              <div class="stat-card" style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+                <div class="stat-val" style="font-size: 1.1rem; font-weight: 700; color: #fff;">\${d.data.fanOut}</div>
+                <div class="stat-lab" style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Fan-out</div>
+              </div>
+            </div>
+          \`;
+          
+          const nodeIssues = window.issuesByNode[d.data.id] || [];
+          if (nodeIssues.length > 0) {
+            html += \`
+              <div style="margin-top: 1.5rem;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <span>Architecture Issues</span>
+                  <span style="background: #ef4444; color: white; padding: 0.1rem 0.4rem; border-radius: 10px; font-size: 0.65rem;">\${nodeIssues.length}</span>
+                </div>
+                <div class="issues-list">
+                  \${nodeIssues.map(i => \`
+                    <div class="issue-item \${i.severity}" style="padding: 0.75rem; border-radius: 8px; margin-bottom: 0.75rem; font-size: 0.75rem; line-height: 1.4; border-left: 3px solid; background: rgba(0,0,0,0.2);">
+                      <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="font-weight: 700; text-transform: uppercase; font-size: 0.6rem; color: \${i.severity === 'critical' ? '#ef4444' : i.severity === 'high' ? '#fb923c' : '#fbbf24'}">\${i.severity}</span>
+                        <span style="opacity: 0.5; font-size: 0.6rem;">\${i.ruleId}</span>
+                      </div>
+                      <div style="color: #f1f5f9; font-weight: 500; margin-bottom: 0.5rem;">\${i.message}</div>
+                      \${i.why ? \`<div style="color: var(--text-secondary); font-size: 0.7rem; margin-bottom: 0.5rem; padding: 0.4rem; background: rgba(255,255,255,0.03); border-radius: 4px;">\${i.why}</div>\` : ''}
+                      \${i.suggestion ? \`<div style="color: #38bdf8; font-size: 0.7rem; display: flex; gap: 0.4rem;"><span>💡</span><span>\${i.suggestion}</span></div>\` : ''}
+                    </div>
+                  \`).join('')}
+                </div>
+              </div>
+            \`;
+          } else {
+            html += \`
+              <div style="margin-top: 2rem; text-align: center; padding: 2rem 1rem; background: rgba(34, 197, 94, 0.05); border-radius: 12px; border: 1px dashed rgba(34, 197, 94, 0.2);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✓</div>
+                <div style="font-size: 0.8rem; color: #22c55e; font-weight: 600;">No issues detected</div>
+                <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">This module follows the defined architectural rules.</div>
+              </div>
+            \`;
+          }
+          
+          content.innerHTML = html;
         };
 
         // ── Macro View Toggle ────────────────────────────────────────────────
@@ -661,7 +731,6 @@ export class D3Renderer implements IGraphRenderer {
             .text(d => d.count + ' modules');
         }
 
-        // Fit on load
         const cRect = container.getBoundingClientRect();
         const scaleX = cRect.width / (canvasW + 120);
         const scaleY = cRect.height / (totalHeight + 120);
@@ -670,7 +739,6 @@ export class D3Renderer implements IGraphRenderer {
         const ty = 20;
         svg.call(d3zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(initScale));
 
-        // Auto-macro for large projects
         if (graphData.nodes.length > 50) {
           window.toggleMacroView();
         }

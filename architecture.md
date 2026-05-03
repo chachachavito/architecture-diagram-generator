@@ -3,6 +3,18 @@
 ```mermaid
 flowchart TD
   subgraph Core ["Core"]
+    subgraph Core_analyzer ["analyzer"]
+      src_analyzer_ArchitectureAnalyzer_ts["📦 ArchitectureAnalyzer"]
+      src_analyzer_index_ts["📦 Src / Analyzer / Index"]
+      src_analyzer_MetricsCalculator_ts["📦 MetricsCalculator"]
+      src_analyzer_RuleEngine_ts["📦 RuleEngine"]
+      src_analyzer_rules_CircularDependencyRule_ts["📦 CircularDependencyRule"]
+      src_analyzer_rules_FanInRule_ts["📦 FanInRule"]
+      src_analyzer_rules_FanOutRule_ts["📦 FanOutRule"]
+      src_analyzer_rules_GodModuleRule_ts["📦 GodModuleRule"]
+      src_analyzer_rules_LayerViolationRule_ts["📦 LayerViolationRule"]
+      src_analyzer_types_ts["📦 Types"]
+    end
       src_cli_ts["📦 Cli"]
       src_index_ts["📦 Src / Index"]
     subgraph Core_core ["core"]
@@ -52,18 +64,57 @@ flowchart TD
       fs_promises[( "☁️ fs/promises" )]
       glob[( "☁️ glob" )]
       path[( "☁️ path" )]
+      program_____[( "☁️ program" )]
+      reportedCycles[( "☁️ reportedCycles" )]
       ts_morph[( "☁️ ts-morph" )]
       typescript[( "☁️ typescript" )]
       zod[( "☁️ zod" )]
   end
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_MetricsCalculator_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_RuleEngine_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_rules_CircularDependencyRule_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_rules_FanInRule_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_rules_FanOutRule_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_rules_GodModuleRule_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_rules_LayerViolationRule_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_types_ts
+  src_analyzer_ArchitectureAnalyzer_ts --> src_core_GraphTypes_ts
+  src_analyzer_index_ts --> src_analyzer_ArchitectureAnalyzer_ts
+  src_analyzer_index_ts --> src_analyzer_MetricsCalculator_ts
+  src_analyzer_index_ts --> src_analyzer_RuleEngine_ts
+  src_analyzer_index_ts --> src_analyzer_rules_CircularDependencyRule_ts
+  src_analyzer_index_ts --> src_analyzer_rules_FanInRule_ts
+  src_analyzer_index_ts --> src_analyzer_rules_FanOutRule_ts
+  src_analyzer_index_ts --> src_analyzer_rules_GodModuleRule_ts
+  src_analyzer_index_ts --> src_analyzer_rules_LayerViolationRule_ts
+  src_analyzer_index_ts --> src_analyzer_types_ts
+  src_analyzer_MetricsCalculator_ts --> src_analyzer_types_ts
+  src_analyzer_MetricsCalculator_ts --> src_core_GraphTypes_ts
+  src_analyzer_RuleEngine_ts --> src_analyzer_types_ts
+  src_analyzer_RuleEngine_ts --> src_core_GraphTypes_ts
+  src_analyzer_rules_CircularDependencyRule_ts --> reportedCycles
+  src_analyzer_rules_CircularDependencyRule_ts --> src_analyzer_types_ts
+  src_analyzer_rules_CircularDependencyRule_ts --> src_core_GraphTypes_ts
+  src_analyzer_rules_FanInRule_ts --> src_analyzer_types_ts
+  src_analyzer_rules_FanInRule_ts --> src_core_GraphTypes_ts
+  src_analyzer_rules_FanOutRule_ts --> src_analyzer_types_ts
+  src_analyzer_rules_FanOutRule_ts --> src_core_GraphTypes_ts
+  src_analyzer_rules_GodModuleRule_ts --> src_analyzer_types_ts
+  src_analyzer_rules_GodModuleRule_ts --> src_core_GraphTypes_ts
+  src_analyzer_rules_LayerViolationRule_ts --> src_analyzer_types_ts
+  src_analyzer_rules_LayerViolationRule_ts --> src_core_GraphTypes_ts
+  src_analyzer_types_ts --> src_core_GraphTypes_ts
   src_cli_ts --> commander
   src_cli_ts --> path
+  src_cli_ts --> program_____
   src_cli_ts --> src_core_ArchitecturePipeline_ts
   src_core_ArchitectureClassifier_ts --> src_core_ConfigValidator_ts
   src_core_ArchitectureClassifier_ts --> src_core_GraphTypes_ts
   src_core_ArchitectureFilter_ts --> src_core_DependencyGraph_ts
   src_core_ArchitecturePipeline_ts --> fs_promises
   src_core_ArchitecturePipeline_ts --> path
+  src_core_ArchitecturePipeline_ts --> src_analyzer_ArchitectureAnalyzer_ts
+  src_core_ArchitecturePipeline_ts --> src_analyzer_types_ts
   src_core_ArchitecturePipeline_ts --> src_core_ArchitectureClassifier_ts
   src_core_ArchitecturePipeline_ts --> src_core_ConfigValidator_ts
   src_core_ArchitecturePipeline_ts --> src_core_DependencyGraphBuilder_ts
@@ -152,6 +203,18 @@ flowchart TD
   style fs_promises fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style glob fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style path fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
+  style program_____ fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
+  style reportedCycles fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
+  style src_analyzer_ArchitectureAnalyzer_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_index_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_MetricsCalculator_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_RuleEngine_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_rules_CircularDependencyRule_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_rules_FanInRule_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_rules_FanOutRule_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_rules_GodModuleRule_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_rules_LayerViolationRule_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_types_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_cli_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_core_ArchitectureClassifier_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_core_ArchitectureFilter_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px

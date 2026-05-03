@@ -12,8 +12,20 @@ import { DependencyGraphBuilder } from './DependencyGraphBuilder';
 import { DiagramGenerator } from '../generators/DiagramGenerator';
 import { HTMLGenerator } from '../generators/HTMLGenerator';
 import { SVGRenderer } from '../generators/SVGRenderer';
+import { ArchitectureAnalyzer } from '../analyzer/ArchitectureAnalyzer';
+import { AnalysisHistory } from '../analyzer/AnalysisHistory';
+import { parseAnalyzerConfig, DEFAULT_ANALYZER_CONFIG } from '../analyzer/AnalyzerConfig';
+import type { AnalyzerConfig } from '../analyzer/AnalyzerConfig';
+import type { AnalysisResult } from '../analyzer/types';
 import * as path from 'path';
 import * as fs from 'fs/promises';
+import { execSync } from 'child_process';
+
+const ANALYZER_CONFIG_FILES = [
+  'architecture-analyzer.json',
+  '.architecture-analyzer.json',
+  '.architecturerc.json',
+];
 
 export interface PipelineOptions {
   version: string;
@@ -24,6 +36,9 @@ export interface PipelineOptions {
   includeTimestamp?: boolean;
   rootDir: string;
   outputBase?: string;
+  analyzerConfig?: AnalyzerConfig;
+  /** When true, detect changed files via git and focus analysis on them. */
+  changedOnly?: boolean;
 }
 
 /**
@@ -32,17 +47,27 @@ export interface PipelineOptions {
 export class ArchitecturePipeline {
   private normalizer = new Normalizer();
   private classifier = new ArchitectureClassifier();
-  constructor(private options: PipelineOptions) {}
+  private analyzerConfig: AnalyzerConfig;
+
+  constructor(private options: PipelineOptions) {
+    this.analyzerConfig = options.analyzerConfig ?? DEFAULT_ANALYZER_CONFIG;
+  }
 
   /**
    * Discovers files, parses them, builds the graph and runs the full pipeline.
    */
   async runFull(projectRoot: string): Promise<{ 
     graph: ClassifiedGraph, 
-    version: string 
+    version: string,
+    analysis?: AnalysisResult
   }> {
     const absProjectRoot = path.resolve(projectRoot);
     
+    // 0. Load analyzer config from file if not provided
+    if (!this.options.analyzerConfig) {
+      this.analyzerConfig = await this.loadAnalyzerConfig(absProjectRoot);
+    }
+
     // 1. File Discovery
     this.log('Stage 1: Discovering files...');
     const discovery = new FileDiscovery();
@@ -80,19 +105,87 @@ export class ArchitecturePipeline {
     const result = await this.run(sourceGraph);
     const graph = result.graph;
 
-    // 5. Generate and Save Outputs
-    if (this.options.outputBase) {
-      await this.saveOutputs(graph, this.options.outputBase);
+    // 5. Run Architecture Analysis
+    this.log('Stage 4: Running architecture analysis...');
+    const analyzer = new ArchitectureAnalyzer(this.analyzerConfig);
+    
+    // If changedOnly, filter analysis scope to changed files
+    let analysisGraph = graph as ClassifiedGraph;
+    if (this.options.changedOnly) {
+      const changedFiles = this.getChangedFiles(absProjectRoot);
+      if (changedFiles.length > 0) {
+        this.log(`   Changed files mode: ${changedFiles.length} files`);
+        const changedSet = new Set(changedFiles.map(f => path.relative(absProjectRoot, path.resolve(absProjectRoot, f))));
+        // Filter nodes but keep full edge set for accurate coupling analysis
+        const filteredNodes = analysisGraph.nodes.filter(n => {
+          const relPath = n.id;
+          return changedSet.has(relPath) || changedSet.has(relPath.replace(/^src\//, ''));
+        });
+        if (filteredNodes.length > 0) {
+          const filteredIds = new Set(filteredNodes.map(n => n.id));
+          analysisGraph = {
+            ...analysisGraph,
+            nodes: filteredNodes,
+            edges: analysisGraph.edges.filter(e => filteredIds.has(e.from) || filteredIds.has(e.to)),
+          };
+        } else {
+          this.log('   No matching nodes found, falling back to full analysis');
+        }
+      }
+    }
+    
+    const analysis = analyzer.run(analysisGraph);
+    this.log(`   Score: ${analysis.score}/100 | Issues: ${analysis.summary.totalIssues}`);
+
+    // 5.1 Save history snapshot
+    const historyConfig = this.analyzerConfig.history;
+    if (historyConfig?.enabled !== false) {
+      try {
+        const history = new AnalysisHistory(
+          absProjectRoot,
+          historyConfig?.directory,
+          historyConfig?.maxEntries,
+        );
+        const filepath = await history.save(analysis);
+        this.log(`   History saved: ${path.basename(filepath)}`);
+      } catch (err) {
+        this.log(`   History save failed: ${err}`);
+      }
     }
 
-    return result;
+    // 6. Generate and Save Outputs
+    if (this.options.outputBase) {
+      await this.saveOutputs(graph, this.options.outputBase, analysis);
+    }
+
+    return { ...result, analysis };
+  }
+
+  /**
+   * Load analyzer config from project root.
+   */
+  private async loadAnalyzerConfig(projectRoot: string): Promise<AnalyzerConfig> {
+    for (const filename of ANALYZER_CONFIG_FILES) {
+      const filepath = path.join(projectRoot, filename);
+      try {
+        const content = await fs.readFile(filepath, 'utf-8');
+        const raw = JSON.parse(content);
+        const config = parseAnalyzerConfig(raw);
+        this.log(`   Loaded analyzer config: ${filename}`);
+        return config;
+      } catch {
+        // File doesn't exist or is invalid, try next
+      }
+    }
+    this.log('   Using default analyzer config');
+    return DEFAULT_ANALYZER_CONFIG;
   }
 
   /**
    * Generates and saves all output files (JSON, Markdown, HTML).
    */
-  private async saveOutputs(graph: ClassifiedGraph, outputBase: string): Promise<void> {
-    this.log('Stage 5: Saving output files...');
+  private async saveOutputs(graph: ClassifiedGraph, outputBase: string, analysis?: AnalysisResult): Promise<void> {
+    this.log('Stage 6: Saving output files...');
     
     // Resolve output paths
     const absOutputPath = path.isAbsolute(outputBase) 
@@ -106,7 +199,13 @@ export class ArchitecturePipeline {
     const output = {
       version: this.options.version,
       generatedAt: new Date().toISOString(),
-      graph
+      graph,
+      analysis: analysis ? {
+        score: analysis.score,
+        issues: analysis.issues,
+        metrics: analysis.metrics,
+        summary: analysis.summary,
+      } : undefined,
     };
     await fs.writeFile(absOutputPath, JSON.stringify(output, null, 2));
     this.log(`   - Data: ${path.basename(absOutputPath)}`);
@@ -121,7 +220,13 @@ export class ArchitecturePipeline {
     // 3. HTML Dashboard
     const projectName = path.basename(this.options.rootDir);
     const htmlGenerator = new HTMLGenerator();
-    const htmlContent = htmlGenerator.generate(graph, projectName);
+    const report = analysis ? {
+      issues: analysis.issues,
+      score: analysis.score,
+      summary: analysis.summary,
+      suggestions: analysis.suggestions || [],
+    } : undefined;
+    const htmlContent = htmlGenerator.generate(graph, projectName, report);
     const htmlPath = absOutputPath.replace('.json', '.html');
     await fs.writeFile(htmlPath, htmlContent);
     this.log(`   - Dashboard: ${path.basename(htmlPath)}`);
@@ -233,6 +338,26 @@ export class ArchitecturePipeline {
   private log(message: string): void {
     if (this.options.debug) {
       console.error(`[DEBUG] [Pipeline] ${message}`);
+    }
+  }
+
+  /**
+   * Detect changed files via git diff (staged + unstaged).
+   */
+  private getChangedFiles(projectRoot: string): string[] {
+    try {
+      const output = execSync('git diff --name-only HEAD 2>/dev/null || git diff --name-only --cached 2>/dev/null || echo ""', {
+        cwd: projectRoot,
+        encoding: 'utf-8',
+        timeout: 5000,
+      });
+      return output
+        .split('\n')
+        .map(f => f.trim())
+        .filter(f => f.length > 0 && /\.(ts|tsx|js|jsx)$/.test(f));
+    } catch {
+      this.log('   Git diff not available, using full analysis');
+      return [];
     }
   }
 }
