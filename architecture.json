@@ -1,8 +1,21 @@
 {
-  "version": "0.5.0",
-  "generatedAt": "2026-05-03T04:48:18.652Z",
+  "version": "1.3.0",
+  "generatedAt": "2026-05-03T05:22:51.378Z",
   "graph": {
     "nodes": [
+      {
+        "id": "child_process",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "child_process",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "child_process",
+        "externalCalls": []
+      },
       {
         "id": "commander",
         "metadata": {
@@ -108,6 +121,19 @@
         "externalCalls": []
       },
       {
+        "id": "report?",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "report?",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "report?",
+        "externalCalls": []
+      },
+      {
         "id": "reportedCycles",
         "metadata": {
           "type": "external",
@@ -121,6 +147,42 @@
         "externalCalls": []
       },
       {
+        "id": "src/analyzer/AnalysisHistory.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 143,
+            "complexity": 9
+          },
+          "label": "AnalysisHistory",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/AnalyzerConfig.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 80,
+            "complexity": 4
+          },
+          "label": "AnalyzerConfig",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
         "id": "src/analyzer/ArchitectureAnalyzer.ts",
         "metadata": {
           "type": "module",
@@ -128,7 +190,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 67,
+            "sloc": 71,
             "complexity": 3
           },
           "label": "ArchitectureAnalyzer",
@@ -146,7 +208,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 10,
+            "sloc": 17,
             "complexity": 1
           },
           "label": "Src / Analyzer / Index",
@@ -168,6 +230,24 @@
             "complexity": 14
           },
           "label": "MetricsCalculator",
+          "layer": "Core",
+          "domain": "analyzer"
+        },
+        "type": "module",
+        "externalCalls": []
+      },
+      {
+        "id": "src/analyzer/presets/index.ts",
+        "metadata": {
+          "type": "module",
+          "source": "inferred",
+          "inheritance": [],
+          "decorators": [],
+          "metrics": {
+            "sloc": 45,
+            "complexity": 1
+          },
+          "label": "Analyzer / Presets / Index",
           "layer": "Core",
           "domain": "analyzer"
         },
@@ -291,7 +371,7 @@
           ],
           "decorators": [],
           "metrics": {
-            "sloc": 47,
+            "sloc": 46,
             "complexity": 11
           },
           "label": "GodModuleRule",
@@ -332,7 +412,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 44,
+            "sloc": 62,
             "complexity": 1
           },
           "label": "Types",
@@ -350,8 +430,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 192,
-            "complexity": 27
+            "sloc": 413,
+            "complexity": 75
           },
           "label": "Cli",
           "layer": "Core",
@@ -363,7 +443,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 52,
+              "line": 106,
               "column": 3
             }
           },
@@ -371,7 +451,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 52,
+              "line": 106,
               "column": 3
             }
           },
@@ -379,7 +459,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 52,
+              "line": 106,
               "column": 3
             }
           },
@@ -387,7 +467,63 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 52,
+              "line": 106,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 106,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 106,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 106,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 160,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 160,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 160,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 160,
               "column": 3
             }
           }
@@ -437,8 +573,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 223,
-            "complexity": 21
+            "sloc": 320,
+            "complexity": 31
           },
           "label": "ArchitecturePipeline",
           "layer": "Core",
@@ -676,7 +812,7 @@
           ],
           "decorators": [],
           "metrics": {
-            "sloc": 657,
+            "sloc": 669,
             "complexity": 49
           },
           "label": "D3Renderer",
@@ -712,15 +848,32 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 353,
-            "complexity": 3
+            "sloc": 452,
+            "complexity": 7
           },
           "label": "HTMLGenerator",
           "layer": "Core",
           "domain": "generators"
         },
         "type": "module",
-        "externalCalls": []
+        "externalCalls": [
+          {
+            "type": "database",
+            "target": "report?",
+            "location": {
+              "line": 396,
+              "column": 23
+            }
+          },
+          {
+            "type": "database",
+            "target": "report?",
+            "location": {
+              "line": 396,
+              "column": 23
+            }
+          }
+        ]
       },
       {
         "id": "src/generators/index.ts",
@@ -789,7 +942,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 54,
+            "sloc": 42,
             "complexity": 1
           },
           "label": "Types",
@@ -825,7 +978,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 34,
+            "sloc": 52,
             "complexity": 1
           },
           "label": "Src / Index",
@@ -1081,6 +1234,52 @@
     ],
     "edges": [
       {
+        "id": "src/analyzer/AnalysisHistory.ts->fs/promises:import",
+        "from": "src/analyzer/AnalysisHistory.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
+        "id": "src/analyzer/AnalysisHistory.ts->path:import",
+        "from": "src/analyzer/AnalysisHistory.ts",
+        "to": "path",
+        "type": "import"
+      },
+      {
+        "id": "src/analyzer/AnalysisHistory.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/AnalysisHistory.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/AnalyzerConfig.ts->src/analyzer/types.ts:import",
+        "from": "src/analyzer/AnalyzerConfig.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/AnalyzerConfig.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/AnalyzerConfig.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/AnalyzerConfig.ts->zod:import",
+        "from": "src/analyzer/AnalyzerConfig.ts",
+        "to": "zod",
+        "type": "import"
+      },
+      {
+        "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/AnalyzerConfig.ts:import",
+        "from": "src/analyzer/ArchitectureAnalyzer.ts",
+        "to": "src/analyzer/AnalyzerConfig.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
         "id": "src/analyzer/ArchitectureAnalyzer.ts->src/analyzer/MetricsCalculator.ts:import",
         "from": "src/analyzer/ArchitectureAnalyzer.ts",
         "to": "src/analyzer/MetricsCalculator.ts",
@@ -1140,6 +1339,20 @@
         "id": "src/analyzer/ArchitectureAnalyzer.ts->src/core/GraphTypes.ts:import",
         "from": "src/analyzer/ArchitectureAnalyzer.ts",
         "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/AnalysisHistory.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/AnalysisHistory.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/index.ts->src/analyzer/AnalyzerConfig.ts:import",
+        "from": "src/analyzer/index.ts",
+        "to": "src/analyzer/AnalyzerConfig.ts",
         "type": "import",
         "isTypeOnly": false
       },
@@ -1216,6 +1429,20 @@
       {
         "id": "src/analyzer/MetricsCalculator.ts->src/core/GraphTypes.ts:import",
         "from": "src/analyzer/MetricsCalculator.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/presets/index.ts->src/analyzer/AnalyzerConfig.ts:import",
+        "from": "src/analyzer/presets/index.ts",
+        "to": "src/analyzer/AnalyzerConfig.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/analyzer/presets/index.ts->src/core/GraphTypes.ts:import",
+        "from": "src/analyzer/presets/index.ts",
         "to": "src/core/GraphTypes.ts",
         "type": "import",
         "isTypeOnly": false
@@ -1324,6 +1551,12 @@
         "type": "import"
       },
       {
+        "id": "src/cli.ts->fs/promises:import",
+        "from": "src/cli.ts",
+        "to": "fs/promises",
+        "type": "import"
+      },
+      {
         "id": "src/cli.ts->path:import",
         "from": "src/cli.ts",
         "to": "path",
@@ -1334,6 +1567,20 @@
         "from": "src/cli.ts",
         "to": "program\n    ",
         "type": "external-call"
+      },
+      {
+        "id": "src/cli.ts->src/analyzer/AnalysisHistory.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/analyzer/AnalysisHistory.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/cli.ts->src/analyzer/AnalyzerConfig.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/analyzer/AnalyzerConfig.ts",
+        "type": "import",
+        "isTypeOnly": true
       },
       {
         "id": "src/cli.ts->src/core/ArchitecturePipeline.ts:import",
@@ -1364,6 +1611,12 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/core/ArchitecturePipeline.ts->child_process:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "child_process",
+        "type": "import"
+      },
+      {
         "id": "src/core/ArchitecturePipeline.ts->fs/promises:import",
         "from": "src/core/ArchitecturePipeline.ts",
         "to": "fs/promises",
@@ -1374,6 +1627,20 @@
         "from": "src/core/ArchitecturePipeline.ts",
         "to": "path",
         "type": "import"
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/analyzer/AnalysisHistory.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/analyzer/AnalysisHistory.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/analyzer/AnalyzerConfig.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/analyzer/AnalyzerConfig.ts",
+        "type": "import",
+        "isTypeOnly": false
       },
       {
         "id": "src/core/ArchitecturePipeline.ts->src/analyzer/ArchitectureAnalyzer.ts:import",
@@ -1727,6 +1994,12 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/generators/HTMLGenerator.ts->report?:external-call",
+        "from": "src/generators/HTMLGenerator.ts",
+        "to": "report?",
+        "type": "external-call"
+      },
+      {
         "id": "src/generators/HTMLGenerator.ts->src/generators/D3Renderer.ts:import",
         "from": "src/generators/HTMLGenerator.ts",
         "to": "src/generators/D3Renderer.ts",
@@ -1790,11 +2063,95 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/generators/types.ts->src/core/GraphTypes.ts:import",
+        "from": "src/generators/types.ts",
+        "to": "src/core/GraphTypes.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
         "id": "src/generators/VisualMapper.ts->src/core/GraphTypes.ts:import",
         "from": "src/generators/VisualMapper.ts",
         "to": "src/core/GraphTypes.ts",
         "type": "import",
         "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/AnalysisHistory.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/AnalysisHistory.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/AnalyzerConfig.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/AnalyzerConfig.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/ArchitectureAnalyzer.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/ArchitectureAnalyzer.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/MetricsCalculator.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/MetricsCalculator.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/RuleEngine.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/RuleEngine.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/rules/CircularDependencyRule.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/rules/CircularDependencyRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/rules/FanInRule.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/rules/FanInRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/rules/FanOutRule.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/rules/FanOutRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/rules/GodModuleRule.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/rules/GodModuleRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/rules/LayerViolationRule.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/rules/LayerViolationRule.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/index.ts->src/analyzer/types.ts:import",
+        "from": "src/index.ts",
+        "to": "src/analyzer/types.ts",
+        "type": "import",
+        "isTypeOnly": true
       },
       {
         "id": "src/index.ts->src/generators/DiagramGenerator.ts:import",
@@ -1937,10 +2294,10 @@
         "isTypeOnly": false
       }
     ],
-    "version": "0.5.0"
+    "version": "1.3.0"
   },
   "analysis": {
-    "score": 85,
+    "score": 79,
     "issues": [
       {
         "ruleId": "high-fan-out",
@@ -1948,12 +2305,12 @@
         "category": "coupling",
         "nodeId": "src/analyzer/ArchitectureAnalyzer.ts",
         "severity": "medium",
-        "message": "ArchitectureAnalyzer has 9 outgoing dependencies (threshold: 8)",
+        "message": "ArchitectureAnalyzer has 10 outgoing dependencies (threshold: 8)",
         "confidence": 0.85,
         "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
         "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
         "metadata": {
-          "value": 9,
+          "value": 10,
           "threshold": 8
         }
       },
@@ -1963,12 +2320,12 @@
         "category": "coupling",
         "nodeId": "src/analyzer/index.ts",
         "severity": "medium",
-        "message": "Src / Analyzer / Index has 9 outgoing dependencies (threshold: 8)",
+        "message": "Src / Analyzer / Index has 11 outgoing dependencies (threshold: 8)",
         "confidence": 0.85,
         "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
         "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
         "metadata": {
-          "value": 9,
+          "value": 11,
           "threshold": 8
         }
       },
@@ -1978,12 +2335,12 @@
         "category": "coupling",
         "nodeId": "src/core/ArchitecturePipeline.ts",
         "severity": "medium",
-        "message": "ArchitecturePipeline has 14 outgoing dependencies (threshold: 8)",
+        "message": "ArchitecturePipeline has 17 outgoing dependencies (threshold: 8)",
         "confidence": 0.85,
         "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
         "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
         "metadata": {
-          "value": 14,
+          "value": 17,
           "threshold": 8
         }
       },
@@ -2003,42 +2360,72 @@
         }
       },
       {
+        "ruleId": "high-fan-out",
+        "type": "high-fan-out",
+        "category": "coupling",
+        "nodeId": "src/index.ts",
+        "severity": "medium",
+        "message": "Src / Index has 17 outgoing dependencies (threshold: 8)",
+        "confidence": 0.85,
+        "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
+        "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
+        "metadata": {
+          "value": 17,
+          "threshold": 8
+        }
+      },
+      {
+        "ruleId": "high-fan-in",
+        "type": "high-fan-in",
+        "category": "coupling",
+        "nodeId": "src/analyzer/types.ts",
+        "severity": "medium",
+        "message": "Types has 13 incoming dependencies (threshold: 10)",
+        "confidence": 0.85,
+        "suggestion": "Check if this module is becoming too central. Consider decoupling or introducing an abstraction layer.",
+        "why": "High fan-in makes this module a bottleneck. Changes here will have a high impact across the system.",
+        "metadata": {
+          "value": 13,
+          "threshold": 10
+        }
+      },
+      {
         "ruleId": "high-fan-in",
         "type": "high-fan-in",
         "category": "coupling",
         "nodeId": "src/core/GraphTypes.ts",
         "severity": "medium",
-        "message": "GraphTypes has 19 incoming dependencies (threshold: 10)",
+        "message": "GraphTypes has 22 incoming dependencies (threshold: 10)",
         "confidence": 0.85,
         "suggestion": "Check if this module is becoming too central. Consider decoupling or introducing an abstraction layer.",
         "why": "High fan-in makes this module a bottleneck. Changes here will have a high impact across the system.",
         "metadata": {
-          "value": 19,
+          "value": 22,
           "threshold": 10
         }
       }
     ],
     "metrics": {
-      "totalNodes": 42,
-      "totalEdges": 126,
-      "avgFanIn": 3,
-      "avgFanOut": 3,
+      "totalNodes": 45,
+      "totalEdges": 156,
+      "avgFanIn": 3.47,
+      "avgFanOut": 3.47,
       "maxFanIn": {
         "nodeId": "src/core/GraphTypes.ts",
-        "value": 19
+        "value": 22
       },
       "maxFanOut": {
         "nodeId": "src/core/ArchitecturePipeline.ts",
-        "value": 14
+        "value": 17
       },
       "circularDependencies": 0,
       "layerViolations": 0,
       "layerDistribution": {
-        "Core": 42
+        "Core": 45
       }
     },
     "summary": {
-      "totalIssues": 5,
+      "totalIssues": 7,
       "criticalIssues": 0,
       "highIssues": 0,
       "layerViolations": 0,

@@ -4,9 +4,12 @@
 flowchart TD
   subgraph Core ["Core"]
     subgraph Core_analyzer ["analyzer"]
+      src_analyzer_AnalysisHistory_ts["📦 AnalysisHistory"]
+      src_analyzer_AnalyzerConfig_ts["📦 AnalyzerConfig"]
       src_analyzer_ArchitectureAnalyzer_ts["📦 ArchitectureAnalyzer"]
       src_analyzer_index_ts["📦 Src / Analyzer / Index"]
       src_analyzer_MetricsCalculator_ts["📦 MetricsCalculator"]
+      src_analyzer_presets_index_ts["📦 Analyzer / Presets / Index"]
       src_analyzer_RuleEngine_ts["📦 RuleEngine"]
       src_analyzer_rules_CircularDependencyRule_ts["📦 CircularDependencyRule"]
       src_analyzer_rules_FanInRule_ts["📦 FanInRule"]
@@ -57,6 +60,7 @@ flowchart TD
     end
   end
   subgraph External ["External"]
+      child_process[( "☁️ child_process" )]
       commander[( "☁️ commander" )]
       crypto[( "☁️ crypto" )]
       dbNames[( "☁️ dbNames" )]
@@ -65,11 +69,19 @@ flowchart TD
       glob[( "☁️ glob" )]
       path[( "☁️ path" )]
       program_____[( "☁️ program" )]
+      report_[( "☁️ report?" )]
       reportedCycles[( "☁️ reportedCycles" )]
       ts_morph[( "☁️ ts-morph" )]
       typescript[( "☁️ typescript" )]
       zod[( "☁️ zod" )]
   end
+  src_analyzer_AnalysisHistory_ts --> fs_promises
+  src_analyzer_AnalysisHistory_ts --> path
+  src_analyzer_AnalysisHistory_ts --> src_analyzer_types_ts
+  src_analyzer_AnalyzerConfig_ts --> src_analyzer_types_ts
+  src_analyzer_AnalyzerConfig_ts --> src_core_GraphTypes_ts
+  src_analyzer_AnalyzerConfig_ts --> zod
+  src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_AnalyzerConfig_ts
   src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_MetricsCalculator_ts
   src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_RuleEngine_ts
   src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_rules_CircularDependencyRule_ts
@@ -79,6 +91,8 @@ flowchart TD
   src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_rules_LayerViolationRule_ts
   src_analyzer_ArchitectureAnalyzer_ts --> src_analyzer_types_ts
   src_analyzer_ArchitectureAnalyzer_ts --> src_core_GraphTypes_ts
+  src_analyzer_index_ts --> src_analyzer_AnalysisHistory_ts
+  src_analyzer_index_ts --> src_analyzer_AnalyzerConfig_ts
   src_analyzer_index_ts --> src_analyzer_ArchitectureAnalyzer_ts
   src_analyzer_index_ts --> src_analyzer_MetricsCalculator_ts
   src_analyzer_index_ts --> src_analyzer_RuleEngine_ts
@@ -90,6 +104,8 @@ flowchart TD
   src_analyzer_index_ts --> src_analyzer_types_ts
   src_analyzer_MetricsCalculator_ts --> src_analyzer_types_ts
   src_analyzer_MetricsCalculator_ts --> src_core_GraphTypes_ts
+  src_analyzer_presets_index_ts --> src_analyzer_AnalyzerConfig_ts
+  src_analyzer_presets_index_ts --> src_core_GraphTypes_ts
   src_analyzer_RuleEngine_ts --> src_analyzer_types_ts
   src_analyzer_RuleEngine_ts --> src_core_GraphTypes_ts
   src_analyzer_rules_CircularDependencyRule_ts --> reportedCycles
@@ -105,14 +121,20 @@ flowchart TD
   src_analyzer_rules_LayerViolationRule_ts --> src_core_GraphTypes_ts
   src_analyzer_types_ts --> src_core_GraphTypes_ts
   src_cli_ts --> commander
+  src_cli_ts --> fs_promises
   src_cli_ts --> path
   src_cli_ts --> program_____
+  src_cli_ts --> src_analyzer_AnalysisHistory_ts
+  src_cli_ts --> src_analyzer_AnalyzerConfig_ts
   src_cli_ts --> src_core_ArchitecturePipeline_ts
   src_core_ArchitectureClassifier_ts --> src_core_ConfigValidator_ts
   src_core_ArchitectureClassifier_ts --> src_core_GraphTypes_ts
   src_core_ArchitectureFilter_ts --> src_core_DependencyGraph_ts
+  src_core_ArchitecturePipeline_ts --> child_process
   src_core_ArchitecturePipeline_ts --> fs_promises
   src_core_ArchitecturePipeline_ts --> path
+  src_core_ArchitecturePipeline_ts --> src_analyzer_AnalysisHistory_ts
+  src_core_ArchitecturePipeline_ts --> src_analyzer_AnalyzerConfig_ts
   src_core_ArchitecturePipeline_ts --> src_analyzer_ArchitectureAnalyzer_ts
   src_core_ArchitecturePipeline_ts --> src_analyzer_types_ts
   src_core_ArchitecturePipeline_ts --> src_core_ArchitectureClassifier_ts
@@ -165,6 +187,7 @@ flowchart TD
   src_generators_DiagramGenerator_ts --> src_core_GraphTypes_ts
   src_generators_DiagramGenerator_ts --> src_generators_MermaidRenderer_ts
   src_generators_DiagramGenerator_ts --> src_generators_VisualMapper_ts
+  src_generators_HTMLGenerator_ts --> report_
   src_generators_HTMLGenerator_ts --> src_generators_D3Renderer_ts
   src_generators_HTMLGenerator_ts --> src_generators_types_ts
   src_generators_index_ts --> src_generators_DiagramGenerator_ts
@@ -174,7 +197,19 @@ flowchart TD
   src_generators_MermaidRenderer_ts --> src_core_GraphTypes_ts
   src_generators_MermaidRenderer_ts --> src_generators_VisualMapper_ts
   src_generators_SVGRenderer_ts --> src_generators_types_ts
+  src_generators_types_ts --> src_core_GraphTypes_ts
   src_generators_VisualMapper_ts --> src_core_GraphTypes_ts
+  src_index_ts --> src_analyzer_AnalysisHistory_ts
+  src_index_ts --> src_analyzer_AnalyzerConfig_ts
+  src_index_ts --> src_analyzer_ArchitectureAnalyzer_ts
+  src_index_ts --> src_analyzer_MetricsCalculator_ts
+  src_index_ts --> src_analyzer_RuleEngine_ts
+  src_index_ts --> src_analyzer_rules_CircularDependencyRule_ts
+  src_index_ts --> src_analyzer_rules_FanInRule_ts
+  src_index_ts --> src_analyzer_rules_FanOutRule_ts
+  src_index_ts --> src_analyzer_rules_GodModuleRule_ts
+  src_index_ts --> src_analyzer_rules_LayerViolationRule_ts
+  src_index_ts --> src_analyzer_types_ts
   src_index_ts --> src_generators_DiagramGenerator_ts
   src_index_ts --> src_generators_HTMLGenerator_ts
   src_index_ts --> src_generators_MermaidRenderer_ts
@@ -196,6 +231,7 @@ flowchart TD
   src_utils_OutputWriter_ts --> fs_promises
   src_utils_OutputWriter_ts --> path
   src_utils_OutputWriter_ts --> src_utils_errors_ts
+  style child_process fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style commander fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style crypto fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style dbNames fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
@@ -204,10 +240,14 @@ flowchart TD
   style glob fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style path fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style program_____ fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
+  style report_ fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style reportedCycles fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
+  style src_analyzer_AnalysisHistory_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_AnalyzerConfig_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_analyzer_ArchitectureAnalyzer_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_analyzer_index_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_analyzer_MetricsCalculator_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
+  style src_analyzer_presets_index_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_analyzer_RuleEngine_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_analyzer_rules_CircularDependencyRule_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
   style src_analyzer_rules_FanInRule_ts fill:#94a3b822,stroke:#94a3b8,stroke-width:1px
