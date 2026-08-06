@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 import { Project, SourceFile, SyntaxKind } from 'ts-morph';
 import * as path from 'path';
+import * as fsSync from 'fs';
 import { ModuleCache } from '../core/ModuleCache';
 import { ParseError } from '../utils/errors';
 
@@ -94,6 +95,12 @@ export class ASTParser {
   private rootDir: string;
   private cache?: ModuleCache;
   private static project: Project | null = null;
+  /**
+   * Memoised module resolution, per instance: the cache is keyed by a
+   * project-relative path, so sharing it across parsers with different roots
+   * would return files from the wrong project.
+   */
+  private resolutionCache = new Map<string, string>();
 
   constructor(rootDir: string, cache?: ModuleCache) {
     this.rootDir = rootDir;
@@ -655,28 +662,69 @@ export class ASTParser {
    * @returns string - Resolved absolute path
    */
   private resolveRelativeImport(source: string, currentFilePath: string): string {
-    // Handle TypeScript path alias '@/' which maps to project root
+    // Handle TypeScript path alias '@/'. It maps to the project root in most
+    // setups and to src/ in Next.js' own template, so try both — but only
+    // accept a candidate that exists on disk.
     if (source.startsWith('@/')) {
-      // Remove '@/' and resolve from project root
-      const relativePath = source.substring(2);
-      
-      // Don't append extension if already present
-      if (relativePath.match(/\.(ts|tsx|js|jsx)$/)) {
-        return relativePath;
+      const bare = source.substring(2);
+
+      if (bare.match(/\.(ts|tsx|js|jsx)$/)) {
+        return bare;
       }
-      
-      return relativePath + '.ts';
+
+      return this.probeExtensions(bare) ?? this.probeExtensions(`src/${bare}`) ?? `${bare}.ts`;
     }
-    
+
     const currentDir = path.dirname(currentFilePath);
-    const resolved = path.join(currentDir, source);
-    const normalized = resolved.replace(/\\/g, '/');
-    
-    // Don't append extension if already present
+    const normalized = path.join(currentDir, source).replace(/\\/g, '/');
+
     if (normalized.match(/\.(ts|tsx|js|jsx)$/)) {
       return normalized;
     }
-    
-    return normalized + '.ts';
+
+    return this.probeExtensions(normalized) ?? `${normalized}.ts`;
+  }
+
+  /**
+   * Finds which file an extensionless import actually refers to.
+   *
+   * This used to append '.ts' unconditionally, so every import of a .tsx file —
+   * that is, every React component — resolved to a path that did not exist, and
+   * the dependency was dropped from the graph without a word. A UI-heavy
+   * project had almost no edges and still scored 100.
+   *
+   * Order follows TypeScript's own preference; the directory forms cover
+   * `import x from './components'` resolving to its index file.
+   *
+   * @returns the project-relative path that exists, or undefined
+   */
+  private probeExtensions(basePath: string): string | undefined {
+    const cached = this.resolutionCache.get(basePath);
+    if (cached !== undefined) {
+      return cached || undefined;
+    }
+
+    const candidates = [
+      `${basePath}.ts`,
+      `${basePath}.tsx`,
+      `${basePath}.js`,
+      `${basePath}.jsx`,
+      `${basePath}/index.ts`,
+      `${basePath}/index.tsx`,
+      `${basePath}/index.js`,
+      `${basePath}/index.jsx`,
+    ];
+
+    for (const candidate of candidates) {
+      if (fsSync.existsSync(path.resolve(this.rootDir, candidate))) {
+        this.resolutionCache.set(basePath, candidate);
+        return candidate;
+      }
+    }
+
+    // Cache the miss too: unresolved imports are common (generated files,
+    // aliases we cannot see) and re-statting them on every import is wasteful.
+    this.resolutionCache.set(basePath, '');
+    return undefined;
   }
 }

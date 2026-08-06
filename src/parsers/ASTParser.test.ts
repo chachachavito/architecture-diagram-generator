@@ -1227,6 +1227,111 @@ obj.get();
     });
   });
 
+  describe('module resolution', () => {
+    /**
+     * Resolution used to append '.ts' unconditionally, so every import of a
+     * .tsx file — every React component — pointed at a path that did not exist
+     * and its edge was dropped silently. A UI-heavy project ended up with
+     * almost no edges and still scored 100.
+     */
+    it('resolves an extensionless import to a .tsx file', async () => {
+      await fs.mkdir(path.join(tempDir, 'components'), { recursive: true });
+      await fs.writeFile(
+        path.join(tempDir, 'components/Panel.tsx'),
+        `export default function Panel() { return null; }\n`,
+      );
+      await fs.mkdir(path.join(tempDir, 'lib'), { recursive: true });
+      await fs.writeFile(
+        path.join(tempDir, 'lib/uses.ts'),
+        `import Panel from '../components/Panel';\nexport const x = Panel;\n`,
+      );
+
+      const result = await parser.parse('lib/uses.ts');
+
+      expect(result.imports[0].source).toBe('components/Panel.tsx');
+    });
+
+    it('still prefers .ts when both extensions exist', async () => {
+      await fs.writeFile(path.join(tempDir, 'thing.ts'), `export const a = 1;\n`);
+      await fs.writeFile(path.join(tempDir, 'thing.tsx'), `export const b = 2;\n`);
+      await fs.writeFile(
+        path.join(tempDir, 'uses.ts'),
+        `import { a } from './thing';\nexport const x = a;\n`,
+      );
+
+      const result = await parser.parse('uses.ts');
+
+      expect(result.imports[0].source).toBe('thing.ts');
+    });
+
+    it('resolves a directory import to its index file', async () => {
+      await fs.mkdir(path.join(tempDir, 'widgets'), { recursive: true });
+      await fs.writeFile(
+        path.join(tempDir, 'widgets/index.tsx'),
+        `export const W = 1;\n`,
+      );
+      await fs.writeFile(
+        path.join(tempDir, 'uses.ts'),
+        `import { W } from './widgets';\nexport const x = W;\n`,
+      );
+
+      const result = await parser.parse('uses.ts');
+
+      expect(result.imports[0].source).toBe('widgets/index.tsx');
+    });
+
+    it('resolves .jsx files', async () => {
+      await fs.writeFile(path.join(tempDir, 'Legacy.jsx'), `export default 1;\n`);
+      await fs.writeFile(
+        path.join(tempDir, 'uses.ts'),
+        `import L from './Legacy';\nexport const x = L;\n`,
+      );
+
+      const result = await parser.parse('uses.ts');
+
+      expect(result.imports[0].source).toBe('Legacy.jsx');
+    });
+
+    it('keeps an explicit extension untouched', async () => {
+      await fs.writeFile(path.join(tempDir, 'exact.tsx'), `export const a = 1;\n`);
+      await fs.writeFile(
+        path.join(tempDir, 'uses.ts'),
+        `import { a } from './exact.tsx';\nexport const x = a;\n`,
+      );
+
+      const result = await parser.parse('uses.ts');
+
+      expect(result.imports[0].source).toBe('exact.tsx');
+    });
+
+    it('resolves the @/ alias against src/ when the root has no match', async () => {
+      await fs.mkdir(path.join(tempDir, 'src/components'), { recursive: true });
+      await fs.writeFile(
+        path.join(tempDir, 'src/components/Header.tsx'),
+        `export default function Header() { return null; }\n`,
+      );
+      await fs.writeFile(
+        path.join(tempDir, 'src/app.ts'),
+        `import Header from '@/components/Header';\nexport const x = Header;\n`,
+      );
+
+      const result = await parser.parse('src/app.ts');
+
+      expect(result.imports[0].source).toBe('src/components/Header.tsx');
+    });
+
+    it('falls back to .ts for an import that resolves to nothing', async () => {
+      await fs.writeFile(
+        path.join(tempDir, 'uses.ts'),
+        `import { gone } from './missing';\nexport const x = gone;\n`,
+      );
+
+      const result = await parser.parse('uses.ts');
+
+      expect(result.imports[0].source).toBe('missing.ts');
+    });
+  });
+
   describe('barrel and type-only module detection', () => {
     it('flags a pure re-export barrel', async () => {
       await fs.writeFile(
