@@ -34,16 +34,17 @@ export interface ExternalServiceDefinition {
   type?: string;
 }
 
+export type OutputFormat = 'markdown' | 'html' | 'svg';
+
 /**
- * NOT YET IMPLEMENTED. Parsed and validated, but no part of the pipeline reads
- * it: output paths and formats are driven entirely by the CLI's `-o` flag.
- * Kept for schema compatibility — do not document it as a working knob.
+ * Selects which companion artifacts are written alongside the JSON graph.
+ *
+ * The JSON itself is not listed: it is the `-o` target, so it is always
+ * written. Output location is likewise `-o`'s job — a `directory` here could
+ * only contradict it.
  */
 export interface OutputConfig {
-  formats: ('markdown' | 'png' | 'svg')[];
-  directory: string;
-  simplified: boolean;
-  detailed: boolean;
+  formats: OutputFormat[];
 }
 
 
@@ -142,11 +143,11 @@ export const DEFAULT_CONFIG: FullProjectConfig = {
   ],
   domains: [],
   externalServices: [],
+  // Everything the pipeline can write, so the default is exactly what a run
+  // without a config file produces. Narrowing this would silently stop
+  // generating artifacts for anyone who merely has a config file.
   output: {
-    formats: ['markdown'],
-    directory: './docs/architecture',
-    simplified: true,
-    detailed: false,
+    formats: ['markdown', 'html', 'svg'],
   },
 };
 
@@ -329,22 +330,25 @@ export class ConfigurationLoader {
           if (!Array.isArray(o.formats)) {
             errors.push('"output.formats" must be an array');
           } else {
-            const validFormats = new Set(['markdown', 'png', 'svg']);
+            const validFormats = new Set(['markdown', 'html', 'svg']);
             o.formats.forEach((f: unknown, i: number) => {
               if (typeof f !== 'string' || !validFormats.has(f)) {
-                errors.push(`"output.formats[${i}]" must be one of: markdown, png, svg`);
+                errors.push(`"output.formats[${i}]" must be one of: markdown, html, svg`);
               }
             });
           }
         }
-        if ('directory' in o && typeof o.directory !== 'string') {
-          errors.push('"output.directory" must be a string');
-        }
-        if ('simplified' in o && typeof o.simplified !== 'boolean') {
-          errors.push('"output.simplified" must be a boolean');
-        }
-        if ('detailed' in o && typeof o.detailed !== 'boolean') {
-          errors.push('"output.detailed" must be a boolean');
+
+        // 'directory', 'simplified' and 'detailed' used to live here. Nothing
+        // ever read them, so they were removed rather than left as
+        // configuration the code ignores.
+        for (const dead of ['directory', 'simplified', 'detailed']) {
+          if (dead in o) {
+            warnings.push(
+              `"output.${dead}" is no longer supported and is ignored. ` +
+              `Output location is set with the CLI's -o flag.`
+            );
+          }
         }
       }
     }

@@ -109,6 +109,22 @@ auto-detected in the project root, and neither is required to get a first run.
 }
 ```
 
+### Choosing which artifacts get written
+
+`-o` names the JSON graph, which is always written. The companions are opt-out:
+
+```json
+{ "output": { "formats": ["markdown", "html", "svg"] } }
+```
+
+All three are the default. Narrow it when only the graph is consumed — a CI run
+that pipes JSON into `architecture-analyzer` has no use for a
+several-hundred-kilobyte dashboard:
+
+```json
+{ "output": { "formats": [] } }
+```
+
 **Layer names must be one of** `UI`, `API`, `Action`, `Service`, `Core`,
 `External` — in that order, outermost first. Depending inward is allowed;
 depending outward is a violation. A name outside this list is skipped entirely
@@ -233,7 +249,7 @@ bare graph:
 
 ```json
 {
-  "version": "0.6.0",
+  "version": "0.7.0",
   "generatedAt": "2026-01-01T00:00:00.000Z",
   "graph": { "nodes": [], "edges": [] },
   "analysis": { "score": 100, "issues": [], "metrics": {}, "summary": {} }

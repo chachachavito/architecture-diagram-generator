@@ -233,38 +233,32 @@ describe('ConfigurationLoader', () => {
         output: { formats: ['markdown', 'invalid-format'] },
       });
       expect(result.valid).toBe(false);
-      expect(result.errors).toContain('"output.formats[1]" must be one of: markdown, png, svg');
+      expect(result.errors).toContain('"output.formats[1]" must be one of: markdown, html, svg');
     });
 
     it('should accept valid output.formats', () => {
       const result = loader.validate({
-        output: { formats: ['markdown', 'png', 'svg'] },
+        output: { formats: ['markdown', 'html', 'svg'] },
       });
       expect(result.valid).toBe(true);
     });
 
-    it('should validate output.directory as string', () => {
+    it('should reject png, which the pipeline never produced', () => {
       const result = loader.validate({
-        output: { directory: 123 },
+        output: { formats: ['png'] },
       });
       expect(result.valid).toBe(false);
-      expect(result.errors).toContain('"output.directory" must be a string');
     });
 
-    it('should validate output.simplified as boolean', () => {
+    it('should warn about removed output keys instead of ignoring them', () => {
       const result = loader.validate({
-        output: { simplified: 'true' },
+        output: { directory: './docs', simplified: true, detailed: false },
       });
-      expect(result.valid).toBe(false);
-      expect(result.errors).toContain('"output.simplified" must be a boolean');
-    });
-
-    it('should validate output.detailed as boolean', () => {
-      const result = loader.validate({
-        output: { detailed: 1 },
-      });
-      expect(result.valid).toBe(false);
-      expect(result.errors).toContain('"output.detailed" must be a boolean');
+      // Removed rather than left as configuration the code silently drops.
+      expect(result.valid).toBe(true);
+      expect(result.warnings?.join(' ')).toContain('output.directory');
+      expect(result.warnings?.join(' ')).toContain('output.simplified');
+      expect(result.warnings?.join(' ')).toContain('output.detailed');
     });
 
     it('should collect multiple validation errors', () => {
@@ -310,10 +304,7 @@ describe('ConfigurationLoader', () => {
         domains: [{ name: 'Domain', patterns: ['domain/**'] }],
         externalServices: [{ name: 'Service', patterns: ['service'] }],
         output: {
-          formats: ['png'],
-          directory: './output',
-          simplified: false,
-          detailed: true,
+          formats: ['svg'],
         },
       };
 
@@ -325,30 +316,19 @@ describe('ConfigurationLoader', () => {
       expect(result.layers).toEqual([{ name: 'Custom', patterns: ['custom/**'] }]);
       expect(result.domains).toEqual([{ name: 'Domain', patterns: ['domain/**'] }]);
       expect(result.externalServices).toEqual([{ name: 'Service', patterns: ['service'] }]);
-      expect(result.output).toEqual({
-        formats: ['png'],
-        directory: './output',
-        simplified: false,
-        detailed: true,
-      });
+      expect(result.output).toEqual({ formats: ['svg'] });
     });
 
     it('should merge output config partially', () => {
       const userConfig: Partial<FullProjectConfig> = {
         output: {
           formats: ['svg'],
-          directory: './custom-docs',
-          simplified: false,
-          detailed: false,
         },
       };
 
       const result = loader.merge(userConfig, DEFAULT_CONFIG);
 
       expect(result.output.formats).toEqual(['svg']);
-      expect(result.output.directory).toBe('./custom-docs');
-      expect(result.output.simplified).toBe(false);
-      expect(result.output.detailed).toBe(false);
     });
 
     it('should handle partial output config merge', () => {
@@ -407,7 +387,7 @@ describe('ConfigurationLoader', () => {
           { name: 'Weather', patterns: ['**/weather/**'] },
         ],
         output: {
-          formats: ['markdown', 'png'],
+          formats: ['markdown', 'html'],
           directory: './docs/architecture',
           simplified: true,
           detailed: true,
@@ -422,7 +402,7 @@ describe('ConfigurationLoader', () => {
       expect(config.layers).toHaveLength(2);
       expect(config.domains).toHaveLength(2);
       expect(config.output.formats).toContain('markdown');
-      expect(config.output.formats).toContain('png');
+      expect(config.output.formats).toContain('html');
     });
 
     it('should handle config with only required fields', async () => {
