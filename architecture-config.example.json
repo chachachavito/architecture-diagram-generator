@@ -35,13 +35,13 @@
       "color": "#10B981"
     },
     {
-      "name": "Core",
-      "patterns": ["**/lib/**", "**/utils/**", "**/services/**"],
+      "name": "Service",
+      "patterns": ["**/services/**"],
       "color": "#F59E0B"
     },
     {
-      "name": "Data",
-      "patterns": ["**/prisma/**", "**/db/**", "**/models/**"],
+      "name": "Core",
+      "patterns": ["**/lib/**", "**/utils/**", "**/prisma/**", "**/db/**", "**/models/**"],
       "color": "#8B5CF6"
     }
   ],

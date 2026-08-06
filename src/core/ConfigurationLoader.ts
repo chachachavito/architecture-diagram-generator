@@ -129,11 +129,16 @@ export const DEFAULT_CONFIG: FullProjectConfig = {
     '**/dist/**',
     '**/coverage/**',
   ],
+  // Mirrors DEFAULT_CLASSIFICATION_RULES, and every name is a real
+  // ArchitectureLayer. Both matter: these patterns outrank the classifier's
+  // built-in rules, so a config file that omits `layers` must not reclassify
+  // the project, and a name outside ArchitectureLayer is skipped wholesale by
+  // layer-violation analysis — silently exempting the modules it labels.
   layers: [
-    { name: 'UI',         patterns: ['**/app/**/page.tsx', '**/pages/**', '**/components/**'], color: '#3B82F6' },
-    { name: 'API',        patterns: ['**/app/api/**', '**/pages/api/**'],                      color: '#10B981' },
-    { name: 'Processing', patterns: ['**/lib/**', '**/utils/**', '**/services/**'],             color: '#F59E0B' },
-    { name: 'Data',       patterns: ['**/prisma/**', '**/db/**', '**/models/**'],               color: '#8B5CF6' },
+    { name: 'UI',      patterns: ['**/app/**/page.tsx', '**/pages/**', '**/components/**'], color: '#3B82F6' },
+    { name: 'API',     patterns: ['**/app/api/**', '**/pages/api/**'],                      color: '#10B981' },
+    { name: 'Service', patterns: ['**/services/**'],                                        color: '#F59E0B' },
+    { name: 'Core',    patterns: ['**/lib/**', '**/utils/**', '**/prisma/**', '**/db/**', '**/models/**'], color: '#8B5CF6' },
   ],
   domains: [],
   externalServices: [],

@@ -1,7 +1,9 @@
-import { 
-  SourceGraph, 
-  ClassifiedGraph, 
-  GraphSnapshot
+import {
+  SourceGraph,
+  ClassifiedGraph,
+  GraphSnapshot,
+  ArchitectureLayer,
+  ARCHITECTURE_LAYERS
 } from './GraphTypes';
 import { Normalizer } from './Normalizer';
 import { ArchitectureClassifier } from './ArchitectureClassifier';
@@ -192,6 +194,21 @@ export class ArchitecturePipeline {
       }
       return map;
     };
+
+    // A layer name outside ArchitectureLayer is skipped wholesale by
+    // layer-violation analysis. Silently exempting modules from the check is
+    // the failure this tool exists to prevent, so say it out loud.
+    const unknownLayers = (projectConfig.layers ?? [])
+      .map((l) => l.name)
+      .filter((name) => !ARCHITECTURE_LAYERS.includes(name as ArchitectureLayer));
+
+    if (unknownLayers.length > 0) {
+      console.warn(
+        `Warning: unknown layer name(s) in config: ${unknownLayers.join(', ')}. ` +
+        `Modules in these layers are excluded from layer-violation analysis. ` +
+        `Known layers: ${ARCHITECTURE_LAYERS.join(', ')}.`
+      );
+    }
 
     return {
       ...this.options.config,

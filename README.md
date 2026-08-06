@@ -101,13 +101,19 @@ auto-detected in the project root, and neither is required to get a first run.
   "layers": [
     { "name": "UI",   "patterns": ["**/app/**/page.tsx", "**/components/**"] },
     { "name": "API",  "patterns": ["**/app/api/**", "**/middleware.ts"] },
-    { "name": "Core", "patterns": ["**/lib/**", "**/services/**"] }
+    { "name": "Core", "patterns": ["**/lib/**"] }
   ],
   "domains": [
     { "name": "AccessControl", "patterns": ["**/auth/**", "**/middleware.ts"] }
   ]
 }
 ```
+
+**Layer names must be one of** `UI`, `API`, `Action`, `Service`, `Core`,
+`External` — in that order, outermost first. Depending inward is allowed;
+depending outward is a violation. A name outside this list is skipped entirely
+by layer-violation analysis, silently exempting every module it labels, so the
+run warns when your config invents one.
 
 Point at a different file with `--config`:
 
