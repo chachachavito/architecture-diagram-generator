@@ -1,7 +1,7 @@
 {
   "name": "architecture-diagram-generator",
-  "version": "0.4.16",
-  "description": "Automated Architecture Diagram Generator (v0.4.16) for Next.js projects. Scan codebases, classify layers, and generate interactive HTML dashboards and Mermaid diagrams.",
+  "version": "0.6.0",
+  "description": "Automated architecture analysis for TypeScript and Next.js projects. Scan codebases, classify layers, score architecture health, and generate interactive dashboards and Mermaid diagrams.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -14,7 +14,7 @@
     "diagram": "node dist/cli.js",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint src --ext .ts",
     "analyze": "node dist/cli.js",
     "prepare": "husky"
   },

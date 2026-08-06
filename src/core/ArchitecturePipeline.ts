@@ -6,6 +6,7 @@ import {
 import { Normalizer } from './Normalizer';
 import { ArchitectureClassifier } from './ArchitectureClassifier';
 import { ProjectConfig } from './ConfigValidator';
+import type { FullProjectConfig } from './ConfigurationLoader';
 import { FileDiscovery } from './FileDiscovery';
 import { ASTParser } from '../parsers/ASTParser';
 import { DependencyGraphBuilder } from './DependencyGraphBuilder';
@@ -30,6 +31,13 @@ const ANALYZER_CONFIG_FILES = [
 export interface PipelineOptions {
   version: string;
   config: ProjectConfig;
+  /**
+   * Project config loaded from architecture-config.json. Drives file discovery
+   * (include/exclude) and supplies layer/domain patterns to the classifier.
+   * Leave undefined when the project has no config file — discovery then runs
+   * unfiltered instead of falling back to the narrower default include list.
+   */
+  projectConfig?: FullProjectConfig;
   debug?: boolean;
   analysisScope?: string[];
   disabledRules?: string[];
@@ -71,7 +79,11 @@ export class ArchitecturePipeline {
     // 1. File Discovery
     this.log('Stage 1: Discovering files...');
     const discovery = new FileDiscovery();
-    const fileList = await discovery.discover(absProjectRoot, { rootDir: absProjectRoot });
+    const fileList = await discovery.discover(absProjectRoot, {
+      rootDir: absProjectRoot,
+      include: this.options.projectConfig?.include,
+      exclude: this.options.projectConfig?.exclude,
+    });
     
     const allFiles = [
       ...fileList.routes,
@@ -162,19 +174,58 @@ export class ArchitecturePipeline {
   }
 
   /**
+   * Builds the classifier config, folding in the layer/domain patterns declared
+   * in architecture-config.json. An explicitly passed `config` wins over the
+   * file, so programmatic callers keep full control.
+   */
+  private resolveClassifierConfig(): ProjectConfig {
+    const projectConfig = this.options.projectConfig;
+    if (!projectConfig) return this.options.config;
+
+    const toPatternMap = (
+      definitions: { name: string; patterns: string[] }[] | undefined,
+    ): Record<string, string[]> | undefined => {
+      if (!definitions || definitions.length === 0) return undefined;
+      const map: Record<string, string[]> = {};
+      for (const { name, patterns } of definitions) {
+        map[name] = [...(map[name] ?? []), ...patterns];
+      }
+      return map;
+    };
+
+    return {
+      ...this.options.config,
+      layers: this.options.config.layers ?? toPatternMap(projectConfig.layers),
+      domains: this.options.config.domains ?? toPatternMap(projectConfig.domains),
+    };
+  }
+
+  /**
    * Load analyzer config from project root.
    */
   private async loadAnalyzerConfig(projectRoot: string): Promise<AnalyzerConfig> {
     for (const filename of ANALYZER_CONFIG_FILES) {
       const filepath = path.join(projectRoot, filename);
+
+      let content: string;
       try {
-        const content = await fs.readFile(filepath, 'utf-8');
-        const raw = JSON.parse(content);
-        const config = parseAnalyzerConfig(raw);
+        content = await fs.readFile(filepath, 'utf-8');
+      } catch {
+        continue; // Not present — try the next candidate
+      }
+
+      try {
+        const config = parseAnalyzerConfig(JSON.parse(content));
         this.log(`   Loaded analyzer config: ${filename}`);
         return config;
-      } catch {
-        // File doesn't exist or is invalid, try next
+      } catch (err) {
+        // The file exists but we cannot use it. Falling back silently would
+        // report a score computed under rules the user never chose.
+        console.warn(
+          `Warning: ${filename} is invalid and was ignored — using default rules. ` +
+          `${err instanceof Error ? err.message : String(err)}`
+        );
+        return DEFAULT_ANALYZER_CONFIG;
       }
     }
     this.log('   Using default analyzer config');
@@ -260,7 +311,7 @@ export class ArchitecturePipeline {
 
     // 3. Classify
     this.log('Stage: Classify');
-    this.classifier.classify(normalized.nodes, this.options.config);
+    this.classifier.classify(normalized.nodes, this.resolveClassifierConfig());
     const classified: ClassifiedGraph = {
       ...normalized,
       version: this.options.version

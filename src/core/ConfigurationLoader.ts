@@ -34,6 +34,11 @@ export interface ExternalServiceDefinition {
   type?: string;
 }
 
+/**
+ * NOT YET IMPLEMENTED. Parsed and validated, but no part of the pipeline reads
+ * it: output paths and formats are driven entirely by the CLI's `-o` flag.
+ * Kept for schema compatibility — do not document it as a working knob.
+ */
 export interface OutputConfig {
   formats: ('markdown' | 'png' | 'svg')[];
   directory: string;
@@ -88,10 +93,31 @@ const MIGRATIONS: Map<string, MigrationFunction> = new Map([
 
 // ─── Defaults ─────────────────────────────────────────────────────────────────
 
+/**
+ * Config file names searched for, in order, when no explicit path is given.
+ */
+export const CONFIG_FILE_NAMES = [
+  'architecture-config.json',
+  'architecture-config.yaml',
+  'architecture-config.yml',
+] as const;
+
 export const DEFAULT_CONFIG: FullProjectConfig = {
   version: CURRENT_CONFIG_VERSION,
   rootDir: './',
-  include: ['app/**', 'pages/**', 'src/**', 'lib/**'],
+  // Mirrors the directories FileDiscovery scans, so a config file that omits
+  // "include" does not silently narrow discovery. Add root-level entrypoints
+  // (e.g. "middleware.ts") here to pull them into the graph.
+  include: [
+    'app/**',
+    'pages/**',
+    'api/**',
+    'src/**',
+    'lib/**',
+    'components/**',
+    'services/**',
+    'utils/**',
+  ],
   exclude: [
     '**/*.test.ts',
     '**/*.test.tsx',
@@ -138,8 +164,8 @@ export class ConfigurationLoader {
    * @param configPath - Optional explicit path to config file
    * @returns Merged FullProjectConfig
    */
-  async load(configPath?: string): Promise<FullProjectConfig> {
-    const resolvedPath = configPath ?? this.findDefaultConfigPath();
+  async load(configPath?: string, rootDir?: string): Promise<FullProjectConfig> {
+    const resolvedPath = configPath ?? await this.resolveConfigPath(rootDir);
 
     if (!resolvedPath) {
       return { ...DEFAULT_CONFIG };
@@ -393,6 +419,29 @@ export class ConfigurationLoader {
   }
 
   /**
+   * Returns the path of the first config file that actually exists under
+   * `rootDir`, or undefined when the project has no config file.
+   *
+   * Callers use the undefined case to distinguish "no config" from "config
+   * that happens to match the defaults" — only the former should leave
+   * discovery unfiltered.
+   *
+   * @param rootDir - Directory to search (defaults to the current working directory)
+   */
+  async resolveConfigPath(rootDir: string = process.cwd()): Promise<string | undefined> {
+    for (const name of CONFIG_FILE_NAMES) {
+      const candidate = path.join(rootDir, name);
+      try {
+        await fs.access(candidate);
+        return candidate;
+      } catch {
+        // Not present — try the next candidate
+      }
+    }
+    return undefined;
+  }
+
+  /**
    * Gets the current configuration version.
    */
   getCurrentVersion(): string {
@@ -426,20 +475,6 @@ export class ConfigurationLoader {
     }
     // Try JSON as fallback for unknown extensions
     return JSON.parse(content);
-  }
-
-  /**
-   * Returns the path to the first default config file found, or undefined.
-   * Searches in the current working directory.
-   */
-  private findDefaultConfigPath(): string | undefined {
-    const candidates = [
-      'architecture-config.json',
-      'architecture-config.yaml',
-      'architecture-config.yml',
-    ];
-    // Return the first candidate path; actual existence is checked in load()
-    return candidates[0];
   }
 
   private isStringArray(value: unknown): boolean {

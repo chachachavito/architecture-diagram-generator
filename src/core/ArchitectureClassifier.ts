@@ -29,26 +29,32 @@ export interface ClassificationRule {
 /**
  * Default classification rules for Next.js conventions.
  * Higher priority number wins when multiple rules match.
+ *
+ * Each pattern begins with `(^|\/)` rather than `\/`: the pipeline normalises
+ * node ids to project-relative paths, so a top-level `app/` directory has no
+ * leading slash. Requiring one silently left every node in such a project
+ * unclassified (falling back to `Core`), which in turn made layer-violation
+ * detection vacuous for any Next.js app that does not nest sources under src/.
  */
 export const DEFAULT_CLASSIFICATION_RULES: ClassificationRule[] = [
   // API routes
-  { pattern: /\/app\/api\//i,       layer: 'API',        type: 'api',     priority: 10 },
-  { pattern: /\/pages\/api\//i,     layer: 'API',        type: 'api',     priority: 10 },
+  { pattern: /(^|\/)app\/api\//i,       layer: 'API',        type: 'api',     priority: 10 },
+  { pattern: /(^|\/)pages\/api\//i,     layer: 'API',        type: 'api',     priority: 10 },
   // Action handlers
-  { pattern: /\/app\/actions\//i,   layer: 'Action',     type: 'module', priority: 9 },
+  { pattern: /(^|\/)app\/actions\//i,   layer: 'Action',     type: 'module', priority: 9 },
   // UI components/pages
-  { pattern: /\/app\/.*page\.tsx$/i,      layer: 'UI',      type: 'module', priority: 8 },
-  { pattern: /\/app\/.*layout\.tsx$/i,    layer: 'UI',      type: 'module', priority: 8 },
-  { pattern: /\/app\/.*template\.tsx$/i,  layer: 'UI',      type: 'module', priority: 8 },
-  { pattern: /\/pages\//i,          layer: 'UI',         type: 'module',  priority: 7 },
-  { pattern: /\/components\//i,     layer: 'UI',         type: 'module',  priority: 7 },
+  { pattern: /(^|\/)app\/.*page\.tsx$/i,      layer: 'UI',      type: 'module', priority: 8 },
+  { pattern: /(^|\/)app\/.*layout\.tsx$/i,    layer: 'UI',      type: 'module', priority: 8 },
+  { pattern: /(^|\/)app\/.*template\.tsx$/i,  layer: 'UI',      type: 'module', priority: 8 },
+  { pattern: /(^|\/)pages\//i,          layer: 'UI',         type: 'module',  priority: 7 },
+  { pattern: /(^|\/)components\//i,     layer: 'UI',         type: 'module',  priority: 7 },
   // Service layer
-  { pattern: /\/services\//i,       layer: 'Service',    type: 'service', priority: 6 },
+  { pattern: /(^|\/)services\//i,       layer: 'Service',    type: 'service', priority: 6 },
   // Core utilities
-  { pattern: /\/lib\//i,            layer: 'Core',       type: 'module',  priority: 5 },
-  { pattern: /\/utils\//i,          layer: 'Core',       type: 'module',  priority: 5 },
+  { pattern: /(^|\/)lib\//i,            layer: 'Core',       type: 'module',  priority: 5 },
+  { pattern: /(^|\/)utils\//i,          layer: 'Core',       type: 'module',  priority: 5 },
   // External libraries
-  { pattern: /\/libs\//i,           layer: 'External',   type: 'external', priority: 4 },
+  { pattern: /(^|\/)libs\//i,           layer: 'External',   type: 'external', priority: 4 },
 ];
 
 /**
@@ -145,16 +151,41 @@ export class ArchitectureClassifier {
       }
     }
 
+    if (config.domains) {
+      for (const [domain, patterns] of Object.entries(config.domains)) {
+        for (const pattern of patterns) {
+          rules.push({
+            pattern: this.globToRegex(pattern),
+            domain,
+            priority: 50
+          });
+        }
+      }
+    }
+
     return rules;
   }
 
   private globToRegex(glob: string): RegExp {
-    const regex = glob
-      .replace(/[.+^${}()|[\]\\]/g, '\\$&') // Escape regex special chars
-      .replace(/\*\*/g, '.*')               // ** matches anything including /
-      .replace(/(?<!\.)\*/g, '[^/]*');      // * matches anything except /
-    
-    return new RegExp(regex, 'i');
+    // Wildcards are parked behind placeholders so that escaping regex
+    // metacharacters cannot mangle them.
+    let pattern = glob
+      .replace(/\*\*\//g, '___DOUBLESTAR_SLASH___')
+      .replace(/\*\*/g, '___DOUBLESTAR___')
+      .replace(/\*/g, '___STAR___')
+      .replace(/\?/g, '___QUESTION___');
+
+    pattern = pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+
+    pattern = pattern
+      // Zero or more directories — "**/proxy.ts" must also match a file that
+      // sits at the project root, not only nested ones.
+      .replace(/___DOUBLESTAR_SLASH___/g, '(?:.*/)?')
+      .replace(/___DOUBLESTAR___/g, '.*')
+      .replace(/___STAR___/g, '[^/]*')
+      .replace(/___QUESTION___/g, '[^/]');
+
+    return new RegExp(pattern, 'i');
   }
 
   private inferDomainFromPath(id: string): string {

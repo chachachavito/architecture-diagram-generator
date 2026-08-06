@@ -1,76 +1,15 @@
 import { DependencyGraph, GraphNode, GraphEdge, ArchitectureLayer } from './DependencyGraph';
 
 // ---------------------------------------------------------------------------
-// Domain routing tables
-// ---------------------------------------------------------------------------
-
-/** Maps a path fragment → canonical API domain */
-const API_DOMAIN_MAP: Array<{ patterns: string[]; domain: string }> = [
-  { patterns: ['weather', 'rain-nowcast', 'rain_nowcast', 'forecast', 'open-meteo', 'open_meteo', 'radar', 'radar-auto', 'radar_auto'], domain: 'Weather' },
-  { patterns: ['risk', 'live-input', 'live_input', 'historical-input', 'historical_input', 'historical-events', 'historical_events'], domain: 'Risk' },
-  { patterns: ['hydrology', 'tide', 'moon-phase', 'moon_phase'], domain: 'Data' },
-  { patterns: ['backlog', 'optimize', 'generate-prompt', 'generate_prompt', 'verify'], domain: 'Backlog' },
-  { patterns: ['decisions', 'slug'], domain: 'Decisions' },
-  { patterns: ['sync', 'performance', 'login', 'auth'], domain: 'System' },
-  { patterns: ['cron', 'snapshot'], domain: 'Cron' },
-];
-
-/** Maps a path fragment → canonical UI domain */
-const UI_DOMAIN_MAP: Array<{ patterns: string[]; domain: string }> = [
-  { patterns: ['weather'], domain: 'Weather' },
-  { patterns: ['monitoramento', 'monitoring'], domain: 'Monitoring' },
-  { patterns: ['analise', 'picos', 'analysis'], domain: 'Analysis' },
-  { patterns: ['backlog'], domain: 'Backlog' },
-  { patterns: ['decisions'], domain: 'Decisions' },
-  { patterns: ['risk', 'risk-validator'], domain: 'Risk' },
-  { patterns: ['admin', 'performance', 'sync'], domain: 'Admin' },
-  { patterns: ['login', 'auth'], domain: 'Auth' },
-];
-
-/** Maps a service/lib path fragment → canonical Processing domain */
-const SERVICE_DOMAIN_MAP: Array<{ patterns: string[]; domain: string }> = [
-  { patterns: ['weather', 'synoptic', 'meteo', 'forecast', 'rain', 'nowcast'], domain: 'Weather' },
-  { patterns: ['radar', 'capture'], domain: 'Weather' },
-  { patterns: ['risk', 'riskCalculator', 'riskcalculator'], domain: 'Risk' },
-  { patterns: ['tide', 'marinha', 'river', 'hydrology', 'inea'], domain: 'Monitoring' },
-  { patterns: ['moon', 'celestial'], domain: 'Monitoring' },
-  { patterns: ['inmet', 'alertaRio', 'alertario'], domain: 'Monitoring' },
-  { patterns: ['synthesis', 'ai', 'synoptic'], domain: 'Risk' },
-  { patterns: ['db', 'database', 'prisma'], domain: 'Data' },
-];
-
-// ---------------------------------------------------------------------------
-// Core node rename table  (path fragment → canonical label + short id)
-// ---------------------------------------------------------------------------
-const CORE_RENAME: Array<{ pattern: RegExp; id: string; label: string }> = [
-  { pattern: /riskCalculator/i,      id: 'RiskEngine',          label: 'RiskEngine' },
-  { pattern: /synthesisService/i,    id: 'RiskCore',            label: 'RiskCore' },
-  { pattern: /weatherService/i,      id: 'WeatherCore',         label: 'WeatherCore' },
-  { pattern: /radarService/i,        id: 'RadarCore',           label: 'RadarCore' },
-  { pattern: /alertaRioPolling/i,    id: 'DataSource_AlertaRio',label: 'DataSource AlertaRio' },
-  { pattern: /alertaRioHistorico/i,  id: 'DataSource_Historico',label: 'DataSource Historico' },
-  { pattern: /marinhaTideService/i,  id: 'TideCore',            label: 'TideCore' },
-  { pattern: /inmetService/i,        id: 'DataSource_Inmet',    label: 'DataSource Inmet' },
-  { pattern: /ineaService/i,         id: 'DataSource_Inea',     label: 'DataSource Inea' },
-  { pattern: /moonPhaseService/i,    id: 'MoonPhaseCore',       label: 'MoonPhaseCore' },
-  { pattern: /synopticService/i,     id: 'SynopticCore',        label: 'SynopticCore' },
-  { pattern: /aiSynopticSynthesis/i, id: 'AiSynthesis',         label: 'AiSynthesis' },
-  { pattern: /lib\/radar/i,          id: 'lib_radar',           label: 'Lib Radar' },
-  { pattern: /lib\/capture/i,        id: 'lib_capture',         label: 'Lib Capture' },
-  { pattern: /lib\/db/i,             id: 'lib_db',              label: 'Lib DB' },
-  { pattern: /lib\/risk/i,           id: 'lib_risk',            label: 'Lib Risk' },
-  { pattern: /lib\/weather/i,        id: 'lib_weather',         label: 'Lib Weather' },
-  { pattern: /lib\/openMeteo/i,      id: 'lib_openMeteo',       label: 'Lib OpenMeteo' },
-  { pattern: /lib\/classify/i,       id: 'lib_classify',        label: 'Lib Classify' },
-  { pattern: /lib\/geo/i,            id: 'lib_geo',             label: 'Lib Geo' },
-];
-
-// ---------------------------------------------------------------------------
 // Exclusion rules
 // ---------------------------------------------------------------------------
 const EXCLUDED_TYPES = new Set(['config', 'external-service']);
 
-const EXCLUDED_PATH_PATTERNS = [
+/**
+ * Structural exclusions only — these describe how code is organised, not what
+ * it is about. Domain vocabulary belongs in project configuration, never here.
+ */
+const DEFAULT_EXCLUDED_PATH_PATTERNS: RegExp[] = [
   /\/utils?\//i,
   /\/helpers?\//i,
   /logger/i,
@@ -78,14 +17,11 @@ const EXCLUDED_PATH_PATTERNS = [
   /\/constants?\//i,
   /\/hooks\//i,
   /\/shared\//i,
-  /scenarioStorage/i,
-  /uiRiskHelpers/i,
-  /weatherSummaryParser/i,
   // small UI components that are not pages
-  /components\/(?!risk-validator)[A-Z]/,
+  /components\/[A-Z]/,
 ];
 
-const MAX_ARCHITECTURE_NODES = 40;
+const DEFAULT_MAX_ARCHITECTURE_NODES = 40;
 
 // ---------------------------------------------------------------------------
 // Types
@@ -95,12 +31,59 @@ export interface FilterResult {
   coreNodes: Set<string>;
 }
 
+/** Maps path fragments → a canonical domain name, per layer. */
+export interface DomainRule {
+  patterns: string[];
+  domain: string;
+}
+
+/** Renames a matching node to a canonical id + label. */
+export interface RenameRule {
+  pattern: RegExp;
+  id: string;
+  label: string;
+}
+
+export interface ArchitectureFilterOptions {
+  /**
+   * Per-layer domain vocabulary. Empty by default: the filter will not invent
+   * a domain for a module it knows nothing about.
+   */
+  domainMaps?: {
+    API?: DomainRule[];
+    UI?: DomainRule[];
+    Core?: DomainRule[];
+  };
+  /** Canonical renames for well-known modules. Empty by default. */
+  renames?: RenameRule[];
+  /** Overrides the structural path exclusions. */
+  excludePathPatterns?: RegExp[];
+  /** Node budget before low-priority nodes are dropped. */
+  maxNodes?: number;
+}
+
 // ---------------------------------------------------------------------------
 // ArchitectureFilter
 // ---------------------------------------------------------------------------
 export class ArchitectureFilter {
   /** idMap from last filter() call — old absolute path → new short id */
   _lastIdMap: Map<string, string> = new Map();
+
+  private readonly domainMaps: Required<NonNullable<ArchitectureFilterOptions['domainMaps']>>;
+  private readonly renames: RenameRule[];
+  private readonly excludePathPatterns: RegExp[];
+  private readonly maxNodes: number;
+
+  constructor(options: ArchitectureFilterOptions = {}) {
+    this.domainMaps = {
+      API: options.domainMaps?.API ?? [],
+      UI: options.domainMaps?.UI ?? [],
+      Core: options.domainMaps?.Core ?? [],
+    };
+    this.renames = options.renames ?? [];
+    this.excludePathPatterns = options.excludePathPatterns ?? DEFAULT_EXCLUDED_PATH_PATTERNS;
+    this.maxNodes = options.maxNodes ?? DEFAULT_MAX_ARCHITECTURE_NODES;
+  }
 
   filter(fullGraph: DependencyGraph): FilterResult {
     // 1. Filter out excluded nodes
@@ -158,7 +141,7 @@ export class ArchitectureFilter {
 
   private isExcludedPath(filePath: string): boolean {
     const n = filePath.replace(/\\/g, '/');
-    return EXCLUDED_PATH_PATTERNS.some((p) => p.test(n));
+    return this.excludePathPatterns.some((p) => p.test(n));
   }
 
   // ---------------------------------------------------------------------------
@@ -173,7 +156,7 @@ export class ArchitectureFilter {
     const renames = new Map<string, string>(); // oldId → canonicalId
 
     for (const [oldId, node] of nodes) {
-      for (const { pattern, id: canonicalId, label } of CORE_RENAME) {
+      for (const { pattern, id: canonicalId, label } of this.renames) {
         if (pattern.test(oldId)) {
           let finalId = canonicalId;
           // Only suffix if another *different* node already claimed this canonical ID
@@ -213,22 +196,14 @@ export class ArchitectureFilter {
   ): string | undefined {
     const n = (nodeId + ' ' + (label ?? '')).toLowerCase().replace(/\\/g, '/');
 
-    if (layer === 'API') {
-      for (const { patterns, domain } of API_DOMAIN_MAP) {
-        if (patterns.some((p) => n.includes(p))) return domain;
-      }
-    }
+    const rules =
+      layer === 'API'  ? this.domainMaps.API :
+      layer === 'UI'   ? this.domainMaps.UI :
+      layer === 'Core' ? this.domainMaps.Core :
+      [];
 
-    if (layer === 'UI') {
-      for (const { patterns, domain } of UI_DOMAIN_MAP) {
-        if (patterns.some((p) => n.includes(p))) return domain;
-      }
-    }
-
-    if (layer === 'Core') {
-      for (const { patterns, domain } of SERVICE_DOMAIN_MAP) {
-        if (patterns.some((p) => n.includes(p))) return domain;
-      }
+    for (const { patterns, domain } of rules) {
+      if (patterns.some((p) => n.includes(p.toLowerCase()))) return domain;
     }
 
     return undefined;
@@ -283,7 +258,7 @@ export class ArchitectureFilter {
     edges: GraphEdge[],
     coreNodes: Set<string>,
   ): { nodes: Map<string, GraphNode>; edges: GraphEdge[] } {
-    if (nodes.size <= MAX_ARCHITECTURE_NODES) return { nodes, edges };
+    if (nodes.size <= this.maxNodes) return { nodes, edges };
 
     const priority: Record<string, number> = {
       'external-service': -1, config: 0, utility: 1, component: 2, route: 3, api: 4,
@@ -296,7 +271,7 @@ export class ArchitectureFilter {
       return coreBonus + (priority[typeB] ?? 0) - (priority[typeA] ?? 0);
     });
 
-    const kept    = new Map(sorted.slice(0, MAX_ARCHITECTURE_NODES));
+    const kept    = new Map(sorted.slice(0, this.maxNodes));
     const keptIds = new Set(kept.keys());
     return {
       nodes: kept,
