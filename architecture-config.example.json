@@ -78,5 +78,9 @@
       "patterns": ["@vercel/kv"],
       "type": "Cache"
     }
-  ]
+  ],
+
+  "output": {
+    "formats": ["markdown", "html", "svg"]
+  }
 }

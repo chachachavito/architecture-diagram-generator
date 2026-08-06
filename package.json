@@ -1,6 +1,6 @@
 {
   "name": "architecture-diagram-generator",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Automated architecture analysis for TypeScript and Next.js projects. Scan codebases, classify layers, score architecture health, and generate interactive dashboards and Mermaid diagrams.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

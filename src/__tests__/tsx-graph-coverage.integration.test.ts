@@ -46,18 +46,13 @@ describe('graph coverage for .tsx projects', () => {
     });
 
     const { graph } = await pipeline.runFull(root);
-
-    // Node ids are normalised against the working directory rather than the
-    // configured rootDir, so compare on the trailing segments to keep this
-    // test independent of where it runs from.
-    const tail = (id: string) => id.split('/').slice(-2).join('/');
-    const edges = graph.edges.map((e) => `${tail(e.from)}->${tail(e.to)}`);
+    const edges = graph.edges.map((e) => `${e.from}->${e.to}`);
 
     // Every import in the fixture; all but one target a .tsx file.
     expect(edges).toContain('components/Card.tsx->components/Button.tsx');
     expect(edges).toContain('components/Table.tsx->components/Card.tsx');
     expect(edges).toContain('components/Table.tsx->lib/fmt.ts');
-    expect(edges).toContain('dashboard/page.tsx->components/Table.tsx');
+    expect(edges).toContain('app/dashboard/page.tsx->components/Table.tsx');
     expect(edges).toHaveLength(4);
   });
 

@@ -8,7 +8,8 @@ import { ARCHITECTURE_LAYERS } from './layers';
 import { Normalizer } from './Normalizer';
 import { ArchitectureClassifier } from './ArchitectureClassifier';
 import { ProjectConfig } from './ConfigValidator';
-import type { FullProjectConfig } from './ConfigurationLoader';
+import type { FullProjectConfig, OutputFormat } from './ConfigurationLoader';
+import { DEFAULT_CONFIG } from './ConfigurationLoader';
 import { FileDiscovery } from './FileDiscovery';
 import { ASTParser } from '../parsers/ASTParser';
 import { DependencyGraphBuilder } from './DependencyGraphBuilder';
@@ -112,7 +113,10 @@ export class ArchitecturePipeline {
 
     // 3. Build Dependency Graph
     this.log('Stage 3: Building dependency graph...');
-    const builder = new DependencyGraphBuilder();
+    // Must be the analysed project, not the working directory: the Normalizer
+    // strips `rootDir` from node ids, so a builder rooted elsewhere leaves the
+    // difference stuck on the front of every id.
+    const builder = new DependencyGraphBuilder(absProjectRoot);
     const sourceGraph = builder.build(parsedModules);
 
     // 4. Run Pipeline (Normalize, Classify, etc.)
@@ -278,36 +282,50 @@ export class ArchitecturePipeline {
     await fs.writeFile(absOutputPath, JSON.stringify(output, null, 2));
     this.log(`   - Data: ${path.basename(absOutputPath)}`);
 
+    // The JSON above is the -o target and is always written. Everything below
+    // is a companion artifact the project can opt out of — generating a
+    // multi-hundred-kilobyte dashboard on every CI run is pure cost when only
+    // the graph is consumed.
+    const formats = new Set<OutputFormat>(
+      this.options.projectConfig?.output?.formats ?? DEFAULT_CONFIG.output.formats,
+    );
+
     // 2. Markdown (Mermaid)
-    const generator = new DiagramGenerator();
-    const diagram = generator.generate(graph);
-    const mdPath = absOutputPath.replace('.json', '.md');
-    await fs.writeFile(mdPath, `# Architecture Diagram\n\n\`\`\`mermaid\n${diagram.syntax}\n\`\`\``);
-    this.log(`   - Markdown: ${path.basename(mdPath)}`);
+    if (formats.has('markdown')) {
+      const generator = new DiagramGenerator();
+      const diagram = generator.generate(graph);
+      const mdPath = absOutputPath.replace('.json', '.md');
+      await fs.writeFile(mdPath, `# Architecture Diagram\n\n\`\`\`mermaid\n${diagram.syntax}\n\`\`\``);
+      this.log(`   - Markdown: ${path.basename(mdPath)}`);
+    }
 
     // 3. HTML Dashboard
-    const projectName = path.basename(this.options.rootDir);
-    const htmlGenerator = new HTMLGenerator();
-    const report = analysis ? {
-      issues: analysis.issues,
-      score: analysis.score,
-      summary: analysis.summary,
-      suggestions: analysis.suggestions || [],
-    } : undefined;
-    const htmlContent = htmlGenerator.generate(graph, projectName, report);
-    const htmlPath = absOutputPath.replace('.json', '.html');
-    await fs.writeFile(htmlPath, htmlContent);
-    this.log(`   - Dashboard: ${path.basename(htmlPath)}`);
+    if (formats.has('html')) {
+      const projectName = path.basename(this.options.rootDir);
+      const htmlGenerator = new HTMLGenerator();
+      const report = analysis ? {
+        issues: analysis.issues,
+        score: analysis.score,
+        summary: analysis.summary,
+        suggestions: analysis.suggestions || [],
+      } : undefined;
+      const htmlContent = htmlGenerator.generate(graph, projectName, report);
+      const htmlPath = absOutputPath.replace('.json', '.html');
+      await fs.writeFile(htmlPath, htmlContent);
+      this.log(`   - Dashboard: ${path.basename(htmlPath)}`);
+    }
 
     // 4. SVG (Interactive)
-    const svgGenerator = new SVGRenderer();
-    const svgResult = svgGenerator.render(graph as unknown as any);
-    const svgPath = absOutputPath.replace('.json', '.svg');
-    const fullSvg = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    if (formats.has('svg')) {
+      const svgGenerator = new SVGRenderer();
+      const svgResult = svgGenerator.render(graph as unknown as any);
+      const svgPath = absOutputPath.replace('.json', '.svg');
+      const fullSvg = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <style>${svgResult.css}</style>
       ${svgResult.html}`;
-    await fs.writeFile(svgPath, fullSvg);
-    this.log(`   - SVG: ${path.basename(svgPath)}`);
+      await fs.writeFile(svgPath, fullSvg);
+      this.log(`   - SVG: ${path.basename(svgPath)}`);
+    }
   }
 
   /**
