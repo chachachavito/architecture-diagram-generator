@@ -3,89 +3,30 @@ import { Project, SourceFile, SyntaxKind } from 'ts-morph';
 import * as path from 'path';
 import * as fsSync from 'fs';
 import { ModuleCache } from '../core/ModuleCache';
+import type {
+  ImportStatement,
+  ExportStatement,
+  ExternalCall,
+  InheritanceInfo,
+  ModuleMetrics,
+  ModuleMetadata,
+  ParsedModule,
+} from './types';
 import { ParseError } from '../utils/errors';
 
-/**
- * Interface representing an import statement in a module
- */
-export interface ImportStatement {
-  source: string;        // Path of imported module
-  specifiers: string[];  // Imported names
-  isExternal: boolean;   // If it's external dependency (node_modules)
-  isTypeOnly: boolean;   // If it's a type-only import
-  importKind?: 'named' | 'default' | 'namespace' | 'side-effect' | 'dynamic' | 'require';
-}
-
-/**
- * Interface representing an export statement in a module
- */
-export interface ExportStatement {
-  name: string;          // Name of the exported symbol
-  type: 'function' | 'class' | 'variable' | 'type' | 'default';
-  isDefault: boolean;
-}
-
-/**
- * Interface representing an external call (e.g., fetch, axios)
- */
-export interface ExternalCall {
-  type: 'fetch' | 'axios' | 'database' | 'unknown';
-  target: string;        // URL or identifier of the service
-  location: SourceLocation;
-}
-
-/**
- * Interface representing a source location in a file
- */
-export interface SourceLocation {
-  line: number;
-  column?: number;
-}
-
-export interface InheritanceInfo {
-  name: string;
-  type: 'extends' | 'implements';
-  module?: string;
-}
-
-export interface ModuleMetrics {
-  complexity: number;
-  sloc: number;
-}
-
-/**
- * Interface representing module metadata
- */
-export interface ModuleMetadata {
-  hasDefaultExport: boolean;
-  isReactComponent: boolean;
-  isApiRoute: boolean;
-  inheritance: InheritanceInfo[];
-  decorators: string[];
-  metrics: ModuleMetrics;
-  /**
-   * The module declares nothing of its own and only re-exports other modules
-   * (`export ... from`). Its dependency count describes the surface it
-   * aggregates, not coupling it introduces.
-   */
-  isBarrel: boolean;
-  /**
-   * Every export is a type or interface. Depending on such a module creates no
-   * runtime edge — the import is erased at compile time.
-   */
-  isTypeOnlyModule: boolean;
-}
-
-/**
- * Interface representing a parsed module
- */
-export interface ParsedModule {
-  path: string;
-  imports: ImportStatement[];
-  exports: ExportStatement[];
-  externalCalls: ExternalCall[];
-  metadata: ModuleMetadata;
-}
+// Structural types live in ./types so that ModuleCache can depend on them
+// without importing this module. Re-exported here so existing imports from
+// './ASTParser' keep working.
+export type {
+  ImportStatement,
+  ExportStatement,
+  ExternalCall,
+  SourceLocation,
+  InheritanceInfo,
+  ModuleMetrics,
+  ModuleMetadata,
+  ParsedModule,
+} from './types';
 
 /**
  * ASTParser class handles parsing of TypeScript/JavaScript files

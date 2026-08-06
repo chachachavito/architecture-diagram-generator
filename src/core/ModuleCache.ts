@@ -1,7 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
-import { ParsedModule } from '../parsers';
+// Imported from the leaf types module, not the parsers barrel: the barrel
+// re-exports ASTParser, which imports this file.
+import type { ParsedModule } from '../parsers/types';
 
 /**
  * Interface for cache entry metadata
