@@ -1,8 +1,21 @@
 {
-  "version": "1.3.0",
-  "generatedAt": "2026-05-03T05:22:51.378Z",
+  "version": "0.6.0",
+  "generatedAt": "2026-08-06T12:26:20.269Z",
   "graph": {
     "nodes": [
+      {
+        "id": "(() => {\n  try {\n    / dist/cli",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "(() => {\n  try {\n    // dist/cli",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "(() => {\n  try {\n    // dist/cli",
+        "externalCalls": []
+      },
       {
         "id": "child_process",
         "metadata": {
@@ -66,6 +79,19 @@
         },
         "type": "external",
         "label": "dbPatterns",
+        "externalCalls": []
+      },
+      {
+        "id": "fs",
+        "metadata": {
+          "type": "external",
+          "source": "inferred",
+          "label": "fs",
+          "layer": "External",
+          "domain": "shared"
+        },
+        "type": "external",
+        "label": "fs",
         "externalCalls": []
       },
       {
@@ -430,8 +456,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 413,
-            "complexity": 75
+            "sloc": 471,
+            "complexity": 77
           },
           "label": "Cli",
           "layer": "Core",
@@ -441,9 +467,17 @@
         "externalCalls": [
           {
             "type": "database",
+            "target": "(() => {\n  try {\n    // dist/cli",
+            "location": {
+              "line": 18,
+              "column": 25
+            }
+          },
+          {
+            "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 106,
+              "line": 159,
               "column": 3
             }
           },
@@ -451,7 +485,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 106,
+              "line": 159,
               "column": 3
             }
           },
@@ -459,7 +493,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 106,
+              "line": 159,
               "column": 3
             }
           },
@@ -467,7 +501,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 106,
+              "line": 159,
               "column": 3
             }
           },
@@ -475,7 +509,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 106,
+              "line": 159,
               "column": 3
             }
           },
@@ -483,7 +517,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 106,
+              "line": 159,
               "column": 3
             }
           },
@@ -491,7 +525,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 106,
+              "line": 159,
               "column": 3
             }
           },
@@ -499,7 +533,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 160,
+              "line": 159,
               "column": 3
             }
           },
@@ -507,7 +541,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 160,
+              "line": 216,
               "column": 3
             }
           },
@@ -515,7 +549,7 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 160,
+              "line": 216,
               "column": 3
             }
           },
@@ -523,7 +557,23 @@
             "type": "database",
             "target": "program\n    ",
             "location": {
-              "line": 160,
+              "line": 216,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 216,
+              "column": 3
+            }
+          },
+          {
+            "type": "database",
+            "target": "program\n    ",
+            "location": {
+              "line": 216,
               "column": 3
             }
           }
@@ -537,8 +587,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 149,
-            "complexity": 37
+            "sloc": 177,
+            "complexity": 40
           },
           "label": "ArchitectureClassifier",
           "layer": "Core",
@@ -555,8 +605,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 378,
-            "complexity": 58
+            "sloc": 354,
+            "complexity": 54
           },
           "label": "ArchitectureFilter",
           "layer": "Core",
@@ -573,8 +623,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 320,
-            "complexity": 31
+            "sloc": 366,
+            "complexity": 36
           },
           "label": "ArchitecturePipeline",
           "layer": "Core",
@@ -591,8 +641,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 390,
-            "complexity": 60
+            "sloc": 424,
+            "complexity": 61
           },
           "label": "ConfigurationLoader",
           "layer": "Core",
@@ -663,8 +713,8 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 246,
-            "complexity": 56
+            "sloc": 273,
+            "complexity": 63
           },
           "label": "FileDiscovery",
           "layer": "Core",
@@ -699,7 +749,7 @@
           "inheritance": [],
           "decorators": [],
           "metrics": {
-            "sloc": 35,
+            "sloc": 40,
             "complexity": 1
           },
           "label": "Src / Core / Index",
@@ -1545,9 +1595,21 @@
         "isTypeOnly": false
       },
       {
+        "id": "src/cli.ts->(() => {\n  try {\n    / dist/cli:external-call",
+        "from": "src/cli.ts",
+        "to": "(() => {\n  try {\n    / dist/cli",
+        "type": "external-call"
+      },
+      {
         "id": "src/cli.ts->commander:import",
         "from": "src/cli.ts",
         "to": "commander",
+        "type": "import"
+      },
+      {
+        "id": "src/cli.ts->fs:import",
+        "from": "src/cli.ts",
+        "to": "fs",
         "type": "import"
       },
       {
@@ -1586,6 +1648,13 @@
         "id": "src/cli.ts->src/core/ArchitecturePipeline.ts:import",
         "from": "src/cli.ts",
         "to": "src/core/ArchitecturePipeline.ts",
+        "type": "import",
+        "isTypeOnly": false
+      },
+      {
+        "id": "src/cli.ts->src/core/ConfigurationLoader.ts:import",
+        "from": "src/cli.ts",
+        "to": "src/core/ConfigurationLoader.ts",
         "type": "import",
         "isTypeOnly": false
       },
@@ -1662,6 +1731,13 @@
         "to": "src/core/ArchitectureClassifier.ts",
         "type": "import",
         "isTypeOnly": false
+      },
+      {
+        "id": "src/core/ArchitecturePipeline.ts->src/core/ConfigurationLoader.ts:import",
+        "from": "src/core/ArchitecturePipeline.ts",
+        "to": "src/core/ConfigurationLoader.ts",
+        "type": "import",
+        "isTypeOnly": true
       },
       {
         "id": "src/core/ArchitecturePipeline.ts->src/core/ConfigValidator.ts:import",
@@ -2294,10 +2370,10 @@
         "isTypeOnly": false
       }
     ],
-    "version": "1.3.0"
+    "version": "0.6.0"
   },
   "analysis": {
-    "score": 79,
+    "score": 76,
     "issues": [
       {
         "ruleId": "high-fan-out",
@@ -2333,14 +2409,29 @@
         "ruleId": "high-fan-out",
         "type": "high-fan-out",
         "category": "coupling",
-        "nodeId": "src/core/ArchitecturePipeline.ts",
+        "nodeId": "src/cli.ts",
         "severity": "medium",
-        "message": "ArchitecturePipeline has 17 outgoing dependencies (threshold: 8)",
+        "message": "Cli has 10 outgoing dependencies (threshold: 8)",
         "confidence": 0.85,
         "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
         "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
         "metadata": {
-          "value": 17,
+          "value": 10,
+          "threshold": 8
+        }
+      },
+      {
+        "ruleId": "high-fan-out",
+        "type": "high-fan-out",
+        "category": "coupling",
+        "nodeId": "src/core/ArchitecturePipeline.ts",
+        "severity": "medium",
+        "message": "ArchitecturePipeline has 18 outgoing dependencies (threshold: 8)",
+        "confidence": 0.85,
+        "suggestion": "Split module responsibilities or extract smaller services to reduce complexity.",
+        "why": "High fan-out indicates high coupling, making the module harder to test and maintain.",
+        "metadata": {
+          "value": 18,
           "threshold": 8
         }
       },
@@ -2407,16 +2498,16 @@
     ],
     "metrics": {
       "totalNodes": 45,
-      "totalEdges": 156,
-      "avgFanIn": 3.47,
-      "avgFanOut": 3.47,
+      "totalEdges": 160,
+      "avgFanIn": 3.56,
+      "avgFanOut": 3.56,
       "maxFanIn": {
         "nodeId": "src/core/GraphTypes.ts",
         "value": 22
       },
       "maxFanOut": {
         "nodeId": "src/core/ArchitecturePipeline.ts",
-        "value": 17
+        "value": 18
       },
       "circularDependencies": 0,
       "layerViolations": 0,
@@ -2425,7 +2516,7 @@
       }
     },
     "summary": {
-      "totalIssues": 7,
+      "totalIssues": 8,
       "criticalIssues": 0,
       "highIssues": 0,
       "layerViolations": 0,

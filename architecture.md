@@ -60,11 +60,15 @@ flowchart TD
     end
   end
   subgraph External ["External"]
+      ___________try_________dist_cli[( "☁️ = 
+  try 
+    // dist/cli" )]
       child_process[( "☁️ child_process" )]
       commander[( "☁️ commander" )]
       crypto[( "☁️ crypto" )]
       dbNames[( "☁️ dbNames" )]
       dbPatterns[( "☁️ dbPatterns" )]
+      fs[( "☁️ fs" )]
       fs_promises[( "☁️ fs/promises" )]
       glob[( "☁️ glob" )]
       path[( "☁️ path" )]
@@ -120,13 +124,16 @@ flowchart TD
   src_analyzer_rules_LayerViolationRule_ts --> src_analyzer_types_ts
   src_analyzer_rules_LayerViolationRule_ts --> src_core_GraphTypes_ts
   src_analyzer_types_ts --> src_core_GraphTypes_ts
+  src_cli_ts --> ___________try_________dist_cli
   src_cli_ts --> commander
+  src_cli_ts --> fs
   src_cli_ts --> fs_promises
   src_cli_ts --> path
   src_cli_ts --> program_____
   src_cli_ts --> src_analyzer_AnalysisHistory_ts
   src_cli_ts --> src_analyzer_AnalyzerConfig_ts
   src_cli_ts --> src_core_ArchitecturePipeline_ts
+  src_cli_ts --> src_core_ConfigurationLoader_ts
   src_core_ArchitectureClassifier_ts --> src_core_ConfigValidator_ts
   src_core_ArchitectureClassifier_ts --> src_core_GraphTypes_ts
   src_core_ArchitectureFilter_ts --> src_core_DependencyGraph_ts
@@ -138,6 +145,7 @@ flowchart TD
   src_core_ArchitecturePipeline_ts --> src_analyzer_ArchitectureAnalyzer_ts
   src_core_ArchitecturePipeline_ts --> src_analyzer_types_ts
   src_core_ArchitecturePipeline_ts --> src_core_ArchitectureClassifier_ts
+  src_core_ArchitecturePipeline_ts --> src_core_ConfigurationLoader_ts
   src_core_ArchitecturePipeline_ts --> src_core_ConfigValidator_ts
   src_core_ArchitecturePipeline_ts --> src_core_DependencyGraphBuilder_ts
   src_core_ArchitecturePipeline_ts --> src_core_FileDiscovery_ts
@@ -231,11 +239,13 @@ flowchart TD
   src_utils_OutputWriter_ts --> fs_promises
   src_utils_OutputWriter_ts --> path
   src_utils_OutputWriter_ts --> src_utils_errors_ts
+  style ___________try_________dist_cli fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style child_process fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style commander fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style crypto fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style dbNames fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style dbPatterns fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
+  style fs fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style fs_promises fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style glob fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
   style path fill:#fbbf2422,stroke:#fbbf24,stroke-width:1px
