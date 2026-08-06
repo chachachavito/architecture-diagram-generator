@@ -1,4 +1,4 @@
-# 🧠 Architecture Analysis Platform (v0.5.0)
+# 🧠 Architecture Analysis Platform
 
 > Stop guessing your architecture. Start measuring it.
 
@@ -84,20 +84,104 @@ Trend: improving 📈
 
 ## ⚙️ Configuration
 
-Create `architecture-analyzer.json`:
+There are two config files, with different jobs. Both are optional, both are
+auto-detected in the project root, and neither is required to get a first run.
+
+| File | Controls |
+| --- | --- |
+| `architecture-config.json` | **What goes into the graph** — which files are scanned, and how modules map to layers and domains |
+| `architecture-analyzer.json` | **How the graph is judged** — which rules run, at what severity and thresholds |
+
+### `architecture-config.json` — what gets analyzed
 
 ```json
 {
-  "preset": "balanced",
+  "include": ["app/**", "lib/**", "components/**", "middleware.ts"],
+  "exclude": ["**/*.test.ts", "**/node_modules/**"],
+  "layers": [
+    { "name": "UI",   "patterns": ["**/app/**/page.tsx", "**/components/**"] },
+    { "name": "API",  "patterns": ["**/app/api/**", "**/middleware.ts"] },
+    { "name": "Core", "patterns": ["**/lib/**"] }
+  ],
+  "domains": [
+    { "name": "AccessControl", "patterns": ["**/auth/**", "**/middleware.ts"] }
+  ]
+}
+```
+
+**Layer names must be one of** `UI`, `API`, `Action`, `Service`, `Core`,
+`External` — in that order, outermost first. Depending inward is allowed;
+depending outward is a violation. A name outside this list is skipped entirely
+by layer-violation analysis, silently exempting every module it labels, so the
+run warns when your config invents one.
+
+Point at a different file with `--config`:
+
+```bash
+architecture-generator analyze . --config ./config/architecture.json
+```
+
+> **Root-level files must be named in `include`.** By default the scanner walks
+> `app/`, `pages/`, `api/`, `src/`, `lib/`, `components/`, `services/` and
+> `utils/`. A file that sits at the project root — Next.js `middleware.ts`, or
+> `proxy.ts` on Next 16 — is only picked up if an `include` pattern names it.
+> This matters: those files usually hold access control and redirects, so
+> leaving them out means scoring an architecture without its request gate.
+
+When no config file exists, discovery runs unfiltered over the directories
+above. Adding a config file with an `include` list makes that list authoritative.
+
+### `architecture-analyzer.json` — how it is scored
+
+```json
+{
   "rules": {
-    "fan-out": { "threshold": 12 },
-    "fan-in": { "threshold": 20 },
-    "layer-violation": "error"
+    "layer-violation":     { "enabled": true, "severity": "high" },
+    "circular-dependency": { "enabled": true, "severity": "critical" },
+    "high-fan-out":        { "enabled": true, "severity": "medium", "thresholds": { "maxFanOut": 12 } },
+    "high-fan-in":         { "enabled": true, "severity": "medium", "thresholds": { "maxFanIn": 20 } },
+    "god-module":          { "enabled": true, "severity": "high" }
+  },
+  "history": { "enabled": true, "maxEntries": 30 }
+}
+```
+
+Rule ids are exactly: `layer-violation`, `circular-dependency`, `high-fan-out`,
+`high-fan-in`, `god-module`. The schema is strict — an unknown key makes the
+whole file invalid, and the run warns and falls back to default rules.
+
+**Coupling rules skip re-export barrels and type-only modules by default.** A
+barrel's fan-out *is* the surface it re-exports, and a type module's fan-in is
+erased at compile time; counting either produced issues whose only available
+fix — splitting the barrel — makes the codebase worse. Detection is structural,
+not filename-based: an `index.ts` that declares real code is still counted, and
+a barrel named `public-api.ts` is still skipped. To count them anyway:
+
+```json
+{
+  "rules": {
+    "high-fan-out": { "enabled": true, "includeBarrels": true },
+    "high-fan-in":  { "enabled": true, "includeTypeModules": true }
   }
 }
 ```
 
+A module that exports even one runtime value is not type-only, so genuine
+coupling stays visible.
+
+Generate one from a preset:
+
+```bash
+architecture-generator init --preset balanced
+```
+
 ### Presets
+
+Presets are selected per-run with `--preset`, not inside the config file:
+
+```bash
+architecture-generator check . --preset strict
+```
 
 - `strict` → zero tolerance (recommended for mature systems)
 - `balanced` → default
@@ -130,6 +214,31 @@ Includes:
 - Issues explorer panel
 - Click-to-inspect modules
 - Suggestions & explanations
+
+---
+
+## 🔗 Pairing with `architecture-analyzer`
+
+The JSON written by `-o` is consumed by `architecture-analyzer` directly. **No
+adapter or shim is needed** — writing one that unwraps `.graph` yourself is a
+common source of false positives.
+
+```bash
+architecture-generator . -o architecture.json
+architecture-analyzer analyze architecture.json --baseline baseline.json
+```
+
+The emitted file has this shape, and the analyzer reads either the wrapper or a
+bare graph:
+
+```json
+{
+  "version": "0.6.0",
+  "generatedAt": "2026-01-01T00:00:00.000Z",
+  "graph": { "nodes": [], "edges": [] },
+  "analysis": { "score": 100, "issues": [], "metrics": {}, "summary": {} }
+}
+```
 
 ---
 

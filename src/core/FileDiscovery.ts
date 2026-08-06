@@ -117,6 +117,38 @@ export class FileDiscovery {
       }
     }
 
+    // Pick up files the include patterns name outside of scanDirs — root-level
+    // entrypoints (Next.js middleware.ts / proxy.ts, instrumentation.ts) and
+    // custom source directories would otherwise never be globbed at all.
+    if (config.include && config.include.length > 0) {
+      const alreadyFound = new Set<string>([
+        ...fileList.routes,
+        ...fileList.api,
+        ...fileList.components,
+        ...fileList.utilities,
+        ...(fileList.config || []),
+      ]);
+
+      const included = await glob(config.include, {
+        cwd: rootDir,
+        ignore: excludePatterns,
+        absolute: false,
+        nodir: true,
+      });
+
+      for (const file of included) {
+        if (!/\.(ts|tsx|js|jsx)$/.test(file)) continue;
+        if (alreadyFound.has(file)) continue;
+
+        const baseDir = file.split('/')[0];
+        const category =
+          this.categorizeFile(file, scanDirs.includes(baseDir) ? baseDir : '') ?? 'utilities';
+
+        fileList[category]?.push(file);
+        alreadyFound.add(file);
+      }
+    }
+
     // Apply include patterns if specified
     if (config.include && config.include.length > 0) {
       fileList.routes = this.filter(fileList.routes, config.include);

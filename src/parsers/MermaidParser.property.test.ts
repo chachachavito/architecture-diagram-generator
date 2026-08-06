@@ -80,7 +80,15 @@ describe('MermaidParser - Round-trip Property', () => {
   const mermaidASTArbitrary = fc.record({
     type: graphTypeArbitrary,
     direction: directionArbitrary,
-    nodes: fc.array(nodeArbitrary, { minLength: 0, maxLength: 10 }),
+    // Node ids must be unique. A plain fc.array happily produced two nodes
+    // sharing an id, which is not a representable graph: the parser collapses
+    // them on read, so the round-trip could never preserve such an AST and the
+    // suite failed for roughly one seed in twenty.
+    nodes: fc.uniqueArray(nodeArbitrary, {
+      minLength: 0,
+      maxLength: 10,
+      selector: (node) => node.id,
+    }),
     edges: fc.array(edgeArbitrary, { minLength: 0, maxLength: 10 }),
     subgraphs: fc.constant([]), // Simplified for property test
     styles: fc.constant([]), // Simplified for property test

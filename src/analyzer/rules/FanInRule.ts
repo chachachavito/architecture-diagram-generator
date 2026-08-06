@@ -29,6 +29,12 @@ export class FanInRule implements AnalysisRule {
         const node = nodeMap.get(nodeId);
         if (node?.metadata?.type === 'external') continue;
 
+        // Shared type modules and barrels are meant to be depended on widely;
+        // their imports are erased at compile time or are pure re-exports.
+        // Opt back in with `"includeTypeModules"` / `"includeBarrels"`.
+        if (node?.metadata?.isTypeOnlyModule && config?.includeTypeModules !== true) continue;
+        if (node?.metadata?.isBarrel && config?.includeBarrels !== true) continue;
+
         issues.push({
           ruleId: this.id,
           type: 'high-fan-in',

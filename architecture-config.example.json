@@ -1,6 +1,16 @@
 {
   "rootDir": "./",
-  "include": ["app/**", "pages/**", "src/**", "lib/**", "components/**"],
+
+  "include": [
+    "app/**",
+    "pages/**",
+    "src/**",
+    "lib/**",
+    "components/**",
+    "services/**",
+    "middleware.ts"
+  ],
+
   "exclude": [
     "**/*.test.ts",
     "**/*.test.tsx",
@@ -21,47 +31,38 @@
     },
     {
       "name": "API",
-      "patterns": ["**/app/api/**", "**/pages/api/**"],
+      "patterns": ["**/app/api/**", "**/pages/api/**", "**/middleware.ts"],
       "color": "#10B981"
     },
     {
-      "name": "Processing",
-      "patterns": ["**/lib/**", "**/utils/**", "**/services/**"],
+      "name": "Service",
+      "patterns": ["**/services/**"],
       "color": "#F59E0B"
     },
     {
-      "name": "Data",
-      "patterns": ["**/prisma/**", "**/db/**", "**/models/**"],
+      "name": "Core",
+      "patterns": ["**/lib/**", "**/utils/**", "**/prisma/**", "**/db/**", "**/models/**"],
       "color": "#8B5CF6"
     }
   ],
 
   "domains": [
     {
-      "name": "Risk",
-      "patterns": ["**/risk/**"],
+      "name": "AccessControl",
+      "patterns": ["**/auth/**", "**/login/**", "**/middleware.ts"],
       "critical": true
     },
     {
-      "name": "Weather",
-      "patterns": ["**/weather/**", "**/radar/**"]
+      "name": "Billing",
+      "patterns": ["**/billing/**", "**/payments/**"]
     },
     {
-      "name": "Auth",
-      "patterns": ["**/auth/**", "**/login/**"]
-    },
-    {
-      "name": "Hydrology",
-      "patterns": ["**/hydrology/**", "**/tide/**"]
+      "name": "Catalog",
+      "patterns": ["**/catalog/**", "**/products/**"]
     }
   ],
 
   "externalServices": [
-    {
-      "name": "OpenWeather API",
-      "patterns": ["api.openweathermap.org"],
-      "type": "REST API"
-    },
     {
       "name": "PostgreSQL",
       "patterns": ["@prisma/client", "prisma"],
@@ -76,24 +77,6 @@
       "name": "Vercel KV",
       "patterns": ["@vercel/kv"],
       "type": "Cache"
-    }
-  ],
-
-  "output": {
-    "formats": ["markdown", "png"],
-    "directory": "./docs/architecture",
-    "simplified": true,
-    "detailed": true
-  },
-
-  "plugins": [
-    {
-      "name": "ai-documentation-enhancer",
-      "enabled": false,
-      "config": {
-        "apiKey": "${OPENAI_API_KEY}",
-        "model": "gpt-4o-mini"
-      }
     }
   ]
 }

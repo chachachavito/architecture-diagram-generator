@@ -469,6 +469,48 @@ describe('ConfigurationLoader', () => {
     });
   });
 
+  describe('resolveConfigPath()', () => {
+    it('should find architecture-config.json in the given root', async () => {
+      await fs.mkdir(tempDir, { recursive: true });
+      const configPath = path.join(tempDir, 'architecture-config.json');
+      await fs.writeFile(configPath, JSON.stringify({ include: ['app/**'] }));
+
+      const resolved = await loader.resolveConfigPath(tempDir);
+
+      expect(resolved).toBe(configPath);
+    });
+
+    it('should return undefined when the project has no config file', async () => {
+      await fs.mkdir(tempDir, { recursive: true });
+
+      const resolved = await loader.resolveConfigPath(tempDir);
+
+      expect(resolved).toBeUndefined();
+    });
+
+    it('should search the given root rather than the working directory', async () => {
+      const nested = path.join(tempDir, 'nested-project');
+      await fs.mkdir(nested, { recursive: true });
+      const configPath = path.join(nested, 'architecture-config.json');
+      await fs.writeFile(configPath, JSON.stringify({ include: ['lib/**'] }));
+
+      expect(await loader.resolveConfigPath(nested)).toBe(configPath);
+      expect(await loader.resolveConfigPath(tempDir)).toBeUndefined();
+    });
+
+    it('should load the config discovered for a root directory', async () => {
+      await fs.mkdir(tempDir, { recursive: true });
+      await fs.writeFile(
+        path.join(tempDir, 'architecture-config.json'),
+        JSON.stringify({ include: ['app/**', 'proxy.ts'] }),
+      );
+
+      const config = await loader.load(undefined, tempDir);
+
+      expect(config.include).toEqual(['app/**', 'proxy.ts']);
+    });
+  });
+
   describe('error handling', () => {
     it('should handle file read errors gracefully', async () => {
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});

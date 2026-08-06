@@ -1,7 +1,8 @@
 import { ClassifiedGraph, Issue, ArchitectureLayer } from '../../core/GraphTypes';
+import { ARCHITECTURE_LAYERS } from '../../core/layers';
 import { AnalysisRule, RuleConfig } from '../types';
 
-const LAYER_ORDER: ArchitectureLayer[] = ['UI', 'API', 'Action', 'Service', 'Core', 'External'];
+const LAYER_ORDER = ARCHITECTURE_LAYERS;
 
 /**
  * Detects invalid dependencies between architectural layers.

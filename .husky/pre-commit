@@ -1,2 +1,13 @@
 npx lint-staged
-npm run analyze .
+
+# Gate on architecture health without writing anything.
+#
+# This used to run `npm run analyze .`, which had two problems: it ran the CLI
+# from dist/, so it analyzed the last build rather than the source being
+# committed, and it rewrote four generated files on every commit — leaving the
+# tree permanently dirty and training everyone to reach for --no-verify, which
+# disables the lint and tests above.
+#
+# `check` only reads the graph and returns an exit code.
+npm run build --silent
+node dist/cli.js check . --report-format compact

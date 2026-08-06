@@ -1,12 +1,29 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { ArchitecturePipeline } from './core/ArchitecturePipeline';
+import { ConfigurationLoader } from './core/ConfigurationLoader';
+import type { FullProjectConfig } from './core/ConfigurationLoader';
 import { AnalysisHistory } from './analyzer/AnalysisHistory';
 import { getPreset, PRESET_NAMES } from './analyzer/presets';
 import type { AnalyzerConfig } from './analyzer/AnalyzerConfig';
+import * as fs from 'fs/promises';
+import { readFileSync } from 'fs';
 import * as path from 'path';
 
-const VERSION = '1.3.0';
+/**
+ * Read from the package manifest rather than duplicated as a literal: this
+ * value is both what `--version` prints and what lands in the emitted JSON's
+ * `version` field, and it had drifted to a number that existed nowhere else.
+ */
+const VERSION: string = (() => {
+  try {
+    // dist/cli.js → ../package.json, both in-repo and once installed
+    const manifest = path.join(__dirname, '..', 'package.json');
+    return JSON.parse(readFileSync(manifest, 'utf-8')).version as string;
+  } catch {
+    return '0.0.0';
+  }
+})();
 
 // ── Environment Detection ────────────────────────────────────────────────────
 const isCI = !!(process.env.CI || process.env.GITHUB_ACTIONS || process.env.GITLAB_CI || process.env.JENKINS_URL || process.env.CIRCLECI);
@@ -44,6 +61,39 @@ function resolveFormat(explicit?: string, jsonFlag?: boolean): string {
   return isCI ? 'compact' : 'pretty';
 }
 
+/**
+ * Loads architecture-config.json for the project being analyzed.
+ *
+ * Returns undefined when the project has no config file, which keeps file
+ * discovery unfiltered. An explicit --config path that does not exist is a
+ * hard error: silently analyzing the wrong file set is worse than failing.
+ */
+async function loadProjectConfig(
+  projectRoot: string,
+  explicitPath?: string,
+): Promise<FullProjectConfig | undefined> {
+  const loader = new ConfigurationLoader();
+
+  let configPath: string | undefined;
+  if (explicitPath) {
+    configPath = path.resolve(explicitPath);
+    try {
+      await fs.access(configPath);
+    } catch {
+      console.error(`Error: config file not found: ${configPath}`);
+      process.exit(1);
+    }
+  } else {
+    configPath = await loader.resolveConfigPath(projectRoot);
+  }
+
+  if (!configPath) return undefined;
+
+  // stderr, so `analyze --json` stdout stays machine-readable
+  console.error(`Using config: ${configPath}`);
+  return loader.load(configPath, projectRoot);
+}
+
 function resolvePresetConfig(presetName?: string): AnalyzerConfig | undefined {
   if (!presetName) return undefined;
   const preset = getPreset(presetName);
@@ -68,15 +118,18 @@ async function main() {
     .option('-o, --output <path>', 'Path to save the generated JSON', 'architecture.json')
     .option('-d, --debug', 'Output detailed debug logs', false)
     .option('-f, --format <format>', 'Output format (json, html, svg)', 'json')
+    .option('-c, --config <path>', 'Path to architecture-config.json (default: auto-detect in project root)')
     .option('--preset <name>', `Rule preset: ${PRESET_NAMES.join(' | ')}`)
     .action(async (projectRoot, options) => {
       try {
         const absProjectRoot = path.resolve(projectRoot);
         const analyzerConfig = resolvePresetConfig(options.preset);
+        const projectConfig = await loadProjectConfig(absProjectRoot, options.config);
 
         const pipeline = new ArchitecturePipeline({
           version: VERSION,
           config: {},
+          projectConfig,
           debug: options.debug,
           rootDir: absProjectRoot,
           outputBase: options.output,
@@ -110,15 +163,18 @@ async function main() {
     .option('-d, --debug', 'Debug mode', false)
     .option('--json', 'Output as JSON', false)
     .option('--report-format <fmt>', 'Output format: pretty | json | compact', undefined)
+    .option('-c, --config <path>', 'Path to architecture-config.json (default: auto-detect in project root)')
     .option('--preset <name>', `Rule preset: ${PRESET_NAMES.join(' | ')}`)
     .option('--changed', 'Analyze only git-changed files', false)
     .action(async (projectRoot, options) => {
       try {
         const absProjectRoot = path.resolve(projectRoot);
         const analyzerConfig = resolvePresetConfig(options.preset);
+        const projectConfig = await loadProjectConfig(absProjectRoot, options.config);
         const pipeline = new ArchitecturePipeline({
           version: VERSION,
           config: {},
+          projectConfig,
           debug: options.debug,
           rootDir: absProjectRoot,
           analyzerConfig,
@@ -165,6 +221,7 @@ async function main() {
     .option('--fail-on <severity>', 'Fail if any issue of this severity or higher exists (critical|high|medium|low)')
     .option('--max-issues <count>', 'Fail if total issues exceed this count')
     .option('--report-format <fmt>', 'Output format: pretty | json | compact', undefined)
+    .option('-c, --config <path>', 'Path to architecture-config.json (default: auto-detect in project root)')
     .option('--preset <name>', `Rule preset: ${PRESET_NAMES.join(' | ')}`)
     .option('--changed', 'Analyze only git-changed files', false)
     .option('-d, --debug', 'Debug mode', false)
@@ -173,10 +230,12 @@ async function main() {
         const absProjectRoot = path.resolve(projectRoot);
         const threshold = parseInt(options.threshold, 10);
         const analyzerConfig = resolvePresetConfig(options.preset);
+        const projectConfig = await loadProjectConfig(absProjectRoot, options.config);
 
         const pipeline = new ArchitecturePipeline({
           version: VERSION,
           config: {},
+          projectConfig,
           debug: options.debug,
           rootDir: absProjectRoot,
           analyzerConfig,
@@ -242,14 +301,17 @@ async function main() {
     .argument('[project-root]', 'Root directory', '.')
     .option('-d, --debug', 'Debug mode', false)
     .option('--json', 'Output as JSON', false)
+    .option('-c, --config <path>', 'Path to architecture-config.json (default: auto-detect in project root)')
     .option('--preset <name>', `Rule preset: ${PRESET_NAMES.join(' | ')}`)
     .action(async (projectRoot, options) => {
       try {
         const absProjectRoot = path.resolve(projectRoot);
         const analyzerConfig = resolvePresetConfig(options.preset);
+        const projectConfig = await loadProjectConfig(absProjectRoot, options.config);
         const pipeline = new ArchitecturePipeline({
           version: VERSION,
           config: {},
+          projectConfig,
           debug: options.debug,
           rootDir: absProjectRoot,
           analyzerConfig,

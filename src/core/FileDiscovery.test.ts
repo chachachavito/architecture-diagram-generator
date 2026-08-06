@@ -404,6 +404,77 @@ describe('FileDiscovery', () => {
     });
   });
 
+  describe('include patterns outside the scanned directories', () => {
+    it('should discover a root-level file named by an include pattern', async () => {
+      const structure = {
+        'proxy.ts': 'export function proxy() {}',
+        'app/page.tsx': 'export default function Home() {}',
+      };
+
+      const rootDir = await createTempStructure(structure);
+      const config: ProjectConfig = {
+        rootDir,
+        include: ['app/**', 'proxy.ts'],
+      };
+
+      const result = await fileDiscovery.discover(rootDir, config);
+
+      const allFiles = [
+        ...result.routes,
+        ...result.api,
+        ...result.components,
+        ...result.utilities,
+        ...(result.config || []),
+      ];
+      expect(allFiles).toContain('proxy.ts');
+      expect(allFiles).toContain('app/page.tsx');
+    });
+
+    it('should discover files in a custom source directory', async () => {
+      const structure = {
+        'features/billing/checkout.ts': 'export function checkout() {}',
+      };
+
+      const rootDir = await createTempStructure(structure);
+      const config: ProjectConfig = { rootDir, include: ['features/**'] };
+
+      const result = await fileDiscovery.discover(rootDir, config);
+
+      expect(result.utilities).toContain('features/billing/checkout.ts');
+    });
+
+    it('should not pull in root-level files that no include pattern names', async () => {
+      const structure = {
+        'proxy.ts': 'export function proxy() {}',
+        'app/page.tsx': 'export default function Home() {}',
+      };
+
+      const rootDir = await createTempStructure(structure);
+      const config: ProjectConfig = { rootDir, include: ['app/**'] };
+
+      const result = await fileDiscovery.discover(rootDir, config);
+
+      const allFiles = [...result.routes, ...result.utilities, ...(result.config || [])];
+      expect(allFiles).not.toContain('proxy.ts');
+    });
+
+    it('should still honour exclude patterns for included root-level files', async () => {
+      const structure = {
+        'proxy.ts': 'export function proxy() {}',
+        'proxy.test.ts': 'describe("proxy", () => {})',
+      };
+
+      const rootDir = await createTempStructure(structure);
+      const config: ProjectConfig = { rootDir, include: ['proxy*.ts'] };
+
+      const result = await fileDiscovery.discover(rootDir, config);
+
+      const allFiles = [...result.utilities, ...(result.config || [])];
+      expect(allFiles).toContain('proxy.ts');
+      expect(allFiles).not.toContain('proxy.test.ts');
+    });
+  });
+
   describe('edge cases for file categorization', () => {
     it('should handle deeply nested directory structures', async () => {
       const structure = {

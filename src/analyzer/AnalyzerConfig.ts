@@ -10,6 +10,8 @@ const RuleConfigSchema = z.object({
   enabled: z.boolean().default(true),
   severity: SeveritySchema.optional(),
   thresholds: z.record(z.string(), z.number()).optional(),
+  includeBarrels: z.boolean().optional(),
+  includeTypeModules: z.boolean().optional(),
 }).strict();
 
 const ScoringSchema = z.object({
@@ -76,11 +78,19 @@ export function toRuleOverrides(config: AnalyzerConfig): Record<string, RuleConf
   if (!config.rules) return overrides;
 
   for (const [ruleId, ruleCfg] of Object.entries(config.rules)) {
-    const cfg = ruleCfg as { enabled: boolean; severity?: string; thresholds?: Record<string, number> };
+    const cfg = ruleCfg as {
+      enabled: boolean;
+      severity?: string;
+      thresholds?: Record<string, number>;
+      includeBarrels?: boolean;
+      includeTypeModules?: boolean;
+    };
     overrides[ruleId] = {
       enabled: cfg.enabled,
       severity: (cfg.severity || 'medium') as IssueSeverity,
       thresholds: cfg.thresholds,
+      includeBarrels: cfg.includeBarrels,
+      includeTypeModules: cfg.includeTypeModules,
     };
   }
   return overrides;

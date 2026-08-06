@@ -5,6 +5,8 @@ import { ExternalCall } from '../parsers';
  */
 
 export type NodeType = 'module' | 'service' | 'api' | 'external';
+// The runtime list of these layers lives in ./layers, so that this module
+// keeps exporting types only. See the note there.
 export type ArchitectureLayer = 'UI' | 'API' | 'Action' | 'Service' | 'Core' | 'External';
 export type SourcePriority = 'inferred' | 'manual';
 export type IssueSeverity = 'low' | 'medium' | 'high' | 'critical';
