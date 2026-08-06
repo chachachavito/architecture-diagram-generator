@@ -5,19 +5,9 @@ import { ExternalCall } from '../parsers';
  */
 
 export type NodeType = 'module' | 'service' | 'api' | 'external';
+// The runtime list of these layers lives in ./layers, so that this module
+// keeps exporting types only. See the note there.
 export type ArchitectureLayer = 'UI' | 'API' | 'Action' | 'Service' | 'Core' | 'External';
-
-/**
- * The layers, outermost first. This ordering *is* the layering rule: a module
- * may depend inward, never outward.
- *
- * Runtime counterpart of ArchitectureLayer. A layer name outside this list is
- * skipped by layer-violation analysis, so configuration that invents one
- * silently disables the check for every module it labels.
- */
-export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
-  'UI', 'API', 'Action', 'Service', 'Core', 'External',
-];
 export type SourcePriority = 'inferred' | 'manual';
 export type IssueSeverity = 'low' | 'medium' | 'high' | 'critical';
 export type IssueCategory = 'coupling' | 'layering' | 'structure';

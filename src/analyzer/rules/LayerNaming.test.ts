@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { LayerViolationRule } from './LayerViolationRule';
 import { DEFAULT_CONFIG } from '../../core/ConfigurationLoader';
-import { ARCHITECTURE_LAYERS, ClassifiedGraph, GraphNode } from '../../core/GraphTypes';
+import { ClassifiedGraph, GraphNode } from '../../core/GraphTypes';
+import { ARCHITECTURE_LAYERS } from '../../core/layers';
 
 /**
  * LayerViolationRule skips any edge whose endpoint carries a layer name outside

@@ -2,9 +2,9 @@ import {
   SourceGraph,
   ClassifiedGraph,
   GraphSnapshot,
-  ArchitectureLayer,
-  ARCHITECTURE_LAYERS
+  ArchitectureLayer
 } from './GraphTypes';
+import { ARCHITECTURE_LAYERS } from './layers';
 import { Normalizer } from './Normalizer';
 import { ArchitectureClassifier } from './ArchitectureClassifier';
 import { ProjectConfig } from './ConfigValidator';

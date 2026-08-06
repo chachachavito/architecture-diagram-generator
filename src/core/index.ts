@@ -3,6 +3,7 @@ export { FileDiscovery } from './FileDiscovery';
 export type { FileList } from './FileDiscovery';
 
 export * from './GraphTypes';
+export { ARCHITECTURE_LAYERS } from './layers';
 export { DependencyGraph } from './DependencyGraph';
 export { DependencyGraphBuilder } from './DependencyGraphBuilder';
 export { ArchitectureClassifier, DEFAULT_CLASSIFICATION_RULES } from './ArchitectureClassifier';

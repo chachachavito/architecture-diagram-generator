@@ -1,4 +1,5 @@
-import { ClassifiedGraph, Issue, ArchitectureLayer, ARCHITECTURE_LAYERS } from '../../core/GraphTypes';
+import { ClassifiedGraph, Issue, ArchitectureLayer } from '../../core/GraphTypes';
+import { ARCHITECTURE_LAYERS } from '../../core/layers';
 import { AnalysisRule, RuleConfig } from '../types';
 
 const LAYER_ORDER = ARCHITECTURE_LAYERS;
