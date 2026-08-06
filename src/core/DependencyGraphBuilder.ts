@@ -115,6 +115,8 @@ export class DependencyGraphBuilder {
         inheritance: module.metadata.inheritance,
         decorators: module.metadata.decorators,
         metrics: module.metadata.metrics,
+        isBarrel: module.metadata.isBarrel,
+        isTypeOnlyModule: module.metadata.isTypeOnlyModule,
       },
       type: 'module', // Legacy
       externalCalls: module.externalCalls,

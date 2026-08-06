@@ -144,6 +144,25 @@ Rule ids are exactly: `layer-violation`, `circular-dependency`, `high-fan-out`,
 `high-fan-in`, `god-module`. The schema is strict — an unknown key makes the
 whole file invalid, and the run warns and falls back to default rules.
 
+**Coupling rules skip re-export barrels and type-only modules by default.** A
+barrel's fan-out *is* the surface it re-exports, and a type module's fan-in is
+erased at compile time; counting either produced issues whose only available
+fix — splitting the barrel — makes the codebase worse. Detection is structural,
+not filename-based: an `index.ts` that declares real code is still counted, and
+a barrel named `public-api.ts` is still skipped. To count them anyway:
+
+```json
+{
+  "rules": {
+    "high-fan-out": { "enabled": true, "includeBarrels": true },
+    "high-fan-in":  { "enabled": true, "includeTypeModules": true }
+  }
+}
+```
+
+A module that exports even one runtime value is not type-only, so genuine
+coupling stays visible.
+
 Generate one from a preset:
 
 ```bash

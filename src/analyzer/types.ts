@@ -16,6 +16,10 @@ export interface RuleConfig {
   enabled: boolean;
   severity: IssueSeverity;
   thresholds?: Record<string, number>;
+  /** Count re-export barrels in coupling rules (default: false). */
+  includeBarrels?: boolean;
+  /** Count type-only modules in coupling rules (default: false). */
+  includeTypeModules?: boolean;
 }
 
 

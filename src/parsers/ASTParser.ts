@@ -62,6 +62,17 @@ export interface ModuleMetadata {
   inheritance: InheritanceInfo[];
   decorators: string[];
   metrics: ModuleMetrics;
+  /**
+   * The module declares nothing of its own and only re-exports other modules
+   * (`export ... from`). Its dependency count describes the surface it
+   * aggregates, not coupling it introduces.
+   */
+  isBarrel: boolean;
+  /**
+   * Every export is a type or interface. Depending on such a module creates no
+   * runtime edge — the import is erased at compile time.
+   */
+  isTypeOnlyModule: boolean;
 }
 
 /**
@@ -524,8 +535,33 @@ export class ASTParser {
       isApiRoute,
       inheritance,
       decorators,
-      metrics
+      metrics,
+      isBarrel: this.detectBarrel(sourceFile),
+      isTypeOnlyModule: exports.length > 0 && exports.every((exp) => exp.type === 'type'),
     };
+  }
+
+  /**
+   * A barrel re-exports other modules and declares nothing itself. Detected
+   * structurally rather than by filename: plenty of index.ts files hold real
+   * code, and plenty of barrels are not called index.ts.
+   */
+  private detectBarrel(sourceFile: SourceFile): boolean {
+    const reExports = sourceFile
+      .getExportDeclarations()
+      .filter((decl) => !!decl.getModuleSpecifierValue());
+
+    if (reExports.length === 0) return false;
+
+    const declaresOwnCode =
+      sourceFile.getFunctions().length > 0 ||
+      sourceFile.getClasses().length > 0 ||
+      sourceFile.getEnums().length > 0 ||
+      sourceFile.getInterfaces().length > 0 ||
+      sourceFile.getTypeAliases().length > 0 ||
+      sourceFile.getVariableStatements().length > 0;
+
+    return !declaresOwnCode;
   }
 
   private extractInheritance(sourceFile: SourceFile): InheritanceInfo[] {

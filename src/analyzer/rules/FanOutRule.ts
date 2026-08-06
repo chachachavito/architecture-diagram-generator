@@ -28,6 +28,11 @@ export class FanOutRule implements AnalysisRule {
         const node = nodeMap.get(nodeId);
         if (node?.metadata?.type === 'external') continue;
 
+        // A barrel's outgoing edges are the surface it re-exports, not coupling
+        // it introduces: splitting one to satisfy a threshold makes the code
+        // worse. Opt back in with `"includeBarrels": true`.
+        if (node?.metadata?.isBarrel && config?.includeBarrels !== true) continue;
+
         issues.push({
           ruleId: this.id,
           type: 'high-fan-out',

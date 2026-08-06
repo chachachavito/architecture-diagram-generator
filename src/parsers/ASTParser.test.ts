@@ -1226,4 +1226,70 @@ obj.get();
       expect(axiosCalls).toHaveLength(0);
     });
   });
+
+  describe('barrel and type-only module detection', () => {
+    it('flags a pure re-export barrel', async () => {
+      await fs.writeFile(
+        path.join(tempDir, 'index.ts'),
+        `export { Thing } from './thing';\nexport * from './other';\n`,
+      );
+
+      const result = await parser.parse('index.ts');
+
+      expect(result.metadata.isBarrel).toBe(true);
+    });
+
+    it('does not flag an index file that declares its own code', async () => {
+      await fs.writeFile(
+        path.join(tempDir, 'index.ts'),
+        `export { Thing } from './thing';\nexport function helper() { return 1; }\n`,
+      );
+
+      const result = await parser.parse('index.ts');
+
+      expect(result.metadata.isBarrel).toBe(false);
+    });
+
+    it('flags a barrel regardless of filename', async () => {
+      await fs.writeFile(
+        path.join(tempDir, 'public-api.ts'),
+        `export * from './a';\nexport * from './b';\n`,
+      );
+
+      const result = await parser.parse('public-api.ts');
+
+      expect(result.metadata.isBarrel).toBe(true);
+    });
+
+    it('flags a module whose exports are all types', async () => {
+      await fs.writeFile(
+        path.join(tempDir, 'types.ts'),
+        `export interface Foo { a: string }\nexport type Bar = 'x' | 'y';\n`,
+      );
+
+      const result = await parser.parse('types.ts');
+
+      expect(result.metadata.isTypeOnlyModule).toBe(true);
+    });
+
+    it('does not flag a module that also exports runtime values', async () => {
+      await fs.writeFile(
+        path.join(tempDir, 'mixed.ts'),
+        `export interface Foo { a: string }\nexport const DEFAULT = 1;\n`,
+      );
+
+      const result = await parser.parse('mixed.ts');
+
+      expect(result.metadata.isTypeOnlyModule).toBe(false);
+    });
+
+    it('does not flag a module with no exports at all', async () => {
+      await fs.writeFile(path.join(tempDir, 'side-effect.ts'), `console.log('hi');\n`);
+
+      const result = await parser.parse('side-effect.ts');
+
+      expect(result.metadata.isTypeOnlyModule).toBe(false);
+      expect(result.metadata.isBarrel).toBe(false);
+    });
+  });
 });
